@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
+import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import { Calendar, CheckCircle, Mail, BarChart3, Hash, Eye, TrendingUp, Shield, Globe, Users, Heart, Linkedin, Twitter, Instagram, Menu, X, Send } from "lucide-react";
 
 export default function Home() {
@@ -418,7 +419,7 @@ export default function Home() {
             {/* Logo and About */}
             <div className="lg:col-span-2">
               <div className="flex items-center space-x-3 mb-6" data-testid="footer-logo">
-                <img src={logoPath} alt="Growlyft Logo" className="w-8 h-8 invert" />
+                <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" />
                 <div className="text-xl font-bold">
                   <span className="text-white">Grow</span><span className="text-brand-green">lyft</span>
                 </div>
