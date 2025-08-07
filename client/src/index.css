@@ -46,6 +46,11 @@
   --brand-black: hsl(0 0% 0%);
   --soft-gray: hsl(60 14% 98%);
   --text-dark: hsl(12 4% 12%);
+  
+  /* About page specific colors */
+  --deep-navy: hsl(222 84% 5%);
+  --neon-green: hsl(149 96% 46%);
+  --soft-white: hsl(213 27% 98%);
 }
 
 .dark {

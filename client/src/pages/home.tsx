@@ -435,7 +435,7 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-semibold mb-4 text-brand-green">Quick Links</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-about">
+                <a href="/about" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-about">
                   About
                 </a>
                 <button 

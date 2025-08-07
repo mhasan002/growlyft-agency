@@ -1,0 +1,71 @@
+Design a modern, clean, and animated About Us page for a premium social media agency called Growlyft.
+🎯 Brand Values: Human-first, high-performance, transparent, premium.
+
+✅ Layout:
+
+Hero section with animated background and short mission statement.
+Section for “Our Story” (with left text, right image animation).
+Section for “Our Team” (grid-style team member cards, light hover animation).
+Section for “Why Brands Trust Growlyft” (with icon-based bullet points).
+CTA section at the bottom with glowing button to "Book a Free Discovery Call".
+🎨 Design Style:
+Primary Colors: Deep navy (#0F172A), vibrant neon green (#04E762), soft white background (#F8FAFC).
+Font: Modern sans-serif (e.g., Inter or Poppins).
+Rounded elements (buttons, images, card corners).
+Section fade-ins, slow parallax backgrounds, scroll-triggered animations.
+📱 Responsive for desktop and mobile.
+🖼️ Use real people-style placeholder images for team; avoid avatars.
+
+Include company logo (uploaded separately) in top-left.
+
+✍️ TEXT CONTENT FOR "ABOUT US" PAGE
+🔹 Hero Section
+Headline:
+"Real People. Real Strategy. Real Growth."
+Subheadline:
+We’re not another faceless agency. Growlyft is powered by humans who care about your brand’s presence — every post, every reply, every DM.
+
+CTA Button:
+[ Book a Free Discovery Call ]
+
+🔹 Our Story
+Header:
+Built for Brands That Want to Actually Grow
+Text:
+Growlyft was founded on a simple idea — that great content isn’t just made, it’s crafted by people who understand your audience.
+
+In a world of automation and AI-generated fluff, we bring back the human touch to digital growth. From scripting to daily engagement, we’re the human engine behind brands that want to stay consistent, relevant, and trusted.
+
+🔹 Our Team
+Header:
+Meet the Humans Behind the Growth
+Text:
+We're a distributed team of social media strategists, content writers, graphic designers, video editors, and engagement managers — all working together to handle your social media from A to Z.
+
+(Include photo-based team member cards like):
+👩‍💼 Emma — Strategy Lead (London)
+🧑‍🎨 Alex — Graphic Designer (Berlin)
+🎬 Nina — Video Scriptwriter (New York)
+📲 Mehedi — Client Success Manager (Dubai)
+🔹 Why Brands Trust Growlyft
+Header:
+Why Global Brands Trust Us with Their Voice
+Bullets with icons (or animated cards):
+
+💬 Human-Centered Engagement: No bots. All DMs, comments, and mentions handled by our trained team daily.
+📅 Consistent Content Calendar: Stay ahead with weekly planning and trend-based scripting.
+📈 Data-Driven Insights: Weekly performance updates, trend reviews, and optimization.
+🤝 Real Communication: Strategy calls, proactive suggestions, and full transparency.
+🔹 Call-To-Action Section
+Headline:
+Let’s Grow — Together
+Subtext:
+Whether you're just getting started or scaling to millions, Growlyft will keep your social presence consistent, engaging, and alive.
+
+CTA Button:
+[ Schedule a Discovery Call ]
+
+🔸 Footer (repeats site-wide)
+About Us | Team | Blog | Contact
+Company Name & Logo
+Copyright © 2025 Growlyft
