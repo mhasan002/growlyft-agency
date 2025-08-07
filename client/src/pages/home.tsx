@@ -441,13 +441,9 @@ export default function Home() {
                 <a href="/why-us" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-why-us">
                   Why Us
                 </a>
-                <button 
-                  onClick={() => scrollToSection('services')} 
-                  className="block text-gray-300 hover:text-brand-green transition-colors duration-300"
-                  data-testid="footer-link-services"
-                >
+                <a href="/services" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-services">
                   Services
-                </button>
+                </a>
                 <button 
                   onClick={() => scrollToSection('contact')} 
                   className="block text-gray-300 hover:text-brand-green transition-colors duration-300"

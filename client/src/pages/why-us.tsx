@@ -74,6 +74,13 @@ export default function WhyUs() {
               >
                 About
               </a>
+              <a 
+                href="/services" 
+                className="text-gray-600 hover:text-emerald-500 transition-colors duration-300 font-medium"
+                data-testid="nav-services"
+              >
+                Services
+              </a>
               <button 
                 onClick={() => scrollToSection('benefits')} 
                 className="text-gray-600 hover:text-emerald-500 transition-colors duration-300 font-medium"
@@ -117,6 +124,13 @@ export default function WhyUs() {
                   data-testid="mobile-nav-about"
                 >
                   About
+                </a>
+                <a 
+                  href="/services" 
+                  className="text-left text-gray-600 hover:text-emerald-500 transition-colors duration-300 font-medium"
+                  data-testid="mobile-nav-services"
+                >
+                  Services
                 </a>
                 <button 
                   onClick={() => scrollToSection('benefits')} 

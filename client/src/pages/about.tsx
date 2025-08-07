@@ -348,13 +348,12 @@ export default function About() {
                 <a href="/about" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-about">
                   About Us
                 </a>
-                <button 
-                  onClick={() => scrollToSection('team')} 
-                  className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300"
-                  data-testid="footer-link-team"
-                >
-                  Team
-                </button>
+                <a href="/why-us" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-why-us">
+                  Why Us
+                </a>
+                <a href="/services" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-services">
+                  Services
+                </a>
                 <a href="#" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-blog">
                   Blog
                 </a>

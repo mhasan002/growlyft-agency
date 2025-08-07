@@ -1,0 +1,91 @@
+Design a premium, modern, animated Services page for Growlyft – a high-end Web2 social media management agency.
+🧩 DESIGN BRIEF
+Layout:
+Full-width sections with subtle scroll-based animations (fade/slide-in, parallax, micro-interactions)
+Elegant transitions between sections
+Use branded colors from the logo (deep blue, white, light gray, electric green as accent)
+Use sans-serif fonts (e.g., Poppins, Inter, or Manrope)
+Header:
+Sticky header with transparent background that turns solid on scroll
+Navigation: Home, Services (active), About, Contact
+Sections to include:
+💼 Section 1: Hero (Top Banner)
+Design:
+Fullscreen background with light motion (subtle gradient, flowing waves, or soft parallax visuals)
+Add animated version of Growlyft logo (pulse or subtle hover interaction)
+Text:
+Social Media. Human First.
+Where real people manage, grow, and elevate your brand — daily.
+
+🎯 From content creation to comment handling, we manage it all — so you don’t have to.
+
+[Let's Talk] [See Capabilities]
+🛠️ Section 2: Our Signature Packages (Cards Style)
+Design:
+Three animated service cards (Starter, Growth, Authority)
+Hover reveals more features
+No pricing shown
+Each card should have icons and motion transitions
+Text:
+⭐ Starter
+Perfect for small brands starting to build their presence.
+You get: consistent posting, scripting, and 1:1 human engagement — daily.
+🚀 Growth (Most Popular)
+Built for scaling brands that need momentum.
+You get: strategy, content, optimization, and full-cycle interaction across platforms.
+👑 Authority
+For serious brands who want to dominate.
+You get: multi-layer content ops, senior-led engagement, proactive strategy, and full control.
+👉 All services are delivered by real people who know what works online.
+
+[Book a Discovery Call]
+
+🔧 Section 3: What We Handle — So You Don’t Have To
+Design:
+Grid layout (3x3 or 2x4 layout)
+Each block fades in on scroll with a smooth pop
+Add icons or illustrations
+Copy:
+Content Strategy & Planning
+Weekly content playbooks tailored to your audience.
+Post Design & Captions
+Visuals & voice built to match your brand personality.
+Short Video Scripting
+We don’t just edit — we guide what to say and how.
+Engagement (DMs & Comments)
+Real human interaction — not bots. We handle it with care.
+Trend Monitoring
+From memes to macro shifts, we keep you ahead.
+Hashtag Optimization
+Real research, not random tags.
+Analytics & Reporting
+Weekly summaries with next steps you can act on.
+Brand Optimization
+Every post, story, and comment aligned with your positioning.
+💬 Section 4: Custom-Tailored Solutions
+Design:
+Left: human photo (e.g., friendly strategist with laptop)
+Right: copy and CTA
+Copy:
+Need something different?
+
+Every brand’s journey is unique — and so is how we work with you.  
+Whether you’re launching, scaling, or fixing what’s broken, we’ll build a content ops system just for you.
+
+Let’s figure it out — together.
+
+[Get Your Custom Plan]
+🔄 Section 5: FAQ (Animated Accordion)
+Sample Questions:
+What platforms do you manage?
+Can you adapt to our brand tone?
+How do I communicate with your team?
+Do you provide reports or analytics?
+What if I need extra platforms or features?
+🟢 Footer (Sticky Footer or Animated Scroll-In)
+Links: About Us | Contact | Team | Blog
+Copyright © Growlyft 2025 | Built for real brands, by real people.
+✅ Notes to AI/Builder
+Animate all section transitions using scroll fade-ins and hover effects
+Use call-to-action buttons that animate on hover
+Ensure mobile responsiveness with collapsible service cards
