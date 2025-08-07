@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
-import { MessageCircle, Calendar, BarChart3, Handshake, Menu, X, Phone } from "lucide-react";
+import { MessageCircle, Calendar, BarChart3, Handshake, Menu, X, Phone, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export default function About() {
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
@@ -373,13 +373,13 @@ export default function About() {
               <h3 className="text-lg font-semibold mb-4 text-emerald-400">Follow Us</h3>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="social-linkedin">
-                  LinkedIn
+                  <Linkedin className="w-6 h-6" />
                 </a>
                 <a href="#" className="text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="social-twitter">
-                  Twitter
+                  <Twitter className="w-6 h-6" />
                 </a>
                 <a href="#" className="text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="social-instagram">
-                  Instagram
+                  <Instagram className="w-6 h-6" />
                 </a>
               </div>
             </div>
