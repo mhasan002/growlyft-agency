@@ -1,0 +1,79 @@
+Design a modern, animated, and responsive homepage for a social media agency called Growlyft.
+Build using HTML + TailwindCSS.
+🪄 OVERALL DESIGN STYLE:
+Clean, futuristic, and minimalist layout
+Rounded corners, soft shadows, smooth interactions
+Use grid and flex layout for symmetry
+Slight glassmorphism or semi-transparent sections (optional)
+Use high readability fonts (e.g., Inter, Poppins, or similar sans-serif)
+🎨 BRAND COLORS (Based on Logo):
+Primary Green: #52C251
+Accent Black: #000000
+Soft Gray Background: #F9F9F9
+Text Color: dark gray #1F1F1F
+Use green for CTA buttons, highlights, hover states
+Buttons should animate with hover scale and color transition
+📌 HEADER:
+Sticky header with white background and subtle shadow on scroll
+Left: logo image (path: /logo.png) with company name: Grow (black), Lyft (green)
+Right: nav items — “Services”, “Contact” — use smooth scroll
+On hover: text color transitions to green
+🧲 HERO SECTION:
+Full height section (min-h-screen)
+Centered large tagline:
+“We are your one-stop solution for brand growth.”
+Subheadline:
+“From content creation and scripting to DMs and engagement – we’re here for your brand, always.”
+Animated text fade-in (use animate-fadeIn or similar)
+CTA button: “Let’s Work Together”
+Green background, white text, hover glow effect
+Background: soft abstract shape, or a light radial gradient
+Optional floating animation for icons or graphics
+💼 SERVICES PREVIEW SECTION:
+Heading: What We Can Help With
+3 or 6 cards in a grid layout
+Each card:
+Icon or illustration
+Title only (no pricing)
+Hover effect: lift + green border glow
+Example cards:
+Content Calendar
+Video Scripting
+DMs & Engagement
+Hashtag Research
+Visual Branding Strategy
+Performance Reports
+💚 WHY GROWLYFT SECTION:
+Heading: “Why Brands Trust Growlyft”
+White background with soft green accents
+3–4 credibility blocks with icons & animation:
+✅ 24/7 Support
+🌍 Global Clients
+📈 Proven Growth
+🤝 Human-First Approach
+Add counter animation (e.g., 100+ Brands Helped with count-up animation)
+📩 CONTACT SECTION:
+Title: “Let’s Talk About Your Brand”
+Name, Email, Message fields
+Green CTA button: Send Message
+Optional floating envelope icon or send animation
+Background color: light gray #F9F9F9
+🦶 FOOTER:
+Dark footer (bg-black, text-white)
+Left: mini logo + short “About Growlyft” paragraph
+Right:
+Links: About, Contact, Team, Blog
+Social icons (LinkedIn, X, Instagram)
+Copyright © Growlyft 2025
+Fade-in on scroll
+🔁 ANIMATION RULES:
+Use TailwindCSS animate, transition, and hover: utilities
+Hero text fade-in on load (opacity-0 to opacity-100 + translate-y)
+Button hover: scale up slightly (hover:scale-105 + transition duration-300)
+Cards: shadow pop on hover
+Counters: JS-based count animation on scroll
+Smooth scroll for nav anchors
+📂 FILE NOTES:
+Logo path: /logo.png
+Use placeholder icons or SVGs
+Keep code organized with comments
