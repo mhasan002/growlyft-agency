@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import { 
-  Menu, X, Mail, Instagram, MapPin, CheckCircle,
+  Menu, X, Mail, Instagram, MapPin, CheckCircle, MessageCircle,
   Linkedin, Twitter, ChevronDown, ChevronUp
 } from "lucide-react";
 
@@ -237,11 +237,30 @@ export default function Contact() {
             
             {/* Left Side - Illustration/Image */}
             <div className="animate-on-scroll">
-              <div className="bg-gradient-to-br from-emerald-50 to-blue-50 rounded-3xl p-12 h-96 flex items-center justify-center mb-8 lg:mb-0">
-                <div className="text-center">
-                  <Mail className="w-24 h-24 text-emerald-500 mx-auto mb-6 animate-bounce-slow" />
-                  <h3 className="text-2xl font-bold text-black mb-4">Let's Connect</h3>
-                  <p className="text-gray-600">We're here to help your brand grow</p>
+              <div className="relative bg-gradient-to-br from-emerald-50 via-white to-blue-50 rounded-3xl p-12 h-96 flex items-center justify-center mb-8 lg:mb-0 overflow-hidden">
+                {/* Floating Elements */}
+                <div className="absolute top-8 left-8 w-16 h-16 bg-emerald-500 opacity-10 rounded-full animate-float" style={{animationDelay: '0s'}}></div>
+                <div className="absolute bottom-12 right-12 w-12 h-12 bg-blue-500 opacity-15 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+                <div className="absolute top-1/2 right-8 w-8 h-8 bg-emerald-500 opacity-20 rounded-full animate-float" style={{animationDelay: '0.5s'}}></div>
+                
+                {/* Main Content */}
+                <div className="text-center relative z-10">
+                  <div className="relative mb-8">
+                    {/* Multiple Icons in a Creative Layout */}
+                    <div className="flex items-center justify-center space-x-4">
+                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                        <Mail className="w-8 h-8 text-emerald-500" />
+                      </div>
+                      <div className="bg-emerald-100 p-4 rounded-2xl shadow-lg transform -rotate-2 hover:rotate-2 transition-transform duration-300">
+                        <Instagram className="w-10 h-10 text-emerald-600" />
+                      </div>
+                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-1 hover:-rotate-3 transition-transform duration-300">
+                        <MessageCircle className="w-8 h-8 text-blue-500" />
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-black mb-4">Ready to Connect?</h3>
+                  <p className="text-gray-600 leading-relaxed">Choose the best way to reach us and let's start building something amazing together</p>
                 </div>
               </div>
             </div>

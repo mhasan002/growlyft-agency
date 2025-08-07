@@ -67,27 +67,30 @@ export default function About() {
               >
                 Home
               </a>
-              <button 
-                onClick={() => scrollToSection('our-story')} 
+              <span className="text-emerald-400 font-semibold border-b-2 border-emerald-400 pb-1" data-testid="nav-about-active">
+                About
+              </span>
+              <a 
+                href="/services" 
                 className="text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
-                data-testid="nav-story"
+                data-testid="nav-services"
               >
-                Our Story
-              </button>
-              <button 
-                onClick={() => scrollToSection('team')} 
+                Services
+              </a>
+              <a 
+                href="/why-us" 
                 className="text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
-                data-testid="nav-team"
+                data-testid="nav-why-us"
               >
-                Team
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')} 
+                Why Us
+              </a>
+              <a 
+                href="/contact" 
                 className="text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
                 data-testid="nav-contact"
               >
                 Contact
-              </button>
+              </a>
             </nav>
             
             {/* Mobile Menu Button */}
@@ -102,8 +105,8 @@ export default function About() {
           
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4" data-testid="mobile-menu">
-              <div className="flex flex-col space-y-4">
+            <div className="md:hidden mt-4 pb-4 bg-white/95 backdrop-blur-sm rounded-lg" data-testid="mobile-menu">
+              <div className="flex flex-col space-y-4 px-4">
                 <a 
                   href="/" 
                   className="text-left text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
@@ -111,27 +114,30 @@ export default function About() {
                 >
                   Home
                 </a>
-                <button 
-                  onClick={() => scrollToSection('our-story')} 
+                <span className="text-left text-emerald-400 font-semibold" data-testid="mobile-nav-about-active">
+                  About
+                </span>
+                <a 
+                  href="/services" 
                   className="text-left text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
-                  data-testid="mobile-nav-story"
+                  data-testid="mobile-nav-services"
                 >
-                  Our Story
-                </button>
-                <button 
-                  onClick={() => scrollToSection('team')} 
+                  Services
+                </a>
+                <a 
+                  href="/why-us" 
                   className="text-left text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
-                  data-testid="mobile-nav-team"
+                  data-testid="mobile-nav-why-us"
                 >
-                  Team
-                </button>
-                <button 
-                  onClick={() => scrollToSection('contact')} 
+                  Why Us
+                </a>
+                <a 
+                  href="/contact" 
                   className="text-left text-slate-600 hover:text-emerald-400 transition-colors duration-300 font-medium"
                   data-testid="mobile-nav-contact"
                 >
                   Contact
-                </button>
+                </a>
               </div>
             </div>
           )}

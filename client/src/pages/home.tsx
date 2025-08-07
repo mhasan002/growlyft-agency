@@ -136,27 +136,37 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <button 
-                onClick={() => scrollToSection('services')} 
+              <span className="text-brand-green font-semibold border-b-2 border-brand-green pb-1" data-testid="nav-home-active">
+                Home
+              </span>
+              <a 
+                href="/about" 
+                className="text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
+                data-testid="nav-about"
+              >
+                About
+              </a>
+              <a 
+                href="/services" 
                 className="text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                 data-testid="nav-services"
               >
                 Services
-              </button>
-              <button 
-                onClick={() => scrollToSection('why-us')} 
+              </a>
+              <a 
+                href="/why-us" 
                 className="text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                 data-testid="nav-why-us"
               >
                 Why Us
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')} 
+              </a>
+              <a 
+                href="/contact" 
                 className="text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                 data-testid="nav-contact"
               >
                 Contact
-              </button>
+              </a>
             </nav>
             
             {/* Mobile Menu Button */}
@@ -171,29 +181,39 @@ export default function Home() {
           
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4" data-testid="mobile-menu">
-              <div className="flex flex-col space-y-4">
-                <button 
-                  onClick={() => scrollToSection('services')} 
+            <div className="md:hidden mt-4 pb-4 bg-white/95 backdrop-blur-sm rounded-lg" data-testid="mobile-menu">
+              <div className="flex flex-col space-y-4 px-4">
+                <span className="text-left text-brand-green font-semibold" data-testid="mobile-nav-home-active">
+                  Home
+                </span>
+                <a 
+                  href="/about" 
+                  className="text-left text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
+                  data-testid="mobile-nav-about"
+                >
+                  About
+                </a>
+                <a 
+                  href="/services" 
                   className="text-left text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                   data-testid="mobile-nav-services"
                 >
                   Services
-                </button>
-                <button 
-                  onClick={() => scrollToSection('why-us')} 
+                </a>
+                <a 
+                  href="/why-us" 
                   className="text-left text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                   data-testid="mobile-nav-why-us"
                 >
                   Why Us
-                </button>
-                <button 
-                  onClick={() => scrollToSection('contact')} 
+                </a>
+                <a 
+                  href="/contact" 
                   className="text-left text-text-dark hover:text-brand-green transition-colors duration-300 font-medium"
                   data-testid="mobile-nav-contact"
                 >
                   Contact
-                </button>
+                </a>
               </div>
             </div>
           )}
