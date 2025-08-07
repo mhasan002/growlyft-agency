@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
-import { Calendar, CheckCircle, Mail, BarChart3, Hash, Eye, TrendingUp, Shield, Globe, Users, Heart, Linkedin, Twitter, Instagram, Menu, X, Send } from "lucide-react";
+import { Calendar, CheckCircle, Mail, BarChart3, Hash, Eye, TrendingUp, Shield, Globe, Users, Heart, Linkedin, Twitter, Instagram, Menu, X, Send, Video, Palette } from "lucide-react";
 
 export default function Home() {
   const { toast } = useToast();
@@ -249,7 +249,9 @@ export default function Home() {
               { icon: Mail, title: "DMs & Engagement", testId: "service-dms-engagement" },
               { icon: Hash, title: "Hashtag Research", testId: "service-hashtag-research" },
               { icon: Eye, title: "Visual Branding Strategy", testId: "service-visual-branding" },
-              { icon: BarChart3, title: "Performance Reports", testId: "service-performance-reports" }
+              { icon: BarChart3, title: "Performance Reports", testId: "service-performance-reports" },
+              { icon: Video, title: "Video Editing", testId: "service-video-editing" },
+              { icon: Palette, title: "Graphics Design", testId: "service-graphics-design" }
             ].map((service, index) => (
               <div 
                 key={index}
