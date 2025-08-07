@@ -354,16 +354,12 @@ export default function About() {
                 <a href="/services" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-services">
                   Services
                 </a>
+                <a href="/contact" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-contact">
+                  Contact
+                </a>
                 <a href="#" className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300" data-testid="footer-link-blog">
                   Blog
                 </a>
-                <button 
-                  onClick={() => scrollToSection('contact')} 
-                  className="block text-gray-300 hover:text-emerald-400 transition-colors duration-300"
-                  data-testid="footer-link-contact"
-                >
-                  Contact
-                </button>
               </div>
             </div>
             
