@@ -82,10 +82,10 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto popup-form-background border-2 border-yellow-400/40 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+      <DialogContent className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-yellow-400/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0">
         <div className="popup-decoration-dots"></div>
-        <div className="popup-form-content">
-        <DialogHeader className="relative pb-6">
+        <div className="popup-form-content p-6">
+        <DialogHeader className="relative pb-6 sticky top-0 bg-inherit z-10">
           <button
             onClick={handleClose}
             className="absolute right-0 top-0 p-2 text-white/70 hover:text-yellow-400 transition-colors duration-200"

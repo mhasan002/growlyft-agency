@@ -268,6 +268,28 @@
 .popup-form-content {
   position: relative;
   z-index: 1;
+  max-height: 85vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(251, 191, 36, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+.popup-form-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.popup-form-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.popup-form-content::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.3);
+  border-radius: 3px;
+}
+
+.popup-form-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.5);
 }
 
 /* Enhanced input styling for popups */
