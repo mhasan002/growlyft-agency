@@ -24,13 +24,9 @@ export const discoveryCallSubmissions = pgTable("discovery_call_submissions", {
   websiteUrl: text("website_url").notNull(),
   email: text("email").notNull(),
   phoneNumber: text("phone_number").notNull(),
-  countryCode: text("country_code").notNull().default("+1"),
-  servicesInterested: text("services_interested").array().notNull(),
-  budgetAllocated: text("budget_allocated").notNull(),
-  minimumBudget: text("minimum_budget").notNull(),
-  preferredDate: text("preferred_date").notNull(),
-  timeZone: text("time_zone").notNull(),
-  callPlatform: text("call_platform").notNull(),
+  monthlyBudget: text("monthly_budget").notNull(),
+  mainGoal: text("main_goal").notNull(),
+  readyToInvest: text("ready_to_invest").notNull(),
   createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
@@ -55,31 +51,21 @@ export const insertDiscoveryCallSchema = createInsertSchema(discoveryCallSubmiss
   websiteUrl: true,
   email: true,
   phoneNumber: true,
-  countryCode: true,
-  servicesInterested: true,
-  budgetAllocated: true,
-  minimumBudget: true,
-  preferredDate: true,
-  timeZone: true,
-  callPlatform: true,
+  monthlyBudget: true,
+  mainGoal: true,
+  readyToInvest: true,
 }).extend({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   businessName: z.string().min(2, "Business name must be at least 2 characters"),
-  websiteUrl: z.string().url("Please enter a valid URL"),
+  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
   email: z.string().email("Please enter a valid email address"),
   phoneNumber: z.string().min(10, "Please enter a valid phone number"),
-  countryCode: z.string().min(2, "Please select a country code"),
-  servicesInterested: z.array(z.string()).min(1, "Please select at least one service"),
-  budgetAllocated: z.enum(["ready_now", "next_1_3_months", "exploring"], {
-    required_error: "Please select your budget status",
+  monthlyBudget: z.enum(["under_300", "300_500", "500_1000", "1000_3000", "3000_10000", "10000_plus"], {
+    required_error: "Please select your monthly marketing budget",
   }),
-  minimumBudget: z.enum(["under_300", "300_500", "500_1000", "1000_plus"], {
-    required_error: "Please select your minimum budget",
-  }),
-  preferredDate: z.string().min(1, "Please select a preferred date"),
-  timeZone: z.string().min(1, "Please select your time zone"),
-  callPlatform: z.enum(["zoom", "google_meet", "whatsapp"], {
-    required_error: "Please select a call platform",
+  mainGoal: z.string().min(10, "Please describe your main goal (at least 10 characters)"),
+  readyToInvest: z.enum(["yes", "not_sure", "no"], {
+    required_error: "Please select if you're ready to invest in marketing",
   }),
 });
 

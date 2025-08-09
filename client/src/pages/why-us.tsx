@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import StrategyCallPopup from "@/components/StrategyCallPopup";
 import { BarChart3, MessageCircle, Users, Rocket, TrendingUp, Menu, X, Phone, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export default function WhyUs() {
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
+  const [isStrategyCallPopupOpen, setIsStrategyCallPopupOpen] = useState(false);
 
   // Scroll handlers
   useEffect(() => {
@@ -335,8 +337,9 @@ export default function WhyUs() {
             
             <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
               <Button 
+                onClick={() => setIsStrategyCallPopupOpen(true)}
                 className="bg-emerald-500 text-black px-12 py-6 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-400 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3 animate-glow"
-                data-testid="cta-primary"
+                data-testid="button-start-strategy-call"
               >
                 <span>Start With a Free Strategy Call</span>
                 <Phone className="w-6 h-6" />
@@ -419,6 +422,12 @@ export default function WhyUs() {
           </div>
         </div>
       </footer>
+
+      {/* Strategy Call Popup */}
+      <StrategyCallPopup 
+        isOpen={isStrategyCallPopupOpen} 
+        onClose={() => setIsStrategyCallPopupOpen(false)} 
+      />
     </div>
   );
 }

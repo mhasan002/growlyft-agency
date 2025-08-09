@@ -212,3 +212,36 @@
     box-shadow: 0 0 30px hsla(var(--brand-green) / 0.6); 
   }
 }
+
+/* Floating Label Styles for Popup Form */
+.floating-label-group {
+  @apply relative;
+}
+
+.floating-input,
+.floating-textarea {
+  @apply pt-6 pb-2 px-3 rounded-lg border transition-all duration-200;
+}
+
+.floating-input:focus,
+.floating-textarea:focus {
+  @apply outline-none ring-2;
+}
+
+.floating-label {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 text-sm transition-all duration-200 pointer-events-none;
+}
+
+.floating-label-textarea {
+  @apply absolute left-3 top-6 text-sm transition-all duration-200 pointer-events-none;
+}
+
+.floating-input:focus ~ .floating-label,
+.floating-input:not(:placeholder-shown) ~ .floating-label {
+  @apply top-2 text-xs transform-none;
+}
+
+.floating-textarea:focus ~ .floating-label-textarea,
+.floating-textarea:not(:placeholder-shown) ~ .floating-label-textarea {
+  @apply top-2 text-xs;
+}
