@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ContactSubmission, type InsertContact, type DiscoveryCallSubmission, type InsertDiscoveryCall } from "@shared/schema";
+import { type User, type InsertUser, type ContactSubmission, type InsertContact, type DiscoveryCallSubmission, type InsertDiscoveryCall, type TalkGrowthSubmission, type InsertTalkGrowth } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -7,17 +7,20 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   createContactSubmission(contact: InsertContact): Promise<ContactSubmission>;
   createDiscoveryCallSubmission(discoveryCall: InsertDiscoveryCall): Promise<DiscoveryCallSubmission>;
+  createTalkGrowthSubmission(talkGrowth: InsertTalkGrowth): Promise<TalkGrowthSubmission>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private contactSubmissions: Map<string, ContactSubmission>;
   private discoveryCallSubmissions: Map<string, DiscoveryCallSubmission>;
+  private talkGrowthSubmissions: Map<string, TalkGrowthSubmission>;
 
   constructor() {
     this.users = new Map();
     this.contactSubmissions = new Map();
     this.discoveryCallSubmissions = new Map();
+    this.talkGrowthSubmissions = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -57,6 +60,17 @@ export class MemStorage implements IStorage {
     };
     this.discoveryCallSubmissions.set(id, discoveryCallSubmission);
     return discoveryCallSubmission;
+  }
+
+  async createTalkGrowthSubmission(insertTalkGrowth: InsertTalkGrowth): Promise<TalkGrowthSubmission> {
+    const id = randomUUID();
+    const talkGrowthSubmission: TalkGrowthSubmission = {
+      ...insertTalkGrowth,
+      id,
+      createdAt: new Date(),
+    };
+    this.talkGrowthSubmissions.set(id, talkGrowthSubmission);
+    return talkGrowthSubmission;
   }
 }
 

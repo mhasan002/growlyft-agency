@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import StrategyCallPopup from "@/components/StrategyCallPopup";
+import TalkGrowthPopup from "@/components/TalkGrowthPopup";
 import { BarChart3, MessageCircle, Users, Rocket, TrendingUp, Menu, X, Phone, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export default function WhyUs() {
@@ -10,6 +11,7 @@ export default function WhyUs() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
   const [isStrategyCallPopupOpen, setIsStrategyCallPopupOpen] = useState(false);
+  const [isTalkGrowthPopupOpen, setIsTalkGrowthPopupOpen] = useState(false);
 
   // Scroll handlers
   useEffect(() => {
@@ -345,9 +347,10 @@ export default function WhyUs() {
                 <Phone className="w-6 h-6" />
               </Button>
               <Button 
+                onClick={() => setIsTalkGrowthPopupOpen(true)}
                 variant="outline"
                 className="border-2 border-yellow-400 text-yellow-400 bg-transparent px-12 py-6 rounded-full text-xl font-bold hover:bg-yellow-400 hover:text-black hover:scale-105 transition-all duration-300 ease-out h-auto"
-                data-testid="cta-secondary"
+                data-testid="button-talk-growth"
               >
                 Let's Talk Growth
               </Button>
@@ -427,6 +430,12 @@ export default function WhyUs() {
       <StrategyCallPopup 
         isOpen={isStrategyCallPopupOpen} 
         onClose={() => setIsStrategyCallPopupOpen(false)} 
+      />
+
+      {/* Talk Growth Popup */}
+      <TalkGrowthPopup 
+        isOpen={isTalkGrowthPopupOpen} 
+        onClose={() => setIsTalkGrowthPopupOpen(false)} 
       />
     </div>
   );

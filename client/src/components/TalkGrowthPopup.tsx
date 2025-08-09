@@ -7,33 +7,57 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { insertDiscoveryCallSchema, type InsertDiscoveryCall } from "@shared/schema";
+import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
+import { X, Target, ArrowRight, CheckCircle, Mail } from "lucide-react";
 
-interface StrategyCallPopupProps {
+interface TalkGrowthPopupProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 const budgetOptions = [
   { value: "under_300", label: "< $300" },
-  { value: "300_500", label: "$300-$500" },
   { value: "500_1000", label: "$500-$1k" },
   { value: "1000_3000", label: "$1k–$3k" },
-  { value: "3000_10000", label: "$3k–$10k" },
+  { value: "3000_5000", label: "$3k–$5k" },
+  { value: "5000_10000", label: "$5k–$10k" },
   { value: "10000_plus", label: "$10k+" },
 ];
 
-export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopupProps) {
+const serviceOptions = [
+  { id: "paid_ads", label: "Paid Ads" },
+  { id: "seo", label: "SEO" },
+  { id: "branding", label: "Branding" },
+  { id: "social_media", label: "Social Media" },
+  { id: "funnels", label: "Funnels" },
+  { id: "other", label: "Other" },
+];
+
+const talkGrowthSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
+  businessName: z.string().min(2, "Business name must be at least 2 characters"),
+  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
+  email: z.string().email("Please enter a valid email address"),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+  monthlyBudget: z.enum(["under_300", "500_1000", "1000_3000", "3000_5000", "5000_10000", "10000_plus"], {
+    required_error: "Please select your minimum monthly budget",
+  }),
+  servicesInterested: z.array(z.string()).min(1, "Please select at least one service"),
+  marketingChallenge: z.string().min(10, "Please describe your biggest challenge (at least 10 characters)"),
+});
+
+type TalkGrowthForm = z.infer<typeof talkGrowthSchema>;
+
+export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const queryClient = useQueryClient();
 
-  const form = useForm<InsertDiscoveryCall>({
-    resolver: zodResolver(insertDiscoveryCallSchema),
+  const form = useForm<TalkGrowthForm>({
+    resolver: zodResolver(talkGrowthSchema),
     defaultValues: {
       fullName: "",
       businessName: "",
@@ -41,41 +65,36 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
       email: "",
       phoneNumber: "",
       monthlyBudget: undefined,
-      mainGoal: "",
-      readyToInvest: undefined,
+      servicesInterested: [],
+      marketingChallenge: "",
     },
   });
 
   const mutation = useMutation({
-    mutationFn: (data: InsertDiscoveryCall) => apiRequest("POST", "/api/discovery-calls", data),
-    onSuccess: (response, variables) => {
-      // Check if they qualify for the Calendly redirect
-      const qualifiesForCall = 
-        variables.readyToInvest === "yes" && 
-        (variables.monthlyBudget === "500_1000" || 
-         variables.monthlyBudget === "1000_3000" || 
-         variables.monthlyBudget === "3000_10000" || 
-         variables.monthlyBudget === "10000_plus");
-      
-      setShouldRedirect(qualifiesForCall);
+    mutationFn: (data: TalkGrowthForm) => apiRequest("POST", "/api/talk-growth", data),
+    onSuccess: () => {
       setIsSubmitted(true);
-      queryClient.invalidateQueries({ queryKey: ['/api/discovery-calls'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/talk-growth'] });
     },
   });
 
-  const onSubmit = (data: InsertDiscoveryCall) => {
-    mutation.mutate(data);
+  const onSubmit = (data: TalkGrowthForm) => {
+    const formData = { ...data, servicesInterested: selectedServices };
+    mutation.mutate(formData);
   };
 
-  const handleCalendlyRedirect = () => {
-    // Replace with actual Calendly link
-    window.open("https://calendly.com/growlyft/free-strategy-call", "_blank");
-    onClose();
+  const handleServiceToggle = (serviceId: string) => {
+    const newSelection = selectedServices.includes(serviceId)
+      ? selectedServices.filter(id => id !== serviceId)
+      : [...selectedServices, serviceId];
+    
+    setSelectedServices(newSelection);
+    form.setValue("servicesInterested", newSelection);
   };
 
   const handleClose = () => {
     setIsSubmitted(false);
-    setShouldRedirect(false);
+    setSelectedServices([]);
     form.reset();
     onClose();
   };
@@ -94,20 +113,20 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
           
           <div className="flex items-center space-x-3 mb-4">
             <div className="p-2 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg">
-              <Sparkles className="w-6 h-6 text-black" />
+              <Target className="w-6 h-6 text-black" />
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
-              Free Strategy Call
+              Let's Talk Growth
             </DialogTitle>
           </div>
           
           <DialogDescription className="text-white/80 text-base leading-relaxed">
-            Get a personalized growth strategy for your business. Our experts will analyze your current approach and provide actionable recommendations.
+            Ready to scale your business? Tell us about your goals and challenges, and we'll create a custom growth strategy for you.
           </DialogDescription>
         </DialogHeader>
 
         {!isSubmitted ? (
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="strategy-call-form">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="talk-growth-form">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div className="floating-label-group">
@@ -212,9 +231,9 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               </div>
             </div>
 
-            {/* Monthly Marketing Budget */}
+            {/* Minimum Monthly Budget */}
             <div className="space-y-2">
-              <Label className="text-white/90 font-medium">Monthly Marketing Budget *</Label>
+              <Label className="text-white/90 font-medium">Minimum Monthly Budget *</Label>
               <Select onValueChange={(value) => form.setValue("monthlyBudget", value as any)}>
                 <SelectTrigger className="bg-black/50 border-yellow-400/30 text-white focus:border-yellow-400 focus:ring-yellow-400/20" data-testid="select-monthly-budget">
                   <SelectValue placeholder="Select your budget range" className="text-white/70" />
@@ -234,50 +253,48 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               )}
             </div>
 
-            {/* Main Goal for This Call */}
-            <div className="floating-label-group">
-              <Textarea
-                {...form.register("mainGoal")}
-                id="mainGoal"
-                rows={4}
-                className="floating-textarea bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20 resize-none"
-                placeholder="Tell us about your main goals, challenges, or what you'd like to achieve..."
-                data-testid="textarea-main-goal"
-              />
-              <Label htmlFor="mainGoal" className="floating-label-textarea text-white/70">
-                Main Goal for This Call *
-              </Label>
-              {form.formState.errors.mainGoal && (
-                <span className="text-red-400 text-sm mt-1" data-testid="error-main-goal">
-                  {form.formState.errors.mainGoal.message}
+            {/* Services Interested */}
+            <div className="space-y-4">
+              <Label className="text-white/90 font-medium">Which Services Are You Interested In? *</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {serviceOptions.map((service) => (
+                  <div key={service.id} className="flex items-center space-x-3 p-3 rounded-lg border border-yellow-400/20 hover:bg-yellow-400/5 transition-colors">
+                    <Checkbox
+                      id={service.id}
+                      checked={selectedServices.includes(service.id)}
+                      onCheckedChange={() => handleServiceToggle(service.id)}
+                      className="border-yellow-400 text-yellow-400 data-[state=checked]:bg-yellow-400 data-[state=checked]:border-yellow-400"
+                      data-testid={`checkbox-service-${service.id}`}
+                    />
+                    <Label htmlFor={service.id} className="text-white cursor-pointer text-sm">
+                      {service.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              {form.formState.errors.servicesInterested && (
+                <span className="text-red-400 text-sm" data-testid="error-services-interested">
+                  {form.formState.errors.servicesInterested.message}
                 </span>
               )}
             </div>
 
-            {/* Are You Ready to Invest */}
-            <div className="space-y-4">
-              <Label className="text-white/90 font-medium">Are You Ready to Invest in Marketing if We're a Fit? *</Label>
-              <RadioGroup 
-                onValueChange={(value) => form.setValue("readyToInvest", value as any)}
-                className="space-y-3"
-                data-testid="radio-ready-to-invest"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-yellow-400/20 hover:bg-yellow-400/5 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" className="border-yellow-400 text-yellow-400" />
-                  <Label htmlFor="yes" className="text-white cursor-pointer flex-1">Yes</Label>
-                </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-yellow-400/20 hover:bg-yellow-400/5 transition-colors">
-                  <RadioGroupItem value="not_sure" id="not_sure" className="border-yellow-400 text-yellow-400" />
-                  <Label htmlFor="not_sure" className="text-white cursor-pointer flex-1">Not Sure</Label>
-                </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-yellow-400/20 hover:bg-yellow-400/5 transition-colors">
-                  <RadioGroupItem value="no" id="no" className="border-yellow-400 text-yellow-400" />
-                  <Label htmlFor="no" className="text-white cursor-pointer flex-1">No</Label>
-                </div>
-              </RadioGroup>
-              {form.formState.errors.readyToInvest && (
-                <span className="text-red-400 text-sm" data-testid="error-ready-to-invest">
-                  {form.formState.errors.readyToInvest.message}
+            {/* Marketing Challenge */}
+            <div className="floating-label-group">
+              <Textarea
+                {...form.register("marketingChallenge")}
+                id="marketingChallenge"
+                rows={4}
+                className="floating-textarea bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20 resize-none"
+                placeholder="Tell us about your biggest marketing challenge, current roadblocks, or what you're trying to achieve..."
+                data-testid="textarea-marketing-challenge"
+              />
+              <Label htmlFor="marketingChallenge" className="floating-label-textarea text-white/70">
+                What's Your Biggest Marketing Challenge? *
+              </Label>
+              {form.formState.errors.marketingChallenge && (
+                <span className="text-red-400 text-sm mt-1" data-testid="error-marketing-challenge">
+                  {form.formState.errors.marketingChallenge.message}
                 </span>
               )}
             </div>
@@ -286,48 +303,21 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             <Button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-400/25 disabled:opacity-50 disabled:hover:scale-100"
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-400/25 hover:animate-bounce disabled:opacity-50 disabled:hover:scale-100 disabled:hover:animate-none"
               data-testid="button-submit"
             >
               {mutation.isPending ? (
                 "Submitting..."
               ) : (
                 <div className="flex items-center justify-center space-x-2">
-                  <span>Get My Free Strategy Call</span>
+                  <span>Let's Talk Growth</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               )}
             </Button>
           </form>
-        ) : shouldRedirect ? (
-          // Success - Qualified for Calendly
-          <div className="text-center space-y-6 py-8">
-            <div className="flex justify-center">
-              <div className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full">
-                <CheckCircle className="w-12 h-12 text-black" />
-              </div>
-            </div>
-            
-            <div className="space-y-3">
-              <h3 className="text-2xl font-bold text-white">Perfect! You Qualify!</h3>
-              <p className="text-white/80 text-lg leading-relaxed max-w-md mx-auto">
-                Based on your responses, you're an ideal fit for our free strategy call. Let's schedule your session now!
-              </p>
-            </div>
-
-            <Button
-              onClick={handleCalendlyRedirect}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-400/25"
-              data-testid="button-schedule-call"
-            >
-              <div className="flex items-center space-x-2">
-                <span>Schedule My Call Now</span>
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </Button>
-          </div>
         ) : (
-          // Success - Not qualified
+          // Success Message
           <div className="text-center space-y-6 py-8">
             <div className="flex justify-center">
               <div className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full">
@@ -337,12 +327,17 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             
             <div className="space-y-3">
               <h3 className="text-2xl font-bold text-white">Thank You!</h3>
-              <p className="text-white/80 text-lg leading-relaxed max-w-md mx-auto">
-                Thanks for your interest — at the moment, our free call slots are reserved for businesses actively investing in growth.
-              </p>
-              <p className="text-yellow-400 text-base">
-                Feel free to reach out when you're ready to scale your marketing efforts!
-              </p>
+              <div className="space-y-2">
+                <p className="text-white/80 text-lg leading-relaxed max-w-md mx-auto">
+                  Your growth consultation request has been submitted successfully.
+                </p>
+                <div className="flex items-center justify-center space-x-2 text-yellow-400">
+                  <Mail className="w-5 h-5" />
+                  <p className="text-base font-medium">
+                    Please check your email inbox or spam folder to get the meeting link
+                  </p>
+                </div>
+              </div>
             </div>
 
             <Button
