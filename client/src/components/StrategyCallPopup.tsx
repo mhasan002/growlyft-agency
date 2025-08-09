@@ -82,7 +82,9 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-black border-2 border-yellow-400/30 shadow-2xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto popup-form-background border-2 border-yellow-400/40 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div className="popup-decoration-dots"></div>
+        <div className="popup-form-content">
         <DialogHeader className="relative pb-6">
           <button
             onClick={handleClose}
@@ -115,7 +117,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   {...form.register("fullName")}
                   type="text"
                   id="fullName"
-                  className="floating-input bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20"
+                  className="floating-input popup-input text-white placeholder-transparent"
                   placeholder="John Doe"
                   data-testid="input-full-name"
                 />
@@ -135,7 +137,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   {...form.register("businessName")}
                   type="text"
                   id="businessName"
-                  className="floating-input bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20"
+                  className="floating-input popup-input text-white placeholder-transparent"
                   placeholder="Your Business Name"
                   data-testid="input-business-name"
                 />
@@ -156,7 +158,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                 {...form.register("websiteUrl")}
                 type="url"
                 id="websiteUrl"
-                className="floating-input bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20"
+                className="floating-input popup-input text-white placeholder-transparent"
                 placeholder="https://yourwebsite.com or https://instagram.com/yourbrand"
                 data-testid="input-website-url"
               />
@@ -177,7 +179,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   {...form.register("email")}
                   type="email"
                   id="email"
-                  className="floating-input bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20"
+                  className="floating-input popup-input text-white placeholder-transparent"
                   placeholder="john@example.com"
                   data-testid="input-email"
                 />
@@ -197,7 +199,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   {...form.register("phoneNumber")}
                   type="tel"
                   id="phoneNumber"
-                  className="floating-input bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20"
+                  className="floating-input popup-input text-white placeholder-transparent"
                   placeholder="(555) 123-4567"
                   data-testid="input-phone-number"
                 />
@@ -216,10 +218,10 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             <div className="space-y-2">
               <Label className="text-white/90 font-medium">Monthly Marketing Budget *</Label>
               <Select onValueChange={(value) => form.setValue("monthlyBudget", value as any)}>
-                <SelectTrigger className="bg-black/50 border-yellow-400/30 text-white focus:border-yellow-400 focus:ring-yellow-400/20" data-testid="select-monthly-budget">
+                <SelectTrigger className="popup-input text-white" data-testid="select-monthly-budget">
                   <SelectValue placeholder="Select your budget range" className="text-white/70" />
                 </SelectTrigger>
-                <SelectContent className="bg-black border-yellow-400/30">
+                <SelectContent className="bg-gray-900 border-yellow-400/30">
                   {budgetOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className="text-white hover:bg-yellow-400/10">
                       {option.label}
@@ -240,7 +242,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                 {...form.register("mainGoal")}
                 id="mainGoal"
                 rows={4}
-                className="floating-textarea bg-black/50 border-yellow-400/30 text-white placeholder-transparent focus:border-yellow-400 focus:ring-yellow-400/20 resize-none"
+                className="floating-textarea popup-input text-white placeholder-transparent resize-none"
                 placeholder="Tell us about your main goals, challenges, or what you'd like to achieve..."
                 data-testid="textarea-main-goal"
               />
@@ -354,6 +356,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             </Button>
           </div>
         )}
+        </div>
       </DialogContent>
     </Dialog>
   );
