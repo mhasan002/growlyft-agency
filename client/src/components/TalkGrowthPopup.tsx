@@ -37,52 +37,129 @@ const serviceOptions = [
 ];
 
 const countryCodeOptions = [
+  { id: "AF", value: "+93", label: "🇦🇫 +93 (Afghanistan)", country: "Afghanistan" },
+  { id: "AL", value: "+355", label: "🇦🇱 +355 (Albania)", country: "Albania" },
+  { id: "DZ", value: "+213", label: "🇩🇿 +213 (Algeria)", country: "Algeria" },
+  { id: "AD", value: "+376", label: "🇦🇩 +376 (Andorra)", country: "Andorra" },
+  { id: "AO", value: "+244", label: "🇦🇴 +244 (Angola)", country: "Angola" },
   { id: "AR", value: "+54", label: "🇦🇷 +54 (Argentina)", country: "Argentina" },
+  { id: "AM", value: "+374", label: "🇦🇲 +374 (Armenia)", country: "Armenia" },
   { id: "AU", value: "+61", label: "🇦🇺 +61 (Australia)", country: "Australia" },
   { id: "AT", value: "+43", label: "🇦🇹 +43 (Austria)", country: "Austria" },
+  { id: "AZ", value: "+994", label: "🇦🇿 +994 (Azerbaijan)", country: "Azerbaijan" },
+  { id: "BH", value: "+973", label: "🇧🇭 +973 (Bahrain)", country: "Bahrain" },
+  { id: "BD", value: "+880", label: "🇧🇩 +880 (Bangladesh)", country: "Bangladesh" },
+  { id: "BY", value: "+375", label: "🇧🇾 +375 (Belarus)", country: "Belarus" },
   { id: "BE", value: "+32", label: "🇧🇪 +32 (Belgium)", country: "Belgium" },
+  { id: "BZ", value: "+501", label: "🇧🇿 +501 (Belize)", country: "Belize" },
+  { id: "BJ", value: "+229", label: "🇧🇯 +229 (Benin)", country: "Benin" },
+  { id: "BO", value: "+591", label: "🇧🇴 +591 (Bolivia)", country: "Bolivia" },
+  { id: "BA", value: "+387", label: "🇧🇦 +387 (Bosnia and Herzegovina)", country: "Bosnia and Herzegovina" },
+  { id: "BW", value: "+267", label: "🇧🇼 +267 (Botswana)", country: "Botswana" },
   { id: "BR", value: "+55", label: "🇧🇷 +55 (Brazil)", country: "Brazil" },
+  { id: "BG", value: "+359", label: "🇧🇬 +359 (Bulgaria)", country: "Bulgaria" },
+  { id: "BF", value: "+226", label: "🇧🇫 +226 (Burkina Faso)", country: "Burkina Faso" },
+  { id: "KH", value: "+855", label: "🇰🇭 +855 (Cambodia)", country: "Cambodia" },
+  { id: "CM", value: "+237", label: "🇨🇲 +237 (Cameroon)", country: "Cameroon" },
   { id: "CA", value: "+1", label: "🇨🇦 +1 (Canada)", country: "Canada" },
   { id: "CL", value: "+56", label: "🇨🇱 +56 (Chile)", country: "Chile" },
   { id: "CN", value: "+86", label: "🇨🇳 +86 (China)", country: "China" },
   { id: "CO", value: "+57", label: "🇨🇴 +57 (Colombia)", country: "Colombia" },
+  { id: "CR", value: "+506", label: "🇨🇷 +506 (Costa Rica)", country: "Costa Rica" },
+  { id: "HR", value: "+385", label: "🇭🇷 +385 (Croatia)", country: "Croatia" },
+  { id: "CU", value: "+53", label: "🇨🇺 +53 (Cuba)", country: "Cuba" },
+  { id: "CY", value: "+357", label: "🇨🇾 +357 (Cyprus)", country: "Cyprus" },
   { id: "CZ", value: "+420", label: "🇨🇿 +420 (Czech Republic)", country: "Czech Republic" },
   { id: "DK", value: "+45", label: "🇩🇰 +45 (Denmark)", country: "Denmark" },
+  { id: "DO", value: "+1", label: "🇩🇴 +1 (Dominican Republic)", country: "Dominican Republic" },
+  { id: "EC", value: "+593", label: "🇪🇨 +593 (Ecuador)", country: "Ecuador" },
   { id: "EG", value: "+20", label: "🇪🇬 +20 (Egypt)", country: "Egypt" },
+  { id: "SV", value: "+503", label: "🇸🇻 +503 (El Salvador)", country: "El Salvador" },
+  { id: "EE", value: "+372", label: "🇪🇪 +372 (Estonia)", country: "Estonia" },
+  { id: "ET", value: "+251", label: "🇪🇹 +251 (Ethiopia)", country: "Ethiopia" },
   { id: "FI", value: "+358", label: "🇫🇮 +358 (Finland)", country: "Finland" },
   { id: "FR", value: "+33", label: "🇫🇷 +33 (France)", country: "France" },
+  { id: "GE", value: "+995", label: "🇬🇪 +995 (Georgia)", country: "Georgia" },
   { id: "DE", value: "+49", label: "🇩🇪 +49 (Germany)", country: "Germany" },
+  { id: "GH", value: "+233", label: "🇬🇭 +233 (Ghana)", country: "Ghana" },
   { id: "GR", value: "+30", label: "🇬🇷 +30 (Greece)", country: "Greece" },
+  { id: "GT", value: "+502", label: "🇬🇹 +502 (Guatemala)", country: "Guatemala" },
+  { id: "HN", value: "+504", label: "🇭🇳 +504 (Honduras)", country: "Honduras" },
+  { id: "HK", value: "+852", label: "🇭🇰 +852 (Hong Kong)", country: "Hong Kong" },
   { id: "HU", value: "+36", label: "🇭🇺 +36 (Hungary)", country: "Hungary" },
+  { id: "IS", value: "+354", label: "🇮🇸 +354 (Iceland)", country: "Iceland" },
   { id: "IN", value: "+91", label: "🇮🇳 +91 (India)", country: "India" },
   { id: "ID", value: "+62", label: "🇮🇩 +62 (Indonesia)", country: "Indonesia" },
+  { id: "IR", value: "+98", label: "🇮🇷 +98 (Iran)", country: "Iran" },
+  { id: "IQ", value: "+964", label: "🇮🇶 +964 (Iraq)", country: "Iraq" },
+  { id: "IE", value: "+353", label: "🇮🇪 +353 (Ireland)", country: "Ireland" },
   { id: "IL", value: "+972", label: "🇮🇱 +972 (Israel)", country: "Israel" },
   { id: "IT", value: "+39", label: "🇮🇹 +39 (Italy)", country: "Italy" },
+  { id: "JM", value: "+1", label: "🇯🇲 +1 (Jamaica)", country: "Jamaica" },
   { id: "JP", value: "+81", label: "🇯🇵 +81 (Japan)", country: "Japan" },
+  { id: "JO", value: "+962", label: "🇯🇴 +962 (Jordan)", country: "Jordan" },
+  { id: "KZ", value: "+7", label: "🇰🇿 +7 (Kazakhstan)", country: "Kazakhstan" },
+  { id: "KE", value: "+254", label: "🇰🇪 +254 (Kenya)", country: "Kenya" },
+  { id: "KW", value: "+965", label: "🇰🇼 +965 (Kuwait)", country: "Kuwait" },
+  { id: "LV", value: "+371", label: "🇱🇻 +371 (Latvia)", country: "Latvia" },
+  { id: "LB", value: "+961", label: "🇱🇧 +961 (Lebanon)", country: "Lebanon" },
+  { id: "LT", value: "+370", label: "🇱🇹 +370 (Lithuania)", country: "Lithuania" },
+  { id: "LU", value: "+352", label: "🇱🇺 +352 (Luxembourg)", country: "Luxembourg" },
+  { id: "MO", value: "+853", label: "🇲🇴 +853 (Macau)", country: "Macau" },
   { id: "MY", value: "+60", label: "🇲🇾 +60 (Malaysia)", country: "Malaysia" },
+  { id: "MV", value: "+960", label: "🇲🇻 +960 (Maldives)", country: "Maldives" },
+  { id: "MT", value: "+356", label: "🇲🇹 +356 (Malta)", country: "Malta" },
   { id: "MX", value: "+52", label: "🇲🇽 +52 (Mexico)", country: "Mexico" },
+  { id: "MD", value: "+373", label: "🇲🇩 +373 (Moldova)", country: "Moldova" },
+  { id: "MC", value: "+377", label: "🇲🇨 +377 (Monaco)", country: "Monaco" },
+  { id: "MN", value: "+976", label: "🇲🇳 +976 (Mongolia)", country: "Mongolia" },
+  { id: "ME", value: "+382", label: "🇲🇪 +382 (Montenegro)", country: "Montenegro" },
+  { id: "MA", value: "+212", label: "🇲🇦 +212 (Morocco)", country: "Morocco" },
+  { id: "MM", value: "+95", label: "🇲🇲 +95 (Myanmar)", country: "Myanmar" },
+  { id: "NP", value: "+977", label: "🇳🇵 +977 (Nepal)", country: "Nepal" },
   { id: "NL", value: "+31", label: "🇳🇱 +31 (Netherlands)", country: "Netherlands" },
   { id: "NZ", value: "+64", label: "🇳🇿 +64 (New Zealand)", country: "New Zealand" },
+  { id: "NI", value: "+505", label: "🇳🇮 +505 (Nicaragua)", country: "Nicaragua" },
   { id: "NG", value: "+234", label: "🇳🇬 +234 (Nigeria)", country: "Nigeria" },
+  { id: "KP", value: "+850", label: "🇰🇵 +850 (North Korea)", country: "North Korea" },
   { id: "NO", value: "+47", label: "🇳🇴 +47 (Norway)", country: "Norway" },
+  { id: "OM", value: "+968", label: "🇴🇲 +968 (Oman)", country: "Oman" },
+  { id: "PK", value: "+92", label: "🇵🇰 +92 (Pakistan)", country: "Pakistan" },
+  { id: "PA", value: "+507", label: "🇵🇦 +507 (Panama)", country: "Panama" },
+  { id: "PY", value: "+595", label: "🇵🇾 +595 (Paraguay)", country: "Paraguay" },
   { id: "PE", value: "+51", label: "🇵🇪 +51 (Peru)", country: "Peru" },
   { id: "PH", value: "+63", label: "🇵🇭 +63 (Philippines)", country: "Philippines" },
   { id: "PL", value: "+48", label: "🇵🇱 +48 (Poland)", country: "Poland" },
   { id: "PT", value: "+351", label: "🇵🇹 +351 (Portugal)", country: "Portugal" },
+  { id: "QA", value: "+974", label: "🇶🇦 +974 (Qatar)", country: "Qatar" },
+  { id: "RO", value: "+40", label: "🇷🇴 +40 (Romania)", country: "Romania" },
   { id: "RU", value: "+7", label: "🇷🇺 +7 (Russia)", country: "Russia" },
   { id: "SA", value: "+966", label: "🇸🇦 +966 (Saudi Arabia)", country: "Saudi Arabia" },
+  { id: "RS", value: "+381", label: "🇷🇸 +381 (Serbia)", country: "Serbia" },
   { id: "SG", value: "+65", label: "🇸🇬 +65 (Singapore)", country: "Singapore" },
+  { id: "SK", value: "+421", label: "🇸🇰 +421 (Slovakia)", country: "Slovakia" },
+  { id: "SI", value: "+386", label: "🇸🇮 +386 (Slovenia)", country: "Slovenia" },
   { id: "ZA", value: "+27", label: "🇿🇦 +27 (South Africa)", country: "South Africa" },
   { id: "KR", value: "+82", label: "🇰🇷 +82 (South Korea)", country: "South Korea" },
   { id: "ES", value: "+34", label: "🇪🇸 +34 (Spain)", country: "Spain" },
+  { id: "LK", value: "+94", label: "🇱🇰 +94 (Sri Lanka)", country: "Sri Lanka" },
   { id: "SE", value: "+46", label: "🇸🇪 +46 (Sweden)", country: "Sweden" },
   { id: "CH", value: "+41", label: "🇨🇭 +41 (Switzerland)", country: "Switzerland" },
+  { id: "TW", value: "+886", label: "🇹🇼 +886 (Taiwan)", country: "Taiwan" },
+  { id: "TZ", value: "+255", label: "🇹🇿 +255 (Tanzania)", country: "Tanzania" },
   { id: "TH", value: "+66", label: "🇹🇭 +66 (Thailand)", country: "Thailand" },
   { id: "TR", value: "+90", label: "🇹🇷 +90 (Turkey)", country: "Turkey" },
+  { id: "UA", value: "+380", label: "🇺🇦 +380 (Ukraine)", country: "Ukraine" },
   { id: "AE", value: "+971", label: "🇦🇪 +971 (UAE)", country: "UAE" },
   { id: "GB", value: "+44", label: "🇬🇧 +44 (United Kingdom)", country: "United Kingdom" },
   { id: "US", value: "+1", label: "🇺🇸 +1 (United States)", country: "United States" },
+  { id: "UY", value: "+598", label: "🇺🇾 +598 (Uruguay)", country: "Uruguay" },
+  { id: "UZ", value: "+998", label: "🇺🇿 +998 (Uzbekistan)", country: "Uzbekistan" },
+  { id: "VE", value: "+58", label: "🇻🇪 +58 (Venezuela)", country: "Venezuela" },
   { id: "VN", value: "+84", label: "🇻🇳 +84 (Vietnam)", country: "Vietnam" },
+  { id: "YE", value: "+967", label: "🇾🇪 +967 (Yemen)", country: "Yemen" },
+  { id: "ZM", value: "+260", label: "🇿🇲 +260 (Zambia)", country: "Zambia" },
+  { id: "ZW", value: "+263", label: "🇿🇼 +263 (Zimbabwe)", country: "Zimbabwe" },
 ];
 
 const talkGrowthSchema = z.object({
@@ -289,8 +366,8 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                     <SelectTrigger className="w-32 popup-input text-white" data-testid="select-country-code">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0F172A] border-[#04E762]/30 max-h-60">
-                      <div className="p-2">
+                    <SelectContent className="bg-[#0F172A] border-[#04E762]/30 max-h-80">
+                      <div className="sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10">
                         <Input
                           type="text"
                           placeholder="Search countries..."
@@ -299,15 +376,17 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                           onChange={(e) => setSearchQuery(e.target.value)}
                         />
                       </div>
-                      {filteredCountries.map((option) => (
-                        <SelectItem 
-                          key={option.id} 
-                          value={option.value} 
-                          className="text-[#F8FAFC] hover:bg-[#04E762]/10"
-                        >
-                          {option.label}
-                        </SelectItem>
-                      ))}
+                      <div className="max-h-60 overflow-y-auto">
+                        {filteredCountries.map((option) => (
+                          <SelectItem 
+                            key={option.id} 
+                            value={option.value} 
+                            className="text-[#F8FAFC] hover:bg-[#04E762]/10"
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </div>
                     </SelectContent>
                   </Select>
                   <Input
