@@ -83,7 +83,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent 
-        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-green-500/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
+        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-[#04E762]/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
                    fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50"
         style={{ 
           position: 'fixed',
@@ -99,15 +99,15 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
         <DialogHeader className="relative pb-6 mb-4">
           <button
             onClick={handleClose}
-            className="absolute right-0 top-0 p-2 text-white/70 hover:text-green-400 transition-colors duration-200"
+            className="absolute right-0 top-0 p-2 text-[#F8FAFC]/70 hover:text-[#04E762] transition-colors duration-200"
             data-testid="close-popup"
           >
             <X className="w-5 h-5" />
           </button>
           
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-gradient-to-r from-green-400 to-green-500 rounded-lg">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="p-2 bg-gradient-to-r from-[#04E762] to-[#04E762] rounded-lg">
+              <Sparkles className="w-6 h-6 text-[#0F172A]" />
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
               Free Strategy Call
@@ -232,9 +232,9 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                 <SelectTrigger className="popup-input text-white" data-testid="select-monthly-budget">
                   <SelectValue placeholder="Select your budget range" className="text-white/70" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-green-400/30">
+                <SelectContent className="bg-[#0F172A] border-[#04E762]/30">
                   {budgetOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className="text-white hover:bg-green-400/10">
+                    <SelectItem key={option.value} value={option.value} className="text-[#F8FAFC] hover:bg-[#04E762]/10">
                       {option.label}
                     </SelectItem>
                   ))}
@@ -275,17 +275,17 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                 className="space-y-3"
                 data-testid="radio-ready-to-invest"
               >
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-green-400/20 hover:bg-green-400/5 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" className="border-green-400 text-green-400" />
-                  <Label htmlFor="yes" className="text-white cursor-pointer flex-1">Yes</Label>
+                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
+                  <RadioGroupItem value="yes" id="yes" className="border-[#04E762] text-[#04E762]" />
+                  <Label htmlFor="yes" className="text-[#F8FAFC] cursor-pointer flex-1">Yes</Label>
                 </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-green-400/20 hover:bg-green-400/5 transition-colors">
-                  <RadioGroupItem value="not_sure" id="not_sure" className="border-green-400 text-green-400" />
-                  <Label htmlFor="not_sure" className="text-white cursor-pointer flex-1">Not Sure</Label>
+                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
+                  <RadioGroupItem value="not_sure" id="not_sure" className="border-[#04E762] text-[#04E762]" />
+                  <Label htmlFor="not_sure" className="text-[#F8FAFC] cursor-pointer flex-1">Not Sure</Label>
                 </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-green-400/20 hover:bg-green-400/5 transition-colors">
-                  <RadioGroupItem value="no" id="no" className="border-green-400 text-green-400" />
-                  <Label htmlFor="no" className="text-white cursor-pointer flex-1">No</Label>
+                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
+                  <RadioGroupItem value="no" id="no" className="border-[#04E762] text-[#04E762]" />
+                  <Label htmlFor="no" className="text-[#F8FAFC] cursor-pointer flex-1">No</Label>
                 </div>
               </RadioGroup>
               {form.formState.errors.readyToInvest && (
@@ -299,7 +299,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             <Button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-green-400/25 disabled:opacity-50 disabled:hover:scale-100"
+              className="w-full bg-gradient-to-r from-[#04E762] to-[#04E762] hover:from-[#04E762] hover:to-[#04E762] hover:opacity-90 text-[#0F172A] font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#04E762]/25 disabled:opacity-50 disabled:hover:scale-100"
               data-testid="button-submit"
             >
               {mutation.isPending ? (

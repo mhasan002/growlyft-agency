@@ -102,7 +102,7 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent 
-        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-green-500/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
+        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-[#04E762]/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
                    fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50"
         style={{ 
           position: 'fixed',
@@ -118,15 +118,15 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
         <DialogHeader className="relative pb-6 mb-4">
           <button
             onClick={handleClose}
-            className="absolute right-0 top-0 p-2 text-white/70 hover:text-green-400 transition-colors duration-200"
+            className="absolute right-0 top-0 p-2 text-[#F8FAFC]/70 hover:text-[#04E762] transition-colors duration-200"
             data-testid="close-popup"
           >
             <X className="w-5 h-5" />
           </button>
           
           <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-gradient-to-r from-green-400 to-green-500 rounded-lg">
-              <Target className="w-6 h-6 text-white" />
+            <div className="p-2 bg-gradient-to-r from-[#04E762] to-[#04E762] rounded-lg">
+              <Target className="w-6 h-6 text-[#0F172A]" />
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
               Let's Talk Growth
@@ -251,9 +251,9 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                 <SelectTrigger className="popup-input text-white" data-testid="select-monthly-budget">
                   <SelectValue placeholder="Select your budget range" className="text-white/70" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-green-400/30">
+                <SelectContent className="bg-[#0F172A] border-[#04E762]/30">
                   {budgetOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className="text-white hover:bg-green-400/10">
+                    <SelectItem key={option.value} value={option.value} className="text-[#F8FAFC] hover:bg-[#04E762]/10">
                       {option.label}
                     </SelectItem>
                   ))}
@@ -276,10 +276,10 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                       id={service.id}
                       checked={selectedServices.includes(service.id)}
                       onCheckedChange={() => handleServiceToggle(service.id)}
-                      className="border-green-400 text-green-400 data-[state=checked]:bg-green-400 data-[state=checked]:border-green-400"
+                      className="border-[#04E762] text-[#04E762] data-[state=checked]:bg-[#04E762] data-[state=checked]:border-[#04E762]"
                       data-testid={`checkbox-service-${service.id}`}
                     />
-                    <Label htmlFor={service.id} className="text-white cursor-pointer text-sm">
+                    <Label htmlFor={service.id} className="text-[#F8FAFC] cursor-pointer text-sm">
                       {service.label}
                     </Label>
                   </div>
@@ -316,7 +316,7 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
             <Button
               type="submit"
               disabled={mutation.isPending}
-              className="w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-green-400/25 hover:animate-bounce disabled:opacity-50 disabled:hover:scale-100 disabled:hover:animate-none"
+              className="w-full bg-gradient-to-r from-[#04E762] to-[#04E762] hover:from-[#04E762] hover:to-[#04E762] hover:opacity-90 text-[#0F172A] font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-[#04E762]/25 hover:animate-bounce disabled:opacity-50 disabled:hover:scale-100 disabled:hover:animate-none"
               data-testid="button-submit"
             >
               {mutation.isPending ? (

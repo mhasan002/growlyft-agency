@@ -215,40 +215,112 @@
 
 /* Floating Label Styles for Popup Form */
 .floating-label-group {
-  @apply relative;
+  position: relative;
+  margin-bottom: 1.5rem;
 }
 
-.floating-input,
-.floating-textarea {
-  @apply pt-6 pb-2 px-3 rounded-lg border transition-all duration-200;
+.floating-input {
+  width: 100%;
+  padding: 1.5rem 0.75rem 0.5rem 0.75rem;
+  border: 1px solid rgba(4, 231, 98, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  color: #F8FAFC;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-.floating-input:focus,
-.floating-textarea:focus {
-  @apply outline-none ring-2;
+.floating-input::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.floating-input:focus {
+  border-color: #04E762;
+  box-shadow: 0 0 0 3px rgba(4, 231, 98, 0.1);
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label,
+.floating-input:valid + .floating-label {
+  top: 0.25rem;
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: #04E762;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0 0.25rem;
 }
 
 .floating-label {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 text-sm transition-all duration-200 pointer-events-none;
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  color: rgba(248, 250, 252, 0.7);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  background: transparent;
+  z-index: 2;
+}
+
+/* Textarea specific floating labels */
+.floating-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 1.5rem 0.75rem 0.5rem 0.75rem;
+  border: 1px solid rgba(4, 231, 98, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  color: #F8FAFC;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+  resize: vertical;
+}
+
+.floating-textarea::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.floating-textarea:focus {
+  border-color: #04E762;
+  box-shadow: 0 0 0 3px rgba(4, 231, 98, 0.1);
+}
+
+.floating-textarea:focus + .floating-label-textarea,
+.floating-textarea:not(:placeholder-shown) + .floating-label-textarea,
+.floating-textarea:valid + .floating-label-textarea {
+  top: 0.25rem;
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: #04E762;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0 0.25rem;
 }
 
 .floating-label-textarea {
-  @apply absolute left-3 top-6 text-sm transition-all duration-200 pointer-events-none;
-}
-
-.floating-input:focus ~ .floating-label,
-.floating-input:not(:placeholder-shown) ~ .floating-label {
-  @apply top-2 text-xs transform-none;
-}
-
-.floating-textarea:focus ~ .floating-label-textarea,
-.floating-textarea:not(:placeholder-shown) ~ .floating-label-textarea {
-  @apply top-2 text-xs;
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  color: rgba(248, 250, 252, 0.7);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  background: transparent;
+  z-index: 2;
 }
 
 /* Enhanced popup form styling */
 .popup-form-background {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #0f172a 100%);
+  background: linear-gradient(135deg, 
+    rgba(15, 23, 42, 0.98) 0%, 
+    rgba(15, 23, 42, 0.95) 50%, 
+    rgba(15, 23, 42, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(4, 231, 98, 0.2);
   position: relative;
 }
 
@@ -259,9 +331,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 20% 80%, #52c25147 0%, transparent 50%), 
-              radial-gradient(circle at 80% 20%, #52c25133 0%, transparent 50%),
-              radial-gradient(circle at 40% 40%, #52c2511a 0%, transparent 50%);
+  background: radial-gradient(circle at 20% 80%, rgba(4, 231, 98, 0.08) 0%, transparent 50%), 
+              radial-gradient(circle at 80% 20%, rgba(4, 231, 98, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgba(4, 231, 98, 0.03) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -271,7 +343,7 @@
   max-height: calc(85vh - 2rem);
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(82, 194, 81, 0.3) rgba(0, 0, 0, 0.1);
+  scrollbar-color: rgba(4, 231, 98, 0.3) rgba(0, 0, 0, 0.1);
 }
 
 .popup-form-content::-webkit-scrollbar {
@@ -284,12 +356,12 @@
 }
 
 .popup-form-content::-webkit-scrollbar-thumb {
-  background: rgba(82, 194, 81, 0.3);
+  background: rgba(4, 231, 98, 0.3);
   border-radius: 3px;
 }
 
 .popup-form-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(82, 194, 81, 0.5);
+  background: rgba(4, 231, 98, 0.5);
 }
 
 /* Force dialog positioning */
@@ -310,21 +382,26 @@
 
 /* Enhanced input styling for popups */
 .popup-input {
-  background: rgba(30, 58, 138, 0.3) !important;
-  border: 1px solid rgba(82, 194, 81, 0.3) !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid rgba(4, 231, 98, 0.3) !important;
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #F8FAFC !important;
+}
+
+.popup-input::placeholder {
+  color: transparent !important;
 }
 
 .popup-input:hover {
-  border-color: rgba(82, 194, 81, 0.5) !important;
-  background: rgba(30, 58, 138, 0.4) !important;
+  border-color: rgba(4, 231, 98, 0.5) !important;
+  background: rgba(15, 23, 42, 0.95) !important;
 }
 
 .popup-input:focus {
-  border-color: rgb(82, 194, 81) !important;
-  background: rgba(30, 58, 138, 0.5) !important;
-  box-shadow: 0 0 0 3px rgba(82, 194, 81, 0.1) !important;
+  border-color: #04E762 !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  box-shadow: 0 0 0 3px rgba(4, 231, 98, 0.2) !important;
 }
 
 /* Decorative elements */
@@ -332,8 +409,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0.08;
-  background-image: radial-gradient(circle, #52c251 1px, transparent 1px);
+  opacity: 0.05;
+  background-image: radial-gradient(circle, #04E762 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
 }
