@@ -46,6 +46,8 @@
   --brand-black: hsl(0 0% 0%);
   --soft-gray: hsl(60 14% 98%);
   --text-dark: hsl(12 4% 12%);
+  --brand-primary: #3A86FF;
+  --brand-highlight: #FFBE0B;
   
   /* About page specific colors */
   --deep-navy: hsl(222 84% 5%);
@@ -130,6 +132,19 @@
   
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .discovery-form-input:focus {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.1) !important;
+  }
+  
+  .discovery-form-primary {
+    background: var(--brand-primary);
+  }
+  
+  .discovery-form-highlight {
+    background: var(--brand-highlight);
   }
   
   .animate-on-scroll {
