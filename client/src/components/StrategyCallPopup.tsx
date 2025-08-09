@@ -354,7 +354,17 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                           placeholder="Search countries..."
                           className="w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30"
                           value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            setSearchQuery(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          autoFocus={false}
                         />
                       </div>
                       <div className="max-h-60 overflow-y-auto">
