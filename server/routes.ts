@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactSchema } from "@shared/schema";
+import { insertContactSchema, insertDiscoveryCallSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -28,6 +28,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(500).json({ 
           success: false, 
           message: "Failed to submit contact form. Please try again." 
+        });
+      }
+    }
+  });
+
+  // Discovery call form submission endpoint
+  app.post("/api/discovery-calls", async (req, res) => {
+    try {
+      const validatedData = insertDiscoveryCallSchema.parse(req.body);
+      const discoveryCallSubmission = await storage.createDiscoveryCallSubmission(validatedData);
+      
+      res.status(201).json({ 
+        success: true, 
+        message: "Thank you for your discovery call request! We'll contact you within 24 hours.",
+        id: discoveryCallSubmission.id 
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          success: false, 
+          message: "Validation error", 
+          errors: error.errors 
+        });
+      } else {
+        console.error("Discovery call form error:", error);
+        res.status(500).json({ 
+          success: false, 
+          message: "Failed to submit discovery call request. Please try again." 
         });
       }
     }

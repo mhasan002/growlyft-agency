@@ -1,0 +1,83 @@
+The form should be sleek, minimal, and mobile-friendly, with clear sections, soft shadows, rounded corners, and accent colors in brand style (use #3A86FF for primary, #FFBE0B for highlights).
+
+Form Structure:
+
+Section 1 – Contact & Business Info (all required)
+Full Name (text input, required)
+
+Business Name (text input, required)
+
+Website or Social Media Link (URL input, required)
+
+Contact Email (email input, required)
+
+Phone Number (tel input, required, with country code selector)
+
+Section 2 – Service Intent Check (all required)
+Which service are you most interested in? (multi-choice checkboxes)
+
+Social Media Management
+
+Paid Ads / Campaigns
+
+Branding & Content Creation
+
+SEO / Website Growth
+
+Other
+
+Do you have a budget allocated for this service? (dropdown)
+
+Yes, ready to invest now
+
+Yes, in the next 1–3 months
+
+Not yet / Just exploring
+
+Minimum Monthly Budget (dropdown)
+
+< $300
+
+$300–$500
+
+$500–$1000
+
+$1000+
+
+Section 3 – Call Details
+Preferred Call Date & Time (date/time picker)
+
+Time Zone (dropdown or auto-detect)
+
+Preferred Call Platform (dropdown: Zoom, Google Meet, WhatsApp)
+
+Logic & Filtering:
+
+If “Not yet / Just exploring” is selected → show an inline polite decline message: "Our discovery calls are reserved for businesses ready to start within 3 months." and disable submit.
+
+If “Minimum Monthly Budget” = < $300 → show inline message: "Our services start from $300/month. Please select a higher budget to proceed." and disable submit.
+
+Design Style:
+
+Clean, minimal, and high-conversion look
+
+Soft rounded corners, drop shadows for inputs
+
+Accent color buttons with hover effects
+
+Smooth input focus animations
+
+Clear section dividers with subtle icons
+
+Responsive layout for mobile and desktop
+
+Call-to-Action Button:
+"Book My Discovery Call" — large, bold, full-width on mobile, with arrow icon →
+
+After Successful Submission:
+
+Show embedded booking calendar for call slot selection
+
+Send confirmation email with call link
+
+Note: The form must be easy to fill out, validate in real-time, and prevent unqualified leads from scheduling.

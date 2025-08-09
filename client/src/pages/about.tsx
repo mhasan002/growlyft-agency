@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import DiscoveryCallForm from "@/components/DiscoveryCallForm";
 import { MessageCircle, Calendar, BarChart3, Handshake, Menu, X, Phone, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export default function About() {
   const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
+  const [isDiscoveryFormOpen, setIsDiscoveryFormOpen] = useState(false);
 
   // Scroll handlers
   useEffect(() => {
@@ -168,7 +170,7 @@ export default function About() {
             {/* CTA Button */}
             <div className="animate-fadeIn" style={{animationDelay: '0.6s'}}>
               <Button 
-                onClick={() => scrollToSection('contact')}
+                onClick={() => setIsDiscoveryFormOpen(true)}
                 className="bg-emerald-400 text-slate-900 px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 hover:shadow-xl hover:bg-emerald-300 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-2"
                 data-testid="hero-cta"
               >
@@ -317,6 +319,7 @@ export default function About() {
             </p>
             
             <Button 
+              onClick={() => setIsDiscoveryFormOpen(true)}
               className="bg-emerald-400 text-slate-900 px-10 py-5 rounded-full text-xl font-semibold hover:scale-105 hover:shadow-2xl hover:bg-emerald-300 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3 animate-glow"
               data-testid="cta-button"
             >
@@ -392,6 +395,12 @@ export default function About() {
           </div>
         </div>
       </footer>
+
+      {/* Discovery Call Form Modal */}
+      <DiscoveryCallForm 
+        isOpen={isDiscoveryFormOpen} 
+        onClose={() => setIsDiscoveryFormOpen(false)} 
+      />
     </div>
   );
 }
