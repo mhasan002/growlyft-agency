@@ -292,6 +292,22 @@
   background: rgba(251, 191, 36, 0.5);
 }
 
+/* Force dialog positioning */
+[data-state="open"][role="dialog"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 50 !important;
+  max-height: 85vh !important;
+  margin: 0 !important;
+}
+
+/* Ensure dialog overlay doesn't interfere */
+[data-state="open"] .popup-form-background {
+  position: relative !important;
+}
+
 /* Enhanced input styling for popups */
 .popup-input {
   background: rgba(0, 0, 0, 0.6) !important;

@@ -101,7 +101,18 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-yellow-400/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0">
+      <DialogContent 
+        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-yellow-400/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
+                   fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50"
+        style={{ 
+          position: 'fixed',
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)',
+          zIndex: 50,
+          maxHeight: '85vh'
+        }}
+      >
         <div className="popup-decoration-dots"></div>
         <div className="popup-form-content p-6">
         <DialogHeader className="relative pb-6 sticky top-0 bg-inherit z-10">
