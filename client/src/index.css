@@ -42,12 +42,18 @@
   --radius: 1rem;
   
   /* Brand specific colors */
-  --brand-green: hsl(112 40% 53%);
-  --brand-black: hsl(0 0% 0%);
+  --brand-green: #63B34A;
+  --brand-black: #000000;
   --soft-gray: hsl(60 14% 98%);
   --text-dark: hsl(12 4% 12%);
-  --brand-primary: #3A86FF;
-  --brand-highlight: #FFBE0B;
+  --brand-primary: #63B34A;
+  --text-main: #000000;
+  --text-secondary: #555555;
+  --form-background: #FFFFFF;
+  --section-background: #F8F8F8;
+  --input-border: #DDDDDD;
+  --error-color: #E63946;
+  --success-color: #2ECC71;
   
   /* About page specific colors */
   --deep-navy: hsl(222 84% 5%);
@@ -135,16 +141,24 @@
   }
   
   .discovery-form-input:focus {
-    border-color: var(--brand-primary) !important;
-    box-shadow: 0 0 0 2px rgba(58, 134, 255, 0.1) !important;
+    border-color: var(--brand-green) !important;
+    box-shadow: 0 0 0 2px rgba(99, 179, 74, 0.1) !important;
   }
   
   .discovery-form-primary {
-    background: var(--brand-primary);
+    background: var(--brand-green);
   }
   
-  .discovery-form-highlight {
-    background: var(--brand-highlight);
+  .discovery-form-section {
+    background: var(--section-background);
+  }
+  
+  .discovery-form-error {
+    color: var(--error-color);
+  }
+  
+  .discovery-form-success {
+    color: var(--success-color);
   }
   
   .animate-on-scroll {

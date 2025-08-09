@@ -46,213 +46,241 @@ const callPlatformOptions = [
 ];
 
 const countryCodeOptions = [
-  { value: "+1-us", label: "+1 🇺🇸 United States" },
-  { value: "+1-ca", label: "+1 🇨🇦 Canada" },
-  { value: "+7", label: "+7 🇷🇺 Russia" },
-  { value: "+20", label: "+20 🇪🇬 Egypt" },
-  { value: "+27", label: "+27 🇿🇦 South Africa" },
-  { value: "+30", label: "+30 🇬🇷 Greece" },
-  { value: "+31", label: "+31 🇳🇱 Netherlands" },
-  { value: "+32", label: "+32 🇧🇪 Belgium" },
-  { value: "+33", label: "+33 🇫🇷 France" },
-  { value: "+34", label: "+34 🇪🇸 Spain" },
-  { value: "+36", label: "+36 🇭🇺 Hungary" },
-  { value: "+39", label: "+39 🇮🇹 Italy" },
-  { value: "+40", label: "+40 🇷🇴 Romania" },
-  { value: "+41", label: "+41 🇨🇭 Switzerland" },
-  { value: "+43", label: "+43 🇦🇹 Austria" },
-  { value: "+44", label: "+44 🇬🇧 United Kingdom" },
-  { value: "+45", label: "+45 🇩🇰 Denmark" },
-  { value: "+46", label: "+46 🇸🇪 Sweden" },
-  { value: "+47", label: "+47 🇳🇴 Norway" },
-  { value: "+48", label: "+48 🇵🇱 Poland" },
-  { value: "+49", label: "+49 🇩🇪 Germany" },
-  { value: "+51", label: "+51 🇵🇪 Peru" },
-  { value: "+52", label: "+52 🇲🇽 Mexico" },
-  { value: "+53", label: "+53 🇨🇺 Cuba" },
-  { value: "+54", label: "+54 🇦🇷 Argentina" },
-  { value: "+55", label: "+55 🇧🇷 Brazil" },
-  { value: "+56", label: "+56 🇨🇱 Chile" },
-  { value: "+57", label: "+57 🇨🇴 Colombia" },
-  { value: "+58", label: "+58 🇻🇪 Venezuela" },
-  { value: "+60", label: "+60 🇲🇾 Malaysia" },
-  { value: "+61", label: "+61 🇦🇺 Australia" },
-  { value: "+62", label: "+62 🇮🇩 Indonesia" },
-  { value: "+63", label: "+63 🇵🇭 Philippines" },
-  { value: "+64", label: "+64 🇳🇿 New Zealand" },
-  { value: "+65", label: "+65 🇸🇬 Singapore" },
-  { value: "+66", label: "+66 🇹🇭 Thailand" },
-  { value: "+81", label: "+81 🇯🇵 Japan" },
-  { value: "+82", label: "+82 🇰🇷 South Korea" },
-  { value: "+84", label: "+84 🇻🇳 Vietnam" },
-  { value: "+86", label: "+86 🇨🇳 China" },
-  { value: "+90", label: "+90 🇹🇷 Turkey" },
-  { value: "+91", label: "+91 🇮🇳 India" },
-  { value: "+92", label: "+92 🇵🇰 Pakistan" },
-  { value: "+93", label: "+93 🇦🇫 Afghanistan" },
-  { value: "+94", label: "+94 🇱🇰 Sri Lanka" },
-  { value: "+95", label: "+95 🇲🇲 Myanmar" },
-  { value: "+98", label: "+98 🇮🇷 Iran" },
-  { value: "+212", label: "+212 🇲🇦 Morocco" },
-  { value: "+213", label: "+213 🇩🇿 Algeria" },
-  { value: "+216", label: "+216 🇹🇳 Tunisia" },
-  { value: "+218", label: "+218 🇱🇾 Libya" },
-  { value: "+220", label: "+220 🇬🇲 Gambia" },
-  { value: "+221", label: "+221 🇸🇳 Senegal" },
-  { value: "+222", label: "+222 🇲🇷 Mauritania" },
-  { value: "+223", label: "+223 🇲🇱 Mali" },
-  { value: "+224", label: "+224 🇬🇳 Guinea" },
-  { value: "+225", label: "+225 🇨🇮 Côte d'Ivoire" },
-  { value: "+226", label: "+226 🇧🇫 Burkina Faso" },
-  { value: "+227", label: "+227 🇳🇪 Niger" },
-  { value: "+228", label: "+228 🇹🇬 Togo" },
-  { value: "+229", label: "+229 🇧🇯 Benin" },
-  { value: "+230", label: "+230 🇲🇺 Mauritius" },
-  { value: "+231", label: "+231 🇱🇷 Liberia" },
-  { value: "+232", label: "+232 🇸🇱 Sierra Leone" },
-  { value: "+233", label: "+233 🇬🇭 Ghana" },
-  { value: "+234", label: "+234 🇳🇬 Nigeria" },
-  { value: "+235", label: "+235 🇹🇩 Chad" },
-  { value: "+236", label: "+236 🇨🇫 Central African Republic" },
-  { value: "+237", label: "+237 🇨🇲 Cameroon" },
-  { value: "+238", label: "+238 🇨🇻 Cape Verde" },
-  { value: "+239", label: "+239 🇸🇹 São Tomé and Príncipe" },
-  { value: "+240", label: "+240 🇬🇶 Equatorial Guinea" },
-  { value: "+241", label: "+241 🇬🇦 Gabon" },
-  { value: "+242", label: "+242 🇨🇬 Republic of the Congo" },
-  { value: "+243", label: "+243 🇨🇩 Democratic Republic of the Congo" },
-  { value: "+244", label: "+244 🇦🇴 Angola" },
-  { value: "+245", label: "+245 🇬🇼 Guinea-Bissau" },
-  { value: "+246", label: "+246 🇮🇴 British Indian Ocean Territory" },
-  { value: "+248", label: "+248 🇸🇨 Seychelles" },
-  { value: "+249", label: "+249 🇸🇩 Sudan" },
-  { value: "+250", label: "+250 🇷🇼 Rwanda" },
-  { value: "+251", label: "+251 🇪🇹 Ethiopia" },
-  { value: "+252", label: "+252 🇸🇴 Somalia" },
-  { value: "+253", label: "+253 🇩🇯 Djibouti" },
-  { value: "+254", label: "+254 🇰🇪 Kenya" },
-  { value: "+255", label: "+255 🇹🇿 Tanzania" },
-  { value: "+256", label: "+256 🇺🇬 Uganda" },
-  { value: "+257", label: "+257 🇧🇮 Burundi" },
-  { value: "+258", label: "+258 🇲🇿 Mozambique" },
-  { value: "+260", label: "+260 🇿🇲 Zambia" },
-  { value: "+261", label: "+261 🇲🇬 Madagascar" },
-  { value: "+262", label: "+262 🇷🇪 Réunion" },
-  { value: "+263", label: "+263 🇿🇼 Zimbabwe" },
-  { value: "+264", label: "+264 🇳🇦 Namibia" },
-  { value: "+265", label: "+265 🇲🇼 Malawi" },
-  { value: "+266", label: "+266 🇱🇸 Lesotho" },
-  { value: "+267", label: "+267 🇧🇼 Botswana" },
-  { value: "+268", label: "+268 🇸🇿 Eswatini" },
-  { value: "+269", label: "+269 🇰🇲 Comoros" },
-  { value: "+290", label: "+290 🇸🇭 Saint Helena" },
-  { value: "+291", label: "+291 🇪🇷 Eritrea" },
-  { value: "+297", label: "+297 🇦🇼 Aruba" },
-  { value: "+298", label: "+298 🇫🇴 Faroe Islands" },
-  { value: "+299", label: "+299 🇬🇱 Greenland" },
-  { value: "+350", label: "+350 🇬🇮 Gibraltar" },
-  { value: "+351", label: "+351 🇵🇹 Portugal" },
-  { value: "+352", label: "+352 🇱🇺 Luxembourg" },
-  { value: "+353", label: "+353 🇮🇪 Ireland" },
-  { value: "+354", label: "+354 🇮🇸 Iceland" },
-  { value: "+355", label: "+355 🇦🇱 Albania" },
-  { value: "+356", label: "+356 🇲🇹 Malta" },
-  { value: "+357", label: "+357 🇨🇾 Cyprus" },
-  { value: "+358", label: "+358 🇫🇮 Finland" },
-  { value: "+359", label: "+359 🇧🇬 Bulgaria" },
-  { value: "+370", label: "+370 🇱🇹 Lithuania" },
-  { value: "+371", label: "+371 🇱🇻 Latvia" },
-  { value: "+372", label: "+372 🇪🇪 Estonia" },
-  { value: "+373", label: "+373 🇲🇩 Moldova" },
-  { value: "+374", label: "+374 🇦🇲 Armenia" },
-  { value: "+375", label: "+375 🇧🇾 Belarus" },
-  { value: "+376", label: "+376 🇦🇩 Andorra" },
-  { value: "+377", label: "+377 🇲🇨 Monaco" },
-  { value: "+378", label: "+378 🇸🇲 San Marino" },
-  { value: "+380", label: "+380 🇺🇦 Ukraine" },
-  { value: "+381", label: "+381 🇷🇸 Serbia" },
-  { value: "+382", label: "+382 🇲🇪 Montenegro" },
-  { value: "+383", label: "+383 🇽🇰 Kosovo" },
-  { value: "+385", label: "+385 🇭🇷 Croatia" },
-  { value: "+386", label: "+386 🇸🇮 Slovenia" },
-  { value: "+387", label: "+387 🇧🇦 Bosnia and Herzegovina" },
-  { value: "+389", label: "+389 🇲🇰 North Macedonia" },
-  { value: "+420", label: "+420 🇨🇿 Czech Republic" },
-  { value: "+421", label: "+421 🇸🇰 Slovakia" },
-  { value: "+423", label: "+423 🇱🇮 Liechtenstein" },
-  { value: "+500", label: "+500 🇫🇰 Falkland Islands" },
-  { value: "+501", label: "+501 🇧🇿 Belize" },
-  { value: "+502", label: "+502 🇬🇹 Guatemala" },
-  { value: "+503", label: "+503 🇸🇻 El Salvador" },
-  { value: "+504", label: "+504 🇭🇳 Honduras" },
-  { value: "+505", label: "+505 🇳🇮 Nicaragua" },
-  { value: "+506", label: "+506 🇨🇷 Costa Rica" },
-  { value: "+507", label: "+507 🇵🇦 Panama" },
-  { value: "+508", label: "+508 🇵🇲 Saint Pierre and Miquelon" },
-  { value: "+509", label: "+509 🇭🇹 Haiti" },
-  { value: "+590", label: "+590 🇬🇵 Guadeloupe" },
-  { value: "+591", label: "+591 🇧🇴 Bolivia" },
-  { value: "+592", label: "+592 🇬🇾 Guyana" },
-  { value: "+593", label: "+593 🇪🇨 Ecuador" },
-  { value: "+594", label: "+594 🇬🇫 French Guiana" },
-  { value: "+595", label: "+595 🇵🇾 Paraguay" },
-  { value: "+596", label: "+596 🇲🇶 Martinique" },
-  { value: "+597", label: "+597 🇸🇷 Suriname" },
-  { value: "+598", label: "+598 🇺🇾 Uruguay" },
-  { value: "+599", label: "+599 🇨🇼 Curaçao" },
-  { value: "+670", label: "+670 🇹🇱 East Timor" },
-  { value: "+672", label: "+672 🇦🇶 Antarctica" },
-  { value: "+673", label: "+673 🇧🇳 Brunei" },
-  { value: "+674", label: "+674 🇳🇷 Nauru" },
-  { value: "+675", label: "+675 🇵🇬 Papua New Guinea" },
-  { value: "+676", label: "+676 🇹🇴 Tonga" },
-  { value: "+677", label: "+677 🇸🇧 Solomon Islands" },
-  { value: "+678", label: "+678 🇻🇺 Vanuatu" },
-  { value: "+679", label: "+679 🇫🇯 Fiji" },
-  { value: "+680", label: "+680 🇵🇼 Palau" },
-  { value: "+681", label: "+681 🇼🇫 Wallis and Futuna" },
-  { value: "+682", label: "+682 🇨🇰 Cook Islands" },
-  { value: "+683", label: "+683 🇳🇺 Niue" },
-  { value: "+684", label: "+684 🇦🇸 American Samoa" },
-  { value: "+685", label: "+685 🇼🇸 Samoa" },
-  { value: "+686", label: "+686 🇰🇮 Kiribati" },
-  { value: "+687", label: "+687 🇳🇨 New Caledonia" },
-  { value: "+688", label: "+688 🇹🇻 Tuvalu" },
-  { value: "+689", label: "+689 🇵🇫 French Polynesia" },
-  { value: "+690", label: "+690 🇹🇰 Tokelau" },
-  { value: "+691", label: "+691 🇫🇲 Federated States of Micronesia" },
-  { value: "+692", label: "+692 🇲🇭 Marshall Islands" },
-  { value: "+850", label: "+850 🇰🇵 North Korea" },
-  { value: "+852", label: "+852 🇭🇰 Hong Kong" },
-  { value: "+853", label: "+853 🇲🇴 Macau" },
-  { value: "+855", label: "+855 🇰🇭 Cambodia" },
-  { value: "+856", label: "+856 🇱🇦 Laos" },
-  { value: "+880", label: "+880 🇧🇩 Bangladesh" },
-  { value: "+886", label: "+886 🇹🇼 Taiwan" },
-  { value: "+960", label: "+960 🇲🇻 Maldives" },
-  { value: "+961", label: "+961 🇱🇧 Lebanon" },
-  { value: "+962", label: "+962 🇯🇴 Jordan" },
-  { value: "+963", label: "+963 🇸🇾 Syria" },
-  { value: "+964", label: "+964 🇮🇶 Iraq" },
-  { value: "+965", label: "+965 🇰🇼 Kuwait" },
-  { value: "+966", label: "+966 🇸🇦 Saudi Arabia" },
-  { value: "+967", label: "+967 🇾🇪 Yemen" },
-  { value: "+968", label: "+968 🇴🇲 Oman" },
-  { value: "+970", label: "+970 🇵🇸 Palestine" },
-  { value: "+971", label: "+971 🇦🇪 United Arab Emirates" },
-  { value: "+972", label: "+972 🇮🇱 Israel" },
-  { value: "+973", label: "+973 🇧🇭 Bahrain" },
-  { value: "+974", label: "+974 🇶🇦 Qatar" },
-  { value: "+975", label: "+975 🇧🇹 Bhutan" },
-  { value: "+976", label: "+976 🇲🇳 Mongolia" },
-  { value: "+977", label: "+977 🇳🇵 Nepal" },
-  { value: "+992", label: "+992 🇹🇯 Tajikistan" },
-  { value: "+993", label: "+993 🇹🇲 Turkmenistan" },
-  { value: "+994", label: "+994 🇦🇿 Azerbaijan" },
-  { value: "+995", label: "+995 🇬🇪 Georgia" },
-  { value: "+996", label: "+996 🇰🇬 Kyrgyzstan" },
-  { value: "+998", label: "+998 🇺🇿 Uzbekistan" },
-];
+  { value: "+93", label: "Afghanistan +93 🇦🇫", country: "Afghanistan" },
+  { value: "+355", label: "Albania +355 🇦🇱", country: "Albania" },
+  { value: "+213", label: "Algeria +213 🇩🇿", country: "Algeria" },
+  { value: "+684", label: "American Samoa +684 🇦🇸", country: "American Samoa" },
+  { value: "+376", label: "Andorra +376 🇦🇩", country: "Andorra" },
+  { value: "+244", label: "Angola +244 🇦🇴", country: "Angola" },
+  { value: "+1-268", label: "Antigua and Barbuda +1 🇦🇬", country: "Antigua and Barbuda" },
+  { value: "+54", label: "Argentina +54 🇦🇷", country: "Argentina" },
+  { value: "+374", label: "Armenia +374 🇦🇲", country: "Armenia" },
+  { value: "+297", label: "Aruba +297 🇦🇼", country: "Aruba" },
+  { value: "+61", label: "Australia +61 🇦🇺", country: "Australia" },
+  { value: "+43", label: "Austria +43 🇦🇹", country: "Austria" },
+  { value: "+994", label: "Azerbaijan +994 🇦🇿", country: "Azerbaijan" },
+  { value: "+1-242", label: "Bahamas +1 🇧🇸", country: "Bahamas" },
+  { value: "+973", label: "Bahrain +973 🇧🇭", country: "Bahrain" },
+  { value: "+880", label: "Bangladesh +880 🇧🇩", country: "Bangladesh" },
+  { value: "+1-246", label: "Barbados +1 🇧🇧", country: "Barbados" },
+  { value: "+375", label: "Belarus +375 🇧🇾", country: "Belarus" },
+  { value: "+32", label: "Belgium +32 🇧🇪", country: "Belgium" },
+  { value: "+501", label: "Belize +501 🇧🇿", country: "Belize" },
+  { value: "+229", label: "Benin +229 🇧🇯", country: "Benin" },
+  { value: "+1-441", label: "Bermuda +1 🇧🇲", country: "Bermuda" },
+  { value: "+975", label: "Bhutan +975 🇧🇹", country: "Bhutan" },
+  { value: "+591", label: "Bolivia +591 🇧🇴", country: "Bolivia" },
+  { value: "+387", label: "Bosnia and Herzegovina +387 🇧🇦", country: "Bosnia and Herzegovina" },
+  { value: "+267", label: "Botswana +267 🇧🇼", country: "Botswana" },
+  { value: "+55", label: "Brazil +55 🇧🇷", country: "Brazil" },
+  { value: "+673", label: "Brunei +673 🇧🇳", country: "Brunei" },
+  { value: "+359", label: "Bulgaria +359 🇧🇬", country: "Bulgaria" },
+  { value: "+226", label: "Burkina Faso +226 🇧🇫", country: "Burkina Faso" },
+  { value: "+257", label: "Burundi +257 🇧🇮", country: "Burundi" },
+  { value: "+855", label: "Cambodia +855 🇰🇭", country: "Cambodia" },
+  { value: "+237", label: "Cameroon +237 🇨🇲", country: "Cameroon" },
+  { value: "+1", label: "Canada +1 🇨🇦", country: "Canada" },
+  { value: "+238", label: "Cape Verde +238 🇨🇻", country: "Cape Verde" },
+  { value: "+1-345", label: "Cayman Islands +1 🇰🇾", country: "Cayman Islands" },
+  { value: "+236", label: "Central African Republic +236 🇨🇫", country: "Central African Republic" },
+  { value: "+235", label: "Chad +235 🇹🇩", country: "Chad" },
+  { value: "+56", label: "Chile +56 🇨🇱", country: "Chile" },
+  { value: "+86", label: "China +86 🇨🇳", country: "China" },
+  { value: "+57", label: "Colombia +57 🇨🇴", country: "Colombia" },
+  { value: "+269", label: "Comoros +269 🇰🇲", country: "Comoros" },
+  { value: "+242", label: "Congo +242 🇨🇬", country: "Congo" },
+  { value: "+243", label: "Congo (DRC) +243 🇨🇩", country: "Congo (DRC)" },
+  { value: "+682", label: "Cook Islands +682 🇨🇰", country: "Cook Islands" },
+  { value: "+506", label: "Costa Rica +506 🇨🇷", country: "Costa Rica" },
+  { value: "+225", label: "Côte d'Ivoire +225 🇨🇮", country: "Côte d'Ivoire" },
+  { value: "+385", label: "Croatia +385 🇭🇷", country: "Croatia" },
+  { value: "+53", label: "Cuba +53 🇨🇺", country: "Cuba" },
+  { value: "+599", label: "Curaçao +599 🇨🇼", country: "Curaçao" },
+  { value: "+357", label: "Cyprus +357 🇨🇾", country: "Cyprus" },
+  { value: "+420", label: "Czech Republic +420 🇨🇿", country: "Czech Republic" },
+  { value: "+45", label: "Denmark +45 🇩🇰", country: "Denmark" },
+  { value: "+253", label: "Djibouti +253 🇩🇯", country: "Djibouti" },
+  { value: "+1-767", label: "Dominica +1 🇩🇲", country: "Dominica" },
+  { value: "+1-809", label: "Dominican Republic +1 🇩🇴", country: "Dominican Republic" },
+  { value: "+593", label: "Ecuador +593 🇪🇨", country: "Ecuador" },
+  { value: "+20", label: "Egypt +20 🇪🇬", country: "Egypt" },
+  { value: "+503", label: "El Salvador +503 🇸🇻", country: "El Salvador" },
+  { value: "+240", label: "Equatorial Guinea +240 🇬🇶", country: "Equatorial Guinea" },
+  { value: "+291", label: "Eritrea +291 🇪🇷", country: "Eritrea" },
+  { value: "+372", label: "Estonia +372 🇪🇪", country: "Estonia" },
+  { value: "+268", label: "Eswatini +268 🇸🇿", country: "Eswatini" },
+  { value: "+251", label: "Ethiopia +251 🇪🇹", country: "Ethiopia" },
+  { value: "+500", label: "Falkland Islands +500 🇫🇰", country: "Falkland Islands" },
+  { value: "+298", label: "Faroe Islands +298 🇫🇴", country: "Faroe Islands" },
+  { value: "+679", label: "Fiji +679 🇫🇯", country: "Fiji" },
+  { value: "+358", label: "Finland +358 🇫🇮", country: "Finland" },
+  { value: "+33", label: "France +33 🇫🇷", country: "France" },
+  { value: "+594", label: "French Guiana +594 🇬🇫", country: "French Guiana" },
+  { value: "+689", label: "French Polynesia +689 🇵🇫", country: "French Polynesia" },
+  { value: "+241", label: "Gabon +241 🇬🇦", country: "Gabon" },
+  { value: "+220", label: "Gambia +220 🇬🇲", country: "Gambia" },
+  { value: "+995", label: "Georgia +995 🇬🇪", country: "Georgia" },
+  { value: "+49", label: "Germany +49 🇩🇪", country: "Germany" },
+  { value: "+233", label: "Ghana +233 🇬🇭", country: "Ghana" },
+  { value: "+350", label: "Gibraltar +350 🇬🇮", country: "Gibraltar" },
+  { value: "+30", label: "Greece +30 🇬🇷", country: "Greece" },
+  { value: "+299", label: "Greenland +299 🇬🇱", country: "Greenland" },
+  { value: "+1-473", label: "Grenada +1 🇬🇩", country: "Grenada" },
+  { value: "+590", label: "Guadeloupe +590 🇬🇵", country: "Guadeloupe" },
+  { value: "+1-671", label: "Guam +1 🇬🇺", country: "Guam" },
+  { value: "+502", label: "Guatemala +502 🇬🇹", country: "Guatemala" },
+  { value: "+44-1481", label: "Guernsey +44 🇬🇬", country: "Guernsey" },
+  { value: "+224", label: "Guinea +224 🇬🇳", country: "Guinea" },
+  { value: "+245", label: "Guinea-Bissau +245 🇬🇼", country: "Guinea-Bissau" },
+  { value: "+592", label: "Guyana +592 🇬🇾", country: "Guyana" },
+  { value: "+509", label: "Haiti +509 🇭🇹", country: "Haiti" },
+  { value: "+504", label: "Honduras +504 🇭🇳", country: "Honduras" },
+  { value: "+852", label: "Hong Kong +852 🇭🇰", country: "Hong Kong" },
+  { value: "+36", label: "Hungary +36 🇭🇺", country: "Hungary" },
+  { value: "+354", label: "Iceland +354 🇮🇸", country: "Iceland" },
+  { value: "+91", label: "India +91 🇮🇳", country: "India" },
+  { value: "+62", label: "Indonesia +62 🇮🇩", country: "Indonesia" },
+  { value: "+98", label: "Iran +98 🇮🇷", country: "Iran" },
+  { value: "+964", label: "Iraq +964 🇮🇶", country: "Iraq" },
+  { value: "+353", label: "Ireland +353 🇮🇪", country: "Ireland" },
+  { value: "+44-1624", label: "Isle of Man +44 🇮🇲", country: "Isle of Man" },
+  { value: "+972", label: "Israel +972 🇮🇱", country: "Israel" },
+  { value: "+39", label: "Italy +39 🇮🇹", country: "Italy" },
+  { value: "+1-876", label: "Jamaica +1 🇯🇲", country: "Jamaica" },
+  { value: "+81", label: "Japan +81 🇯🇵", country: "Japan" },
+  { value: "+44-1534", label: "Jersey +44 🇯🇪", country: "Jersey" },
+  { value: "+962", label: "Jordan +962 🇯🇴", country: "Jordan" },
+  { value: "+7", label: "Kazakhstan +7 🇰🇿", country: "Kazakhstan" },
+  { value: "+254", label: "Kenya +254 🇰🇪", country: "Kenya" },
+  { value: "+686", label: "Kiribati +686 🇰🇮", country: "Kiribati" },
+  { value: "+383", label: "Kosovo +383 🇽🇰", country: "Kosovo" },
+  { value: "+965", label: "Kuwait +965 🇰🇼", country: "Kuwait" },
+  { value: "+996", label: "Kyrgyzstan +996 🇰🇬", country: "Kyrgyzstan" },
+  { value: "+856", label: "Laos +856 🇱🇦", country: "Laos" },
+  { value: "+371", label: "Latvia +371 🇱🇻", country: "Latvia" },
+  { value: "+961", label: "Lebanon +961 🇱🇧", country: "Lebanon" },
+  { value: "+266", label: "Lesotho +266 🇱🇸", country: "Lesotho" },
+  { value: "+231", label: "Liberia +231 🇱🇷", country: "Liberia" },
+  { value: "+218", label: "Libya +218 🇱🇾", country: "Libya" },
+  { value: "+423", label: "Liechtenstein +423 🇱🇮", country: "Liechtenstein" },
+  { value: "+370", label: "Lithuania +370 🇱🇹", country: "Lithuania" },
+  { value: "+352", label: "Luxembourg +352 🇱🇺", country: "Luxembourg" },
+  { value: "+853", label: "Macao +853 🇲🇴", country: "Macao" },
+  { value: "+261", label: "Madagascar +261 🇲🇬", country: "Madagascar" },
+  { value: "+265", label: "Malawi +265 🇲🇼", country: "Malawi" },
+  { value: "+60", label: "Malaysia +60 🇲🇾", country: "Malaysia" },
+  { value: "+960", label: "Maldives +960 🇲🇻", country: "Maldives" },
+  { value: "+223", label: "Mali +223 🇲🇱", country: "Mali" },
+  { value: "+356", label: "Malta +356 🇲🇹", country: "Malta" },
+  { value: "+692", label: "Marshall Islands +692 🇲🇭", country: "Marshall Islands" },
+  { value: "+596", label: "Martinique +596 🇲🇶", country: "Martinique" },
+  { value: "+222", label: "Mauritania +222 🇲🇷", country: "Mauritania" },
+  { value: "+230", label: "Mauritius +230 🇲🇺", country: "Mauritius" },
+  { value: "+262", label: "Mayotte +262 🇾🇹", country: "Mayotte" },
+  { value: "+52", label: "Mexico +52 🇲🇽", country: "Mexico" },
+  { value: "+691", label: "Micronesia +691 🇫🇲", country: "Micronesia" },
+  { value: "+373", label: "Moldova +373 🇲🇩", country: "Moldova" },
+  { value: "+377", label: "Monaco +377 🇲🇨", country: "Monaco" },
+  { value: "+976", label: "Mongolia +976 🇲🇳", country: "Mongolia" },
+  { value: "+382", label: "Montenegro +382 🇲🇪", country: "Montenegro" },
+  { value: "+1-664", label: "Montserrat +1 🇲🇸", country: "Montserrat" },
+  { value: "+212", label: "Morocco +212 🇲🇦", country: "Morocco" },
+  { value: "+258", label: "Mozambique +258 🇲🇿", country: "Mozambique" },
+  { value: "+95", label: "Myanmar +95 🇲🇲", country: "Myanmar" },
+  { value: "+264", label: "Namibia +264 🇳🇦", country: "Namibia" },
+  { value: "+674", label: "Nauru +674 🇳🇷", country: "Nauru" },
+  { value: "+977", label: "Nepal +977 🇳🇵", country: "Nepal" },
+  { value: "+31", label: "Netherlands +31 🇳🇱", country: "Netherlands" },
+  { value: "+687", label: "New Caledonia +687 🇳🇨", country: "New Caledonia" },
+  { value: "+64", label: "New Zealand +64 🇳🇿", country: "New Zealand" },
+  { value: "+505", label: "Nicaragua +505 🇳🇮", country: "Nicaragua" },
+  { value: "+227", label: "Niger +227 🇳🇪", country: "Niger" },
+  { value: "+234", label: "Nigeria +234 🇳🇬", country: "Nigeria" },
+  { value: "+683", label: "Niue +683 🇳🇺", country: "Niue" },
+  { value: "+672", label: "Norfolk Island +672 🇳🇫", country: "Norfolk Island" },
+  { value: "+389", label: "North Macedonia +389 🇲🇰", country: "North Macedonia" },
+  { value: "+1-670", label: "Northern Mariana Islands +1 🇲🇵", country: "Northern Mariana Islands" },
+  { value: "+47", label: "Norway +47 🇳🇴", country: "Norway" },
+  { value: "+968", label: "Oman +968 🇴🇲", country: "Oman" },
+  { value: "+92", label: "Pakistan +92 🇵🇰", country: "Pakistan" },
+  { value: "+680", label: "Palau +680 🇵🇼", country: "Palau" },
+  { value: "+970", label: "Palestine +970 🇵🇸", country: "Palestine" },
+  { value: "+507", label: "Panama +507 🇵🇦", country: "Panama" },
+  { value: "+675", label: "Papua New Guinea +675 🇵🇬", country: "Papua New Guinea" },
+  { value: "+595", label: "Paraguay +595 🇵🇾", country: "Paraguay" },
+  { value: "+51", label: "Peru +51 🇵🇪", country: "Peru" },
+  { value: "+63", label: "Philippines +63 🇵🇭", country: "Philippines" },
+  { value: "+48", label: "Poland +48 🇵🇱", country: "Poland" },
+  { value: "+351", label: "Portugal +351 🇵🇹", country: "Portugal" },
+  { value: "+1-787", label: "Puerto Rico +1 🇵🇷", country: "Puerto Rico" },
+  { value: "+974", label: "Qatar +974 🇶🇦", country: "Qatar" },
+  { value: "+262", label: "Réunion +262 🇷🇪", country: "Réunion" },
+  { value: "+40", label: "Romania +40 🇷🇴", country: "Romania" },
+  { value: "+7", label: "Russia +7 🇷🇺", country: "Russia" },
+  { value: "+250", label: "Rwanda +250 🇷🇼", country: "Rwanda" },
+  { value: "+290", label: "Saint Helena +290 🇸🇭", country: "Saint Helena" },
+  { value: "+1-869", label: "Saint Kitts and Nevis +1 🇰🇳", country: "Saint Kitts and Nevis" },
+  { value: "+1-758", label: "Saint Lucia +1 🇱🇨", country: "Saint Lucia" },
+  { value: "+508", label: "Saint Pierre and Miquelon +508 🇵🇲", country: "Saint Pierre and Miquelon" },
+  { value: "+1-784", label: "Saint Vincent and the Grenadines +1 🇻🇨", country: "Saint Vincent and the Grenadines" },
+  { value: "+685", label: "Samoa +685 🇼🇸", country: "Samoa" },
+  { value: "+378", label: "San Marino +378 🇸🇲", country: "San Marino" },
+  { value: "+239", label: "São Tomé and Príncipe +239 🇸🇹", country: "São Tomé and Príncipe" },
+  { value: "+966", label: "Saudi Arabia +966 🇸🇦", country: "Saudi Arabia" },
+  { value: "+221", label: "Senegal +221 🇸🇳", country: "Senegal" },
+  { value: "+381", label: "Serbia +381 🇷🇸", country: "Serbia" },
+  { value: "+248", label: "Seychelles +248 🇸🇨", country: "Seychelles" },
+  { value: "+232", label: "Sierra Leone +232 🇸🇱", country: "Sierra Leone" },
+  { value: "+65", label: "Singapore +65 🇸🇬", country: "Singapore" },
+  { value: "+1-721", label: "Sint Maarten +1 🇸🇽", country: "Sint Maarten" },
+  { value: "+421", label: "Slovakia +421 🇸🇰", country: "Slovakia" },
+  { value: "+386", label: "Slovenia +386 🇸🇮", country: "Slovenia" },
+  { value: "+677", label: "Solomon Islands +677 🇸🇧", country: "Solomon Islands" },
+  { value: "+252", label: "Somalia +252 🇸🇴", country: "Somalia" },
+  { value: "+27", label: "South Africa +27 🇿🇦", country: "South Africa" },
+  { value: "+82", label: "South Korea +82 🇰🇷", country: "South Korea" },
+  { value: "+211", label: "South Sudan +211 🇸🇸", country: "South Sudan" },
+  { value: "+34", label: "Spain +34 🇪🇸", country: "Spain" },
+  { value: "+94", label: "Sri Lanka +94 🇱🇰", country: "Sri Lanka" },
+  { value: "+249", label: "Sudan +249 🇸🇩", country: "Sudan" },
+  { value: "+597", label: "Suriname +597 🇸🇷", country: "Suriname" },
+  { value: "+47-79", label: "Svalbard and Jan Mayen +47 🇸🇯", country: "Svalbard and Jan Mayen" },
+  { value: "+46", label: "Sweden +46 🇸🇪", country: "Sweden" },
+  { value: "+41", label: "Switzerland +41 🇨🇭", country: "Switzerland" },
+  { value: "+963", label: "Syria +963 🇸🇾", country: "Syria" },
+  { value: "+886", label: "Taiwan +886 🇹🇼", country: "Taiwan" },
+  { value: "+992", label: "Tajikistan +992 🇹🇯", country: "Tajikistan" },
+  { value: "+255", label: "Tanzania +255 🇹🇿", country: "Tanzania" },
+  { value: "+66", label: "Thailand +66 🇹🇭", country: "Thailand" },
+  { value: "+670", label: "Timor-Leste +670 🇹🇱", country: "Timor-Leste" },
+  { value: "+228", label: "Togo +228 🇹🇬", country: "Togo" },
+  { value: "+690", label: "Tokelau +690 🇹🇰", country: "Tokelau" },
+  { value: "+676", label: "Tonga +676 🇹🇴", country: "Tonga" },
+  { value: "+1-868", label: "Trinidad and Tobago +1 🇹🇹", country: "Trinidad and Tobago" },
+  { value: "+216", label: "Tunisia +216 🇹🇳", country: "Tunisia" },
+  { value: "+90", label: "Turkey +90 🇹🇷", country: "Turkey" },
+  { value: "+993", label: "Turkmenistan +993 🇹🇲", country: "Turkmenistan" },
+  { value: "+1-649", label: "Turks and Caicos Islands +1 🇹🇨", country: "Turks and Caicos Islands" },
+  { value: "+688", label: "Tuvalu +688 🇹🇻", country: "Tuvalu" },
+  { value: "+256", label: "Uganda +256 🇺🇬", country: "Uganda" },
+  { value: "+380", label: "Ukraine +380 🇺🇦", country: "Ukraine" },
+  { value: "+971", label: "United Arab Emirates +971 🇦🇪", country: "United Arab Emirates" },
+  { value: "+44", label: "United Kingdom +44 🇬🇧", country: "United Kingdom" },
+  { value: "+1", label: "United States +1 🇺🇸", country: "United States" },
+  { value: "+598", label: "Uruguay +598 🇺🇾", country: "Uruguay" },
+  { value: "+998", label: "Uzbekistan +998 🇺🇿", country: "Uzbekistan" },
+  { value: "+678", label: "Vanuatu +678 🇻🇺", country: "Vanuatu" },
+  { value: "+379", label: "Vatican City +379 🇻🇦", country: "Vatican City" },
+  { value: "+58", label: "Venezuela +58 🇻🇪", country: "Venezuela" },
+  { value: "+84", label: "Vietnam +84 🇻🇳", country: "Vietnam" },
+  { value: "+1-284", label: "Virgin Islands (British) +1 🇻🇬", country: "Virgin Islands (British)" },
+  { value: "+1-340", label: "Virgin Islands (US) +1 🇻🇮", country: "Virgin Islands (US)" },
+  { value: "+681", label: "Wallis and Futuna +681 🇼🇫", country: "Wallis and Futuna" },
+  { value: "+212", label: "Western Sahara +212 🇪🇭", country: "Western Sahara" },
+  { value: "+967", label: "Yemen +967 🇾🇪", country: "Yemen" },
+  { value: "+260", label: "Zambia +260 🇿🇲", country: "Zambia" },
+  { value: "+263", label: "Zimbabwe +263 🇿🇼", country: "Zimbabwe" },
+].sort((a, b) => a.country.localeCompare(b.country));
 
 export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -269,7 +297,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
       websiteUrl: "",
       email: "",
       phoneNumber: "",
-      countryCode: "+1-us",
+      countryCode: "+1",
       servicesInterested: [],
       budgetAllocated: undefined,
       minimumBudget: undefined,
@@ -338,17 +366,17 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
       <Dialog open={isOpen} onOpenChange={resetForm}>
         <DialogContent className="sm:max-w-md bg-white rounded-3xl border-none shadow-2xl">
           <div className="text-center p-6">
-            <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{color: '#3A86FF'}} />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            <CheckCircle className="w-16 h-16 mx-auto mb-4" style={{color: '#2ECC71'}} />
+            <h3 className="text-2xl font-bold mb-2" style={{color: '#000000'}}>
               Thank You!
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6" style={{color: '#555555'}}>
               Your discovery call request has been submitted. We'll contact you within 24 hours to schedule your call.
             </p>
             <Button
               onClick={resetForm}
               className="text-white px-8 py-2 rounded-xl transition-all duration-300 hover:opacity-90"
-              style={{backgroundColor: '#3A86FF'}}
+              style={{backgroundColor: '#2ECC71'}}
             >
               Close
             </Button>
@@ -360,97 +388,121 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl border-none shadow-2xl">
-        <DialogHeader className="text-center border-b border-gray-100 pb-6">
-          <DialogTitle className="text-3xl font-bold text-gray-900">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border-none shadow-2xl" style={{backgroundColor: '#FFFFFF'}}>
+        <DialogHeader className="text-center pb-6" style={{borderBottom: '1px solid #DDDDDD'}}>
+          <DialogTitle className="text-3xl font-bold" style={{color: '#000000'}}>
             Book Your Free Discovery Call
           </DialogTitle>
-          <DialogDescription className="text-gray-600 mt-2">
+          <DialogDescription className="mt-2" style={{color: '#555555'}}>
             Let's discuss how we can help grow your business
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-6">
           {/* Section 1 - Contact & Business Info */}
-          <div className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl p-6 border border-blue-200/50 shadow-lg">
+          <div className="rounded-2xl p-6 border shadow-lg" style={{backgroundColor: '#F8F8F8', borderColor: '#DDDDDD'}}>
             <div className="flex items-center gap-3 mb-6">
-              <Building2 className="w-6 h-6 text-blue-600" style={{color: '#3A86FF'}} />
-              <h3 className="text-xl font-semibold text-gray-900">Contact & Business Information</h3>
+              <Building2 className="w-6 h-6" style={{color: '#63B34A'}} />
+              <h3 className="text-xl font-semibold" style={{color: '#000000'}}>Contact & Business Information</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="fullName" className="text-gray-800 font-medium">
+                <Label htmlFor="fullName" className="font-medium" style={{color: '#000000'}}>
                   Full Name *
                 </Label>
                 <Input
                   id="fullName"
                   {...form.register("fullName")}
-                  className="mt-2 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  style={{borderColor: '#DDDDDD', color: '#000000'}}
                   placeholder="Your full name"
                 />
                 {form.formState.errors.fullName && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.fullName.message}</p>
+                  <p className="text-sm mt-1" style={{color: '#E63946'}}>{form.formState.errors.fullName.message}</p>
                 )}
               </div>
 
               <div>
-                <Label htmlFor="businessName" className="text-gray-800 font-medium">
+                <Label htmlFor="businessName" className="font-medium" style={{color: '#000000'}}>
                   Business Name *
                 </Label>
                 <Input
                   id="businessName"
                   {...form.register("businessName")}
-                  className="mt-2 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  style={{borderColor: '#DDDDDD', color: '#000000'}}
                   placeholder="Your business name"
                 />
                 {form.formState.errors.businessName && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.businessName.message}</p>
+                  <p className="text-sm mt-1" style={{color: '#E63946'}}>{form.formState.errors.businessName.message}</p>
                 )}
               </div>
 
               <div>
-                <Label htmlFor="websiteUrl" className="text-gray-800 font-medium">
+                <Label htmlFor="websiteUrl" className="font-medium" style={{color: '#000000'}}>
                   Website or Social Media Link *
                 </Label>
                 <Input
                   id="websiteUrl"
                   {...form.register("websiteUrl")}
-                  className="mt-2 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  style={{borderColor: '#DDDDDD', color: '#000000'}}
                   placeholder="https://yourwebsite.com"
                 />
                 {form.formState.errors.websiteUrl && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.websiteUrl.message}</p>
+                  <p className="text-sm mt-1" style={{color: '#E63946'}}>{form.formState.errors.websiteUrl.message}</p>
                 )}
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-gray-800 font-medium">
+                <Label htmlFor="email" className="font-medium" style={{color: '#000000'}}>
                   Contact Email *
                 </Label>
                 <Input
                   id="email"
                   type="email"
                   {...form.register("email")}
-                  className="mt-2 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                  style={{borderColor: '#DDDDDD', color: '#000000'}}
                   placeholder="your@email.com"
                 />
                 {form.formState.errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.email.message}</p>
+                  <p className="text-sm mt-1" style={{color: '#E63946'}}>{form.formState.errors.email.message}</p>
                 )}
               </div>
 
               <div className="md:col-span-2">
-                <Label className="text-gray-800 font-medium">Phone Number *</Label>
+                <Label className="font-medium" style={{color: '#000000'}}>Phone Number *</Label>
                 <div className="flex gap-3 mt-2">
                   <Select
                     value={form.watch("countryCode")}
                     onValueChange={(value) => form.setValue("countryCode", value)}
                   >
-                    <SelectTrigger className="w-32 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm">
+                    <SelectTrigger className="w-32 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm" style={{borderColor: '#DDDDDD'}}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-60">
+                      <div className="p-2">
+                        <input
+                          type="text"
+                          placeholder="Search countries..."
+                          className="w-full p-2 border rounded text-sm"
+                          style={{borderColor: '#DDDDDD'}}
+                          onChange={(e) => {
+                            const query = e.target.value.toLowerCase();
+                            const items = document.querySelectorAll('[data-radix-select-item]');
+                            items.forEach((item) => {
+                              const text = item.textContent?.toLowerCase() || '';
+                              if (text.includes(query)) {
+                                (item as HTMLElement).style.display = 'flex';
+                              } else {
+                                (item as HTMLElement).style.display = 'none';
+                              }
+                            });
+                          }}
+                        />
+                      </div>
                       {countryCodeOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
@@ -460,27 +512,28 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
                   </Select>
                   <Input
                     {...form.register("phoneNumber")}
-                    className="flex-1 border-2 border-gray-200 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                    className="flex-1 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                    style={{borderColor: '#DDDDDD', color: '#000000'}}
                     placeholder="Your phone number"
                   />
                 </div>
                 {form.formState.errors.phoneNumber && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.phoneNumber.message}</p>
+                  <p className="text-sm mt-1" style={{color: '#E63946'}}>{form.formState.errors.phoneNumber.message}</p>
                 )}
               </div>
             </div>
           </div>
 
           {/* Section 2 - Service Intent */}
-          <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-200/50 shadow-lg">
+          <div className="rounded-2xl p-6 border shadow-lg" style={{backgroundColor: '#F8F8F8', borderColor: '#DDDDDD'}}>
             <div className="flex items-center gap-3 mb-6">
-              <Mail className="w-6 h-6" style={{color: '#FFBE0B'}} />
-              <h3 className="text-xl font-semibold text-gray-900">Service Intent</h3>
+              <Mail className="w-6 h-6" style={{color: '#63B34A'}} />
+              <h3 className="text-xl font-semibold" style={{color: '#000000'}}>Service Intent</h3>
             </div>
 
             <div className="space-y-6">
               <div>
-                <Label className="text-gray-800 font-medium mb-4 block">
+                <Label className="font-medium mb-4 block" style={{color: '#000000'}}>
                   Which services are you most interested in? *
                 </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -490,10 +543,10 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
                         id={service.id}
                         checked={selectedServices.includes(service.id)}
                         onCheckedChange={(checked) => handleServiceToggle(service.id, checked as boolean)}
-                        className="border-2 border-gray-300"
-                        style={{'--checkbox-checked-bg': '#3A86FF', '--checkbox-checked-border': '#3A86FF'} as React.CSSProperties}
+                        className="border-2"
+                        style={{borderColor: '#DDDDDD', '--checkbox-checked-bg': '#63B34A', '--checkbox-checked-border': '#63B34A'} as React.CSSProperties}
                       />
-                      <Label htmlFor={service.id} className="text-gray-700 cursor-pointer">
+                      <Label htmlFor={service.id} className="cursor-pointer" style={{color: '#000000'}}>
                         {service.label}
                       </Label>
                     </div>
@@ -569,10 +622,10 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
           </div>
 
           {/* Section 3 - Call Details */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-200/50 shadow-lg">
+          <div className="rounded-2xl p-6 border shadow-lg" style={{backgroundColor: '#F8F8F8', borderColor: '#DDDDDD'}}>
             <div className="flex items-center gap-3 mb-6">
-              <Calendar className="w-6 h-6" style={{color: '#3A86FF'}} />
-              <h3 className="text-xl font-semibold text-gray-900">Call Details</h3>
+              <Calendar className="w-6 h-6" style={{color: '#63B34A'}} />
+              <h3 className="text-xl font-semibold" style={{color: '#000000'}}>Call Details</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -647,7 +700,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
               disabled={isSubmitting || !isFormValid}
               className="flex-1 text-white rounded-xl py-3 font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
-                background: !isFormValid || isSubmitting ? '#9CA3AF' : 'linear-gradient(to right, #3A86FF, #FFBE0B)',
+                backgroundColor: !isFormValid || isSubmitting ? '#9CA3AF' : '#63B34A',
                 cursor: !isFormValid || isSubmitting ? 'not-allowed' : 'pointer'
               }}
             >
