@@ -248,7 +248,7 @@
 
 /* Enhanced popup form styling */
 .popup-form-background {
-  background: linear-gradient(135deg, #1f2937 0%, #000000 50%, #374151 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #0f172a 100%);
   position: relative;
 }
 
@@ -259,9 +259,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 20% 80%, #fbbf2447 0%, transparent 50%), 
-              radial-gradient(circle at 80% 20%, #fbbf2433 0%, transparent 50%),
-              radial-gradient(circle at 40% 40%, #fbbf241a 0%, transparent 50%);
+  background: radial-gradient(circle at 20% 80%, #52c25147 0%, transparent 50%), 
+              radial-gradient(circle at 80% 20%, #52c25133 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, #52c2511a 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -271,7 +271,7 @@
   max-height: calc(85vh - 2rem);
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(251, 191, 36, 0.3) rgba(0, 0, 0, 0.1);
+  scrollbar-color: rgba(82, 194, 81, 0.3) rgba(0, 0, 0, 0.1);
 }
 
 .popup-form-content::-webkit-scrollbar {
@@ -284,12 +284,12 @@
 }
 
 .popup-form-content::-webkit-scrollbar-thumb {
-  background: rgba(251, 191, 36, 0.3);
+  background: rgba(82, 194, 81, 0.3);
   border-radius: 3px;
 }
 
 .popup-form-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(251, 191, 36, 0.5);
+  background: rgba(82, 194, 81, 0.5);
 }
 
 /* Force dialog positioning */
@@ -310,21 +310,21 @@
 
 /* Enhanced input styling for popups */
 .popup-input {
-  background: rgba(0, 0, 0, 0.6) !important;
-  border: 1px solid rgba(251, 191, 36, 0.3) !important;
+  background: rgba(30, 58, 138, 0.3) !important;
+  border: 1px solid rgba(82, 194, 81, 0.3) !important;
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .popup-input:hover {
-  border-color: rgba(251, 191, 36, 0.5) !important;
-  background: rgba(0, 0, 0, 0.7) !important;
+  border-color: rgba(82, 194, 81, 0.5) !important;
+  background: rgba(30, 58, 138, 0.4) !important;
 }
 
 .popup-input:focus {
-  border-color: rgb(251, 191, 36) !important;
-  background: rgba(0, 0, 0, 0.8) !important;
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1) !important;
+  border-color: rgb(82, 194, 81) !important;
+  background: rgba(30, 58, 138, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(82, 194, 81, 0.1) !important;
 }
 
 /* Decorative elements */
@@ -332,8 +332,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0.1;
-  background-image: radial-gradient(circle, #fbbf24 1px, transparent 1px);
+  opacity: 0.08;
+  background-image: radial-gradient(circle, #52c251 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
 }
