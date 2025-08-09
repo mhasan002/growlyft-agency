@@ -130,12 +130,12 @@ export default function Contact() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo Section */}
-            <div className="flex items-center space-x-3" data-testid="header-logo">
+            <a href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300" data-testid="header-logo">
               <img src={logoPath} alt="Growlyft Logo" className="w-10 h-10" />
               <div className="text-2xl font-bold">
                 <span className="text-black">Grow</span><span className="text-emerald-500">lyft</span>
               </div>
-            </div>
+            </a>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -237,7 +237,7 @@ export default function Contact() {
             
             {/* Left Side - Illustration/Image */}
             <div className="animate-on-scroll">
-              <div className="relative bg-gradient-to-br from-emerald-50 via-white to-blue-50 rounded-3xl p-12 h-96 flex items-center justify-center mb-8 lg:mb-0 overflow-hidden">
+              <div className="relative p-12 h-96 flex items-center justify-center mb-8 lg:mb-0 overflow-hidden">
                 {/* Floating Elements */}
                 <div className="absolute top-8 left-8 w-16 h-16 bg-emerald-500 opacity-10 rounded-full animate-float" style={{animationDelay: '0s'}}></div>
                 <div className="absolute bottom-12 right-12 w-12 h-12 bg-blue-500 opacity-15 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
@@ -248,14 +248,14 @@ export default function Contact() {
                   <div className="relative mb-8">
                     {/* Multiple Icons in a Creative Layout */}
                     <div className="flex items-center justify-center space-x-4">
-                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-3 hover:rotate-6 transition-transform duration-300">
-                        <Mail className="w-8 h-8 text-emerald-500" />
+                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-3 hover:rotate-6 transition-all duration-300 animate-bounce-slow">
+                        <Mail className="w-8 h-8 text-emerald-500 animate-pulse" />
                       </div>
-                      <div className="bg-emerald-100 p-4 rounded-2xl shadow-lg transform -rotate-2 hover:rotate-2 transition-transform duration-300">
-                        <Instagram className="w-10 h-10 text-emerald-600" />
+                      <div className="bg-emerald-100 p-4 rounded-2xl shadow-lg transform -rotate-2 hover:rotate-2 transition-all duration-300 animate-bounce-slow" style={{animationDelay: '0.5s'}}>
+                        <Instagram className="w-10 h-10 text-emerald-600 animate-pulse" style={{animationDelay: '0.3s'}} />
                       </div>
-                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-1 hover:-rotate-3 transition-transform duration-300">
-                        <MessageCircle className="w-8 h-8 text-blue-500" />
+                      <div className="bg-white p-3 rounded-2xl shadow-lg transform rotate-1 hover:-rotate-3 transition-all duration-300 animate-bounce-slow" style={{animationDelay: '1s'}}>
+                        <MessageCircle className="w-8 h-8 text-blue-500 animate-pulse" style={{animationDelay: '0.6s'}} />
                       </div>
                     </div>
                   </div>
@@ -285,7 +285,10 @@ export default function Contact() {
 
               {/* Contact Form */}
               {!formSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-6" data-testid="contact-form">
+                <div className="relative">
+                  {/* Glass effect backdrop for mobile */}
+                  <div className="absolute inset-0 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl lg:hidden"></div>
+                  <form onSubmit={handleSubmit} className="space-y-6 relative z-10 lg:bg-transparent lg:backdrop-blur-none lg:border-none lg:shadow-none bg-white/80 backdrop-blur-md border border-white/30 rounded-2xl p-6 lg:p-0 shadow-2xl" data-testid="contact-form">
                   {/* Name */}
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-gray-800 font-medium">Full Name *</Label>
@@ -386,7 +389,8 @@ export default function Contact() {
                   >
                     {isSubmitting ? 'Sending...' : 'Send My Request'}
                   </Button>
-                </form>
+                  </form>
+                </div>
               ) : (
                 <div className="text-center p-8 bg-emerald-50 rounded-2xl animate-fadeIn" data-testid="success-message">
                   <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
@@ -476,12 +480,12 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 animate-on-scroll">
             {/* Logo and About */}
             <div className="lg:col-span-2">
-              <div className="flex items-center space-x-3 mb-6" data-testid="footer-logo">
+              <a href="/" className="flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity duration-300" data-testid="footer-logo">
                 <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" />
                 <div className="text-xl font-bold">
                   <span className="text-white">Grow</span><span className="text-emerald-500">lyft</span>
                 </div>
-              </div>
+              </a>
               <p className="text-gray-300 max-w-md leading-relaxed" data-testid="footer-description">
                 Ready to transform your social media presence? Get in touch with our team and let's create something amazing together.
               </p>

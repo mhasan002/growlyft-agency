@@ -51,12 +51,12 @@ export default function About() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo Section */}
-            <div className="flex items-center space-x-3" data-testid="header-logo">
+            <a href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300" data-testid="header-logo">
               <img src={logoPath} alt="Growlyft Logo" className="w-10 h-10" />
               <div className="text-2xl font-bold">
                 <span className="text-slate-900">Grow</span><span className="text-emerald-400">lyft</span>
               </div>
-            </div>
+            </a>
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -333,12 +333,12 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 animate-on-scroll">
             {/* Logo and About */}
             <div className="lg:col-span-2">
-              <div className="flex items-center space-x-3 mb-6" data-testid="footer-logo">
+              <a href="/" className="flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity duration-300" data-testid="footer-logo">
                 <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" />
                 <div className="text-xl font-bold">
                   <span className="text-white">Grow</span><span className="text-emerald-400">lyft</span>
                 </div>
-              </div>
+              </a>
               <p className="text-gray-300 max-w-md leading-relaxed" data-testid="footer-description">
                 Growlyft is your trusted partner in social media growth. We combine creativity, strategy, and genuine care to help brands build meaningful connections with their audience.
               </p>
