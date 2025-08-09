@@ -37,52 +37,52 @@ const serviceOptions = [
 ];
 
 const countryCodeOptions = [
-  { value: "+1", label: "🇺🇸 +1 (United States)", country: "United States" },
-  { value: "+1", label: "🇨🇦 +1 (Canada)", country: "Canada" },
-  { value: "+44", label: "🇬🇧 +44 (United Kingdom)", country: "United Kingdom" },
-  { value: "+49", label: "🇩🇪 +49 (Germany)", country: "Germany" },
-  { value: "+33", label: "🇫🇷 +33 (France)", country: "France" },
-  { value: "+39", label: "🇮🇹 +39 (Italy)", country: "Italy" },
-  { value: "+34", label: "🇪🇸 +34 (Spain)", country: "Spain" },
-  { value: "+31", label: "🇳🇱 +31 (Netherlands)", country: "Netherlands" },
-  { value: "+32", label: "🇧🇪 +32 (Belgium)", country: "Belgium" },
-  { value: "+41", label: "🇨🇭 +41 (Switzerland)", country: "Switzerland" },
-  { value: "+43", label: "🇦🇹 +43 (Austria)", country: "Austria" },
-  { value: "+45", label: "🇩🇰 +45 (Denmark)", country: "Denmark" },
-  { value: "+46", label: "🇸🇪 +46 (Sweden)", country: "Sweden" },
-  { value: "+47", label: "🇳🇴 +47 (Norway)", country: "Norway" },
-  { value: "+358", label: "🇫🇮 +358 (Finland)", country: "Finland" },
-  { value: "+91", label: "🇮🇳 +91 (India)", country: "India" },
-  { value: "+86", label: "🇨🇳 +86 (China)", country: "China" },
-  { value: "+81", label: "🇯🇵 +81 (Japan)", country: "Japan" },
-  { value: "+82", label: "🇰🇷 +82 (South Korea)", country: "South Korea" },
-  { value: "+61", label: "🇦🇺 +61 (Australia)", country: "Australia" },
-  { value: "+64", label: "🇳🇿 +64 (New Zealand)", country: "New Zealand" },
-  { value: "+55", label: "🇧🇷 +55 (Brazil)", country: "Brazil" },
-  { value: "+52", label: "🇲🇽 +52 (Mexico)", country: "Mexico" },
-  { value: "+54", label: "🇦🇷 +54 (Argentina)", country: "Argentina" },
-  { value: "+56", label: "🇨🇱 +56 (Chile)", country: "Chile" },
-  { value: "+57", label: "🇨🇴 +57 (Colombia)", country: "Colombia" },
-  { value: "+51", label: "🇵🇪 +51 (Peru)", country: "Peru" },
-  { value: "+27", label: "🇿🇦 +27 (South Africa)", country: "South Africa" },
-  { value: "+234", label: "🇳🇬 +234 (Nigeria)", country: "Nigeria" },
-  { value: "+20", label: "🇪🇬 +20 (Egypt)", country: "Egypt" },
-  { value: "+971", label: "🇦🇪 +971 (UAE)", country: "UAE" },
-  { value: "+966", label: "🇸🇦 +966 (Saudi Arabia)", country: "Saudi Arabia" },
-  { value: "+65", label: "🇸🇬 +65 (Singapore)", country: "Singapore" },
-  { value: "+60", label: "🇲🇾 +60 (Malaysia)", country: "Malaysia" },
-  { value: "+66", label: "🇹🇭 +66 (Thailand)", country: "Thailand" },
-  { value: "+84", label: "🇻🇳 +84 (Vietnam)", country: "Vietnam" },
-  { value: "+63", label: "🇵🇭 +63 (Philippines)", country: "Philippines" },
-  { value: "+62", label: "🇮🇩 +62 (Indonesia)", country: "Indonesia" },
-  { value: "+7", label: "🇷🇺 +7 (Russia)", country: "Russia" },
-  { value: "+48", label: "🇵🇱 +48 (Poland)", country: "Poland" },
-  { value: "+420", label: "🇨🇿 +420 (Czech Republic)", country: "Czech Republic" },
-  { value: "+36", label: "🇭🇺 +36 (Hungary)", country: "Hungary" },
-  { value: "+30", label: "🇬🇷 +30 (Greece)", country: "Greece" },
-  { value: "+351", label: "🇵🇹 +351 (Portugal)", country: "Portugal" },
-  { value: "+90", label: "🇹🇷 +90 (Turkey)", country: "Turkey" },
-  { value: "+972", label: "🇮🇱 +972 (Israel)", country: "Israel" },
+  { id: "AR", value: "+54", label: "🇦🇷 +54 (Argentina)", country: "Argentina" },
+  { id: "AU", value: "+61", label: "🇦🇺 +61 (Australia)", country: "Australia" },
+  { id: "AT", value: "+43", label: "🇦🇹 +43 (Austria)", country: "Austria" },
+  { id: "BE", value: "+32", label: "🇧🇪 +32 (Belgium)", country: "Belgium" },
+  { id: "BR", value: "+55", label: "🇧🇷 +55 (Brazil)", country: "Brazil" },
+  { id: "CA", value: "+1", label: "🇨🇦 +1 (Canada)", country: "Canada" },
+  { id: "CL", value: "+56", label: "🇨🇱 +56 (Chile)", country: "Chile" },
+  { id: "CN", value: "+86", label: "🇨🇳 +86 (China)", country: "China" },
+  { id: "CO", value: "+57", label: "🇨🇴 +57 (Colombia)", country: "Colombia" },
+  { id: "CZ", value: "+420", label: "🇨🇿 +420 (Czech Republic)", country: "Czech Republic" },
+  { id: "DK", value: "+45", label: "🇩🇰 +45 (Denmark)", country: "Denmark" },
+  { id: "EG", value: "+20", label: "🇪🇬 +20 (Egypt)", country: "Egypt" },
+  { id: "FI", value: "+358", label: "🇫🇮 +358 (Finland)", country: "Finland" },
+  { id: "FR", value: "+33", label: "🇫🇷 +33 (France)", country: "France" },
+  { id: "DE", value: "+49", label: "🇩🇪 +49 (Germany)", country: "Germany" },
+  { id: "GR", value: "+30", label: "🇬🇷 +30 (Greece)", country: "Greece" },
+  { id: "HU", value: "+36", label: "🇭🇺 +36 (Hungary)", country: "Hungary" },
+  { id: "IN", value: "+91", label: "🇮🇳 +91 (India)", country: "India" },
+  { id: "ID", value: "+62", label: "🇮🇩 +62 (Indonesia)", country: "Indonesia" },
+  { id: "IL", value: "+972", label: "🇮🇱 +972 (Israel)", country: "Israel" },
+  { id: "IT", value: "+39", label: "🇮🇹 +39 (Italy)", country: "Italy" },
+  { id: "JP", value: "+81", label: "🇯🇵 +81 (Japan)", country: "Japan" },
+  { id: "MY", value: "+60", label: "🇲🇾 +60 (Malaysia)", country: "Malaysia" },
+  { id: "MX", value: "+52", label: "🇲🇽 +52 (Mexico)", country: "Mexico" },
+  { id: "NL", value: "+31", label: "🇳🇱 +31 (Netherlands)", country: "Netherlands" },
+  { id: "NZ", value: "+64", label: "🇳🇿 +64 (New Zealand)", country: "New Zealand" },
+  { id: "NG", value: "+234", label: "🇳🇬 +234 (Nigeria)", country: "Nigeria" },
+  { id: "NO", value: "+47", label: "🇳🇴 +47 (Norway)", country: "Norway" },
+  { id: "PE", value: "+51", label: "🇵🇪 +51 (Peru)", country: "Peru" },
+  { id: "PH", value: "+63", label: "🇵🇭 +63 (Philippines)", country: "Philippines" },
+  { id: "PL", value: "+48", label: "🇵🇱 +48 (Poland)", country: "Poland" },
+  { id: "PT", value: "+351", label: "🇵🇹 +351 (Portugal)", country: "Portugal" },
+  { id: "RU", value: "+7", label: "🇷🇺 +7 (Russia)", country: "Russia" },
+  { id: "SA", value: "+966", label: "🇸🇦 +966 (Saudi Arabia)", country: "Saudi Arabia" },
+  { id: "SG", value: "+65", label: "🇸🇬 +65 (Singapore)", country: "Singapore" },
+  { id: "ZA", value: "+27", label: "🇿🇦 +27 (South Africa)", country: "South Africa" },
+  { id: "KR", value: "+82", label: "🇰🇷 +82 (South Korea)", country: "South Korea" },
+  { id: "ES", value: "+34", label: "🇪🇸 +34 (Spain)", country: "Spain" },
+  { id: "SE", value: "+46", label: "🇸🇪 +46 (Sweden)", country: "Sweden" },
+  { id: "CH", value: "+41", label: "🇨🇭 +41 (Switzerland)", country: "Switzerland" },
+  { id: "TH", value: "+66", label: "🇹🇭 +66 (Thailand)", country: "Thailand" },
+  { id: "TR", value: "+90", label: "🇹🇷 +90 (Turkey)", country: "Turkey" },
+  { id: "AE", value: "+971", label: "🇦🇪 +971 (UAE)", country: "UAE" },
+  { id: "GB", value: "+44", label: "🇬🇧 +44 (United Kingdom)", country: "United Kingdom" },
+  { id: "US", value: "+1", label: "🇺🇸 +1 (United States)", country: "United States" },
+  { id: "VN", value: "+84", label: "🇻🇳 +84 (Vietnam)", country: "Vietnam" },
 ];
 
 const talkGrowthSchema = z.object({
@@ -104,7 +104,13 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [countryCode, setCountryCode] = useState("+1");
+  const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
+
+  const filteredCountries = countryCodeOptions.filter(option =>
+    option.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    option.value.includes(searchQuery)
+  );
 
   const form = useForm<TalkGrowthForm>({
     resolver: zodResolver(talkGrowthSchema),
@@ -289,23 +295,13 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                           type="text"
                           placeholder="Search countries..."
                           className="w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30"
-                          onChange={(e) => {
-                            const query = e.target.value.toLowerCase();
-                            const items = document.querySelectorAll('[data-radix-select-item]');
-                            items.forEach((item) => {
-                              const text = item.textContent?.toLowerCase() || '';
-                              if (text.includes(query)) {
-                                (item as HTMLElement).style.display = 'flex';
-                              } else {
-                                (item as HTMLElement).style.display = 'none';
-                              }
-                            });
-                          }}
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
                         />
                       </div>
-                      {countryCodeOptions.map((option, index) => (
+                      {filteredCountries.map((option) => (
                         <SelectItem 
-                          key={`${option.value}-${option.country}-${index}`} 
+                          key={option.id} 
                           value={option.value} 
                           className="text-[#F8FAFC] hover:bg-[#04E762]/10"
                         >
