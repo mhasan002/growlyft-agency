@@ -123,18 +123,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="strategy-call-form">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
-              <div className="floating-label-group">
+              <div className="space-y-2">
+                <Label htmlFor="fullName" className="text-white font-medium">
+                  Full Name *
+                </Label>
                 <Input
                   {...form.register("fullName")}
                   type="text"
                   id="fullName"
-                  className="floating-input popup-input text-white placeholder-transparent"
+                  className="popup-input text-white"
                   placeholder="John Doe"
                   data-testid="input-full-name"
                 />
-                <Label htmlFor="fullName" className="floating-label text-white/70">
-                  Full Name *
-                </Label>
                 {form.formState.errors.fullName && (
                   <span className="text-red-400 text-sm mt-1" data-testid="error-full-name">
                     {form.formState.errors.fullName.message}
@@ -143,18 +143,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               </div>
 
               {/* Business Name */}
-              <div className="floating-label-group">
+              <div className="space-y-2">
+                <Label htmlFor="businessName" className="text-white font-medium">
+                  Business Name *
+                </Label>
                 <Input
                   {...form.register("businessName")}
                   type="text"
                   id="businessName"
-                  className="floating-input popup-input text-white placeholder-transparent"
+                  className="popup-input text-white"
                   placeholder="Your Business Name"
                   data-testid="input-business-name"
                 />
-                <Label htmlFor="businessName" className="floating-label text-white/70">
-                  Business Name *
-                </Label>
                 {form.formState.errors.businessName && (
                   <span className="text-red-400 text-sm mt-1" data-testid="error-business-name">
                     {form.formState.errors.businessName.message}
@@ -164,18 +164,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             </div>
 
             {/* Website or Social Media Link */}
-            <div className="floating-label-group">
+            <div className="space-y-2">
+              <Label htmlFor="websiteUrl" className="text-white font-medium">
+                Website or Social Media Link *
+              </Label>
               <Input
                 {...form.register("websiteUrl")}
                 type="url"
                 id="websiteUrl"
-                className="floating-input popup-input text-white placeholder-transparent"
+                className="popup-input text-white"
                 placeholder="https://yourwebsite.com or https://instagram.com/yourbrand"
                 data-testid="input-website-url"
               />
-              <Label htmlFor="websiteUrl" className="floating-label text-white/70">
-                Website or Social Media Link *
-              </Label>
               {form.formState.errors.websiteUrl && (
                 <span className="text-red-400 text-sm mt-1" data-testid="error-website-url">
                   {form.formState.errors.websiteUrl.message}
@@ -185,18 +185,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Contact Email */}
-              <div className="floating-label-group">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white font-medium">
+                  Contact Email *
+                </Label>
                 <Input
                   {...form.register("email")}
                   type="email"
                   id="email"
-                  className="floating-input popup-input text-white placeholder-transparent"
+                  className="popup-input text-white"
                   placeholder="john@example.com"
                   data-testid="input-email"
                 />
-                <Label htmlFor="email" className="floating-label text-white/70">
-                  Contact Email *
-                </Label>
                 {form.formState.errors.email && (
                   <span className="text-red-400 text-sm mt-1" data-testid="error-email">
                     {form.formState.errors.email.message}
@@ -205,18 +205,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               </div>
 
               {/* Phone Number */}
-              <div className="floating-label-group">
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber" className="text-white font-medium">
+                  Phone Number *
+                </Label>
                 <Input
                   {...form.register("phoneNumber")}
                   type="tel"
                   id="phoneNumber"
-                  className="floating-input popup-input text-white placeholder-transparent"
+                  className="popup-input text-white"
                   placeholder="(555) 123-4567"
                   data-testid="input-phone-number"
                 />
-                <Label htmlFor="phoneNumber" className="floating-label text-white/70">
-                  Phone Number *
-                </Label>
                 {form.formState.errors.phoneNumber && (
                   <span className="text-red-400 text-sm mt-1" data-testid="error-phone-number">
                     {form.formState.errors.phoneNumber.message}
@@ -248,18 +248,18 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
             </div>
 
             {/* Main Goal for This Call */}
-            <div className="floating-label-group">
+            <div className="space-y-2">
+              <Label htmlFor="mainGoal" className="text-white font-medium">
+                Main Goal for This Call *
+              </Label>
               <Textarea
                 {...form.register("mainGoal")}
                 id="mainGoal"
                 rows={4}
-                className="floating-textarea popup-input text-white placeholder-transparent resize-none"
+                className="popup-input text-white resize-none"
                 placeholder="Tell us about your main goals, challenges, or what you'd like to achieve..."
                 data-testid="textarea-main-goal"
               />
-              <Label htmlFor="mainGoal" className="floating-label-textarea text-white/70">
-                Main Goal for This Call *
-              </Label>
               {form.formState.errors.mainGoal && (
                 <span className="text-red-400 text-sm mt-1" data-testid="error-main-goal">
                   {form.formState.errors.mainGoal.message}

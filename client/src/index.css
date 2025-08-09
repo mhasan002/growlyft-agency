@@ -390,7 +390,7 @@
 }
 
 .popup-input::placeholder {
-  color: transparent !important;
+  color: rgba(248, 250, 252, 0.5) !important;
 }
 
 .popup-input:hover {
