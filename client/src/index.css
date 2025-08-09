@@ -268,7 +268,7 @@
 .popup-form-content {
   position: relative;
   z-index: 1;
-  max-height: 85vh;
+  max-height: calc(85vh - 2rem);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(251, 191, 36, 0.3) rgba(0, 0, 0, 0.1);

@@ -115,7 +115,7 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
       >
         <div className="popup-decoration-dots"></div>
         <div className="popup-form-content p-6">
-        <DialogHeader className="relative pb-6 sticky top-0 bg-inherit z-10">
+        <DialogHeader className="relative pb-6 mb-4">
           <button
             onClick={handleClose}
             className="absolute right-0 top-0 p-2 text-white/70 hover:text-yellow-400 transition-colors duration-200"
@@ -133,7 +133,7 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
             </DialogTitle>
           </div>
           
-          <DialogDescription className="text-white/80 text-base leading-relaxed">
+          <DialogDescription className="text-white/80 text-base leading-relaxed mb-6">
             Ready to scale your business? Tell us about your goals and challenges, and we'll create a custom growth strategy for you.
           </DialogDescription>
         </DialogHeader>
