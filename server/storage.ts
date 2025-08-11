@@ -184,6 +184,7 @@ export class MemStorage implements IStorage {
     const formConfig: FormConfig = {
       ...insertFormConfig,
       id,
+      buttonName: insertFormConfig.buttonName || null,
       googleSheetUrl: insertFormConfig.googleSheetUrl || null,
       createdAt: new Date(),
       updatedAt: new Date(),
