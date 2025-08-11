@@ -225,9 +225,8 @@ export default function LetsTalkPopup({ isOpen, onClose }: LetsTalkPopupProps) {
                   countryCode="+1"
                   onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
                   onCountryCodeChange={() => {}}
-                  placeholder="Your phone number"
+                  placeholder="123-456-7890"
                   variant="popup"
-                  className="popup-input text-white"
                   data-testid="input-phone-number"
                 />
                 {form.formState.errors.phoneNumber && (

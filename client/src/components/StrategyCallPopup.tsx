@@ -219,9 +219,8 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   countryCode="+1"
                   onPhoneChange={(value) => form.setValue("phoneNumber", value)}
                   onCountryCodeChange={() => {}}
-                  placeholder="Your phone number"
+                  placeholder="123-456-7890"
                   variant="popup"
-                  className="popup-input text-white"
                   data-testid="input-phone-number"
                 />
                 {form.formState.errors.phoneNumber && (

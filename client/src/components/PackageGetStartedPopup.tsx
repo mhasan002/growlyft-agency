@@ -225,9 +225,8 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
                   countryCode="+1"
                   onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
                   onCountryCodeChange={() => {}}
-                  placeholder="Your phone number"
+                  placeholder="123-456-7890"
                   variant="popup"
-                  className="popup-input text-white"
                   data-testid="input-phone-number"
                 />
                 {form.formState.errors.phoneNumber && (

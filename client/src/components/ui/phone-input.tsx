@@ -82,7 +82,43 @@ const countryCodeOptions: CountryOption[] = [
   { id: "gr", value: "+30", label: "+30 (GR)", country: "Greece" },
   { id: "cy", value: "+357", label: "+357 (CY)", country: "Cyprus" },
   { id: "mt", value: "+356", label: "+356 (MT)", country: "Malta" },
-  { id: "is", value: "+354", label: "+354 (IS)", country: "Iceland" }
+  { id: "is", value: "+354", label: "+354 (IS)", country: "Iceland" },
+  { id: "lu", value: "+352", label: "+352 (LU)", country: "Luxembourg" },
+  { id: "lk", value: "+94", label: "+94 (LK)", country: "Sri Lanka" },
+  { id: "bd", value: "+880", label: "+880 (BD)", country: "Bangladesh" },
+  { id: "pk", value: "+92", label: "+92 (PK)", country: "Pakistan" },
+  { id: "af", value: "+93", label: "+93 (AF)", country: "Afghanistan" },
+  { id: "ir", value: "+98", label: "+98 (IR)", country: "Iran" },
+  { id: "iq", value: "+964", label: "+964 (IQ)", country: "Iraq" },
+  { id: "sy", value: "+963", label: "+963 (SY)", country: "Syria" },
+  { id: "lb", value: "+961", label: "+961 (LB)", country: "Lebanon" },
+  { id: "jo", value: "+962", label: "+962 (JO)", country: "Jordan" },
+  { id: "kw", value: "+965", label: "+965 (KW)", country: "Kuwait" },
+  { id: "bh", value: "+973", label: "+973 (BH)", country: "Bahrain" },
+  { id: "qa", value: "+974", label: "+974 (QA)", country: "Qatar" },
+  { id: "om", value: "+968", label: "+968 (OM)", country: "Oman" },
+  { id: "ye", value: "+967", label: "+967 (YE)", country: "Yemen" },
+  { id: "np", value: "+977", label: "+977 (NP)", country: "Nepal" },
+  { id: "bt", value: "+975", label: "+975 (BT)", country: "Bhutan" },
+  { id: "mv", value: "+960", label: "+960 (MV)", country: "Maldives" },
+  { id: "mm", value: "+95", label: "+95 (MM)", country: "Myanmar" },
+  { id: "kh", value: "+855", label: "+855 (KH)", country: "Cambodia" },
+  { id: "la", value: "+856", label: "+856 (LA)", country: "Laos" },
+  { id: "mn", value: "+976", label: "+976 (MN)", country: "Mongolia" },
+  { id: "kp", value: "+850", label: "+850 (KP)", country: "North Korea" },
+  { id: "fj", value: "+679", label: "+679 (FJ)", country: "Fiji" },
+  { id: "pg", value: "+675", label: "+675 (PG)", country: "Papua New Guinea" },
+  { id: "nc", value: "+687", label: "+687 (NC)", country: "New Caledonia" },
+  { id: "vu", value: "+678", label: "+678 (VU)", country: "Vanuatu" },
+  { id: "sb", value: "+677", label: "+677 (SB)", country: "Solomon Islands" },
+  { id: "to", value: "+676", label: "+676 (TO)", country: "Tonga" },
+  { id: "ws", value: "+685", label: "+685 (WS)", country: "Samoa" },
+  { id: "ki", value: "+686", label: "+686 (KI)", country: "Kiribati" },
+  { id: "tv", value: "+688", label: "+688 (TV)", country: "Tuvalu" },
+  { id: "nr", value: "+674", label: "+674 (NR)", country: "Nauru" },
+  { id: "pw", value: "+680", label: "+680 (PW)", country: "Palau" },
+  { id: "fm", value: "+691", label: "+691 (FM)", country: "Micronesia" },
+  { id: "mh", value: "+692", label: "+692 (MH)", country: "Marshall Islands" }
 ];
 
 interface PhoneInputProps {
@@ -146,9 +182,9 @@ export function PhoneInput({
     switch (variant) {
       case "popup":
         return {
-          container: "space-y-2",
+          container: "space-y-0",
           label: "text-white font-medium",
-          button: "w-full border-2 border-[#04E762]/30 bg-[#0F172A] text-white text-left flex items-center justify-between px-4 py-3 rounded-lg focus:outline-none focus:border-[#04E762] transition-colors duration-300",
+          button: "w-32 border-2 border-[#04E762]/30 bg-[#0F172A] text-white text-left flex items-center justify-between px-4 py-3 rounded-lg focus:outline-none focus:border-[#04E762] transition-colors duration-300",
           dropdown: "absolute z-50 w-80 mt-1 bg-[#0F172A] border border-[#04E762]/30 rounded-md shadow-lg max-h-80",
           searchContainer: "sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10",
           searchInput: "w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30",
@@ -199,9 +235,11 @@ export function PhoneInput({
 
   return (
     <div className={`${styles.container} ${className}`}>
-      <Label className={styles.label}>
-        {label} {required && "*"}
-      </Label>
+      {label && (
+        <Label className={styles.label}>
+          {label} {required && "*"}
+        </Label>
+      )}
       <div className="flex gap-3">
         <div className="relative" ref={dropdownRef}>
           <button
