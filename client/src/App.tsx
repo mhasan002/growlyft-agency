@@ -13,6 +13,8 @@ import BlogPost from "@/pages/blog-post";
 import NotFound from "@/pages/not-found";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
+import AdminBlogCreate from "@/pages/admin-blog-create";
+import AdminBlogEdit from "@/pages/admin-blog-edit";
 import { AdminAuthProvider } from "@/hooks/use-admin-auth";
 import { AdminProtectedRoute } from "@/lib/admin-protected-route";
 
@@ -31,8 +33,16 @@ function Router() {
       <AdminAuthProvider>
         <Route path="/admin/login" component={AdminLogin} />
         <AdminProtectedRoute 
-          path="/admin/dashboard" 
+          path="/admin-dashboard" 
           component={AdminDashboard} 
+        />
+        <AdminProtectedRoute 
+          path="/admin-blog-create" 
+          component={AdminBlogCreate} 
+        />
+        <AdminProtectedRoute 
+          path="/admin-blog-edit/:id" 
+          component={AdminBlogEdit} 
         />
       </AdminAuthProvider>
       

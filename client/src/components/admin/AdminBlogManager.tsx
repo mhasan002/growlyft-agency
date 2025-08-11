@@ -1,85 +1,28 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import RichTextEditor from "./RichTextEditor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { BlogPost, InsertBlogPost, insertBlogPostSchema } from "@shared/schema";
-import { Plus, Edit, Trash2, Eye, Calendar, User, Tag, ExternalLink } from "lucide-react";
+import { BlogPost } from "@shared/schema";
+import { Plus, Edit, Trash2, Eye, Calendar, User, Tag, ExternalLink, Filter, Search } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export default function AdminBlogManager() {
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/admin/posts"],
     queryFn: getQueryFn({ on401: "returnNull" }),
-  });
-
-  const createPostMutation = useMutation({
-    mutationFn: async (postData: InsertBlogPost) => {
-      const res = await apiRequest("POST", "/api/admin/posts", postData);
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to create post");
-      }
-      return await res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/posts"] });
-      setIsCreateDialogOpen(false);
-      toast({
-        title: "Post created",
-        description: "Blog post created successfully",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Failed to create post",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const updatePostMutation = useMutation({
-    mutationFn: async ({ id, ...postData }: Partial<InsertBlogPost> & { id: string }) => {
-      const res = await apiRequest("PUT", `/api/admin/posts/${id}`, postData);
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to update post");
-      }
-      return await res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/posts"] });
-      setIsEditDialogOpen(false);
-      setSelectedPost(null);
-      toast({
-        title: "Post updated",
-        description: "Blog post updated successfully",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Failed to update post",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
   });
 
   const deletePostMutation = useMutation({
@@ -105,72 +48,48 @@ export default function AdminBlogManager() {
     },
   });
 
-  const createForm = useForm<InsertBlogPost>({
-    resolver: zodResolver(insertBlogPostSchema),
-    defaultValues: {
-      title: "",
-      slug: "",
-      excerpt: "",
-      content: "",
-      featuredImage: "",
-      author: "",
-      category: "",
-      tags: [],
-      readTime: "",
-      isPublished: false,
+  const togglePublishMutation = useMutation({
+    mutationFn: async ({ id, isPublished }: { id: string; isPublished: boolean }) => {
+      const res = await apiRequest("PUT", `/api/admin/posts/${id}`, { isPublished });
+      if (!res.ok) {
+        throw new Error("Failed to update post");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/posts"] });
+      toast({
+        title: "Post updated",
+        description: "Post status updated successfully",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to update post",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
-  const editForm = useForm<InsertBlogPost>({
-    resolver: zodResolver(insertBlogPostSchema),
+  // Filter posts based on status and search query
+  const filteredPosts = posts.filter((post) => {
+    const matchesStatus = 
+      statusFilter === "all" || 
+      (statusFilter === "published" && post.isPublished) ||
+      (statusFilter === "draft" && !post.isPublished);
+    
+    const matchesSearch = 
+      searchQuery === "" ||
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesStatus && matchesSearch;
   });
 
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9 -]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-  };
-
-  const onCreateSubmit = async (data: InsertBlogPost) => {
-    await createPostMutation.mutateAsync(data);
-  };
-
-  const onEditSubmit = async (data: InsertBlogPost) => {
-    if (!selectedPost) return;
-    await updatePostMutation.mutateAsync({ id: selectedPost.id, ...data });
-  };
-
-  const handleEdit = (post: BlogPost) => {
-    setSelectedPost(post);
-    editForm.reset({
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      content: post.content,
-      featuredImage: post.featuredImage || "",
-      author: post.author,
-      category: post.category,
-      tags: post.tags || [],
-      readTime: post.readTime,
-      isPublished: post.isPublished,
-    });
-    setIsEditDialogOpen(true);
-  };
-
-  const categories = [
-    "Social Media",
-    "Content Marketing",
-    "SEO",
-    "Digital Marketing",
-    "Brand Building",
-    "Analytics & Insights",
-    "Case Studies",
-    "Industry Trends",
-    "Tips & Tricks",
-  ];
+  const publishedCount = posts.filter(p => p.isPublished).length;
+  const draftCount = posts.filter(p => !p.isPublished).length;
 
   if (isLoading) {
     return (
@@ -192,501 +111,225 @@ export default function AdminBlogManager() {
             Create, edit, and manage blog posts for your website
           </p>
         </div>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button data-testid="button-create-post">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Post
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Create New Blog Post</DialogTitle>
-              <DialogDescription>
-                Write and publish a new blog post
-              </DialogDescription>
-            </DialogHeader>
-            <Form {...createForm}>
-              <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={createForm.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Title</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Enter post title"
-                            onChange={(e) => {
-                              field.onChange(e);
-                              const slug = generateSlug(e.target.value);
-                              createForm.setValue("slug", slug);
-                            }}
-                            data-testid="input-post-title"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={createForm.control}
-                    name="slug"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Slug</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="post-url-slug" data-testid="input-post-slug" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={createForm.control}
-                    name="author"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Author</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Author name" data-testid="input-post-author" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={createForm.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger data-testid="select-post-category">
-                              <SelectValue placeholder="Select category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories.map((category) => (
-                              <SelectItem key={category} value={category}>
-                                {category}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={createForm.control}
-                    name="readTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Read Time</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="5 min read" data-testid="input-post-readtime" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={createForm.control}
-                    name="featuredImage"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Featured Image URL</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="https://..." data-testid="input-post-image" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={createForm.control}
-                  name="excerpt"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Excerpt</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          {...field}
-                          placeholder="Brief description of the post"
-                          className="min-h-[80px]"
-                          data-testid="textarea-post-excerpt"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={createForm.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content</FormLabel>
-                      <FormControl>
-                        <RichTextEditor
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Write your post content here..."
-                          height="300px"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={createForm.control}
-                  name="isPublished"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Publish Post</FormLabel>
-                        <div className="text-sm text-muted-foreground">
-                          Make this post visible on the website
-                        </div>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          data-testid="switch-post-published"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex justify-end space-x-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsCreateDialogOpen(false)}
-                    data-testid="button-cancel-create-post"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={createPostMutation.isPending}
-                    data-testid="button-submit-create-post"
-                  >
-                    {createPostMutation.isPending ? "Creating..." : "Create Post"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+        <Button onClick={() => setLocation("/admin-blog-create")} data-testid="button-create-post">
+          <Plus className="h-4 w-4 mr-2" />
+          Create Post
+        </Button>
       </div>
 
-      {posts.length === 0 ? (
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader>
-            <CardTitle>No Blog Posts</CardTitle>
-            <CardDescription>
-              No blog posts have been created yet. Click "Create Post" to get started.
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+            <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{posts.length}</div>
+          </CardContent>
         </Card>
-      ) : (
-        <div className="grid gap-6">
-          {posts.map((post) => (
-            <Card key={post.id} className="overflow-hidden">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="text-xl">{post.title}</CardTitle>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <User className="h-4 w-4" />
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Published</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">{publishedCount}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Drafts</CardTitle>
+            <Edit className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{draftCount}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and Search */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Filter className="h-5 w-5 mr-2" />
+            Filters & Search
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search posts by title, author, or category..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <Select value={statusFilter} onValueChange={(value: "all" | "published" | "draft") => setStatusFilter(value)}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Posts ({posts.length})</SelectItem>
+                <SelectItem value="published">Published ({publishedCount})</SelectItem>
+                <SelectItem value="draft">Drafts ({draftCount})</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Posts Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Blog Posts</CardTitle>
+          <CardDescription>
+            Showing {filteredPosts.length} of {posts.length} posts
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {filteredPosts.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">
+                {searchQuery || statusFilter !== "all" 
+                  ? "No posts match your current filters" 
+                  : "No blog posts yet. Create your first post to get started."
+                }
+              </p>
+              {!searchQuery && statusFilter === "all" && (
+                <Button 
+                  onClick={() => setLocation("/admin-blog-create")} 
+                  className="mt-4"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Your First Post
+                </Button>
+              )}
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredPosts.map((post) => (
+                  <TableRow key={post.id}>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-medium">{post.title}</div>
+                        <div className="text-sm text-muted-foreground truncate max-w-xs">
+                          {post.excerpt}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
                         <span>{post.author}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDistanceToNow(new Date(post.createdAt))} ago</span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{post.category}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Badge 
+                          variant={post.isPublished ? "default" : "secondary"}
+                          className={post.isPublished ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}
+                        >
+                          {post.isPublished ? "Published" : "Draft"}
+                        </Badge>
+                        {post.isPublished && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => togglePublishMutation.mutate({ id: post.id, isPublished: false })}
+                            disabled={togglePublishMutation.isPending}
+                          >
+                            Unpublish
+                          </Button>
+                        )}
+                        {!post.isPublished && (
+                          <Button
+                            size="sm"
+                            onClick={() => togglePublishMutation.mutate({ id: post.id, isPublished: true })}
+                            disabled={togglePublishMutation.isPending}
+                          >
+                            Publish
+                          </Button>
+                        )}
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Tag className="h-4 w-4" />
-                        <span>{post.category}</span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">
+                          {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                        </span>
                       </div>
-                      <span>{post.readTime}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge variant={post.isPublished ? "default" : "secondary"}>
-                      {post.isPublished ? "Published" : "Draft"}
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-muted-foreground mb-4">{post.excerpt}</p>
-                
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {post.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    {post.featuredImage && (
-                      <a
-                        href={post.featuredImage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 flex items-center space-x-1"
-                      >
-                        <span className="text-sm">View Image</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleEdit(post)}
-                      data-testid={`button-edit-post-${post.id}`}
-                    >
-                      <Edit className="h-4 w-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => deletePostMutation.mutate(post.id)}
-                      disabled={deletePostMutation.isPending}
-                      data-testid={`button-delete-post-${post.id}`}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-
-      {/* Edit Dialog - Similar structure to create dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit Blog Post</DialogTitle>
-            <DialogDescription>
-              Update the blog post content and settings
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...editForm}>
-            <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={editForm.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="Enter post title"
-                          onChange={(e) => {
-                            field.onChange(e);
-                            const slug = generateSlug(e.target.value);
-                            editForm.setValue("slug", slug);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Slug</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="post-url-slug" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={editForm.control}
-                  name="author"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Author</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Author name" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={editForm.control}
-                  name="readTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Read Time</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="5 min read" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="featuredImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Featured Image URL</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="https://..." />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={editForm.control}
-                name="excerpt"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Excerpt</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Brief description of the post"
-                        className="min-h-[80px]"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={editForm.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Content</FormLabel>
-                    <FormControl>
-                      <RichTextEditor
-                        value={field.value}
-                        onChange={field.onChange}
-                        placeholder="Write your post content here..."
-                        height="300px"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={editForm.control}
-                name="isPublished"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Publish Post</FormLabel>
-                      <div className="text-sm text-muted-foreground">
-                        Make this post visible on the website
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-2">
+                        {post.isPublished && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => window.open(`/blog/${post.slug}`, "_blank")}
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </Button>
+                        )}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setLocation(`/admin-blog-edit/${post.id}`)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="outline">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Post</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{post.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deletePostMutation.mutate(post.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex justify-end space-x-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsEditDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={updatePostMutation.isPending}
-                >
-                  {updatePostMutation.isPending ? "Updating..." : "Update Post"}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

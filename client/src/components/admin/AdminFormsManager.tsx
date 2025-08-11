@@ -118,11 +118,18 @@ export default function AdminFormsManager() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Homepage">Homepage</SelectItem>
+                <SelectItem value="Homepage Hero Section">Homepage Hero Section</SelectItem>
+                <SelectItem value="Homepage CTA">Homepage CTA</SelectItem>
                 <SelectItem value="Services Page">Services Page</SelectItem>
+                <SelectItem value="Services Page Packages">Services Page Packages</SelectItem>
+                <SelectItem value="Services Page Bottom">Services Page Bottom</SelectItem>
+                <SelectItem value="Services Page CTA">Services Page CTA</SelectItem>
                 <SelectItem value="Contact Page">Contact Page</SelectItem>
+                <SelectItem value="Contact Page Main">Contact Page Main</SelectItem>
                 <SelectItem value="About Page">About Page</SelectItem>
                 <SelectItem value="Footer">Footer</SelectItem>
                 <SelectItem value="Homepage Footer">Homepage Footer</SelectItem>
+                <SelectItem value="All Pages Footer">All Pages Footer</SelectItem>
                 <SelectItem value="Footer and Contact Page">Footer and Contact Page</SelectItem>
               </SelectContent>
             </Select>

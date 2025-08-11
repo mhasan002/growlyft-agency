@@ -1,0 +1,433 @@
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLocation, useRoute } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { BlogPost, InsertBlogPost, insertBlogPostSchema } from "@shared/schema";
+import { ArrowLeft, Save, Eye } from "lucide-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+export default function AdminBlogEdit() {
+  const [, setLocation] = useLocation();
+  const [match, params] = useRoute("/admin-blog-edit/:id");
+  const { toast } = useToast();
+  const [isPreview, setIsPreview] = useState(false);
+
+  const { data: post, isLoading } = useQuery<BlogPost>({
+    queryKey: ["/api/admin/posts", params?.id],
+    queryFn: getQueryFn({ on401: "returnNull" }),
+    enabled: !!params?.id,
+  });
+
+  const form = useForm<InsertBlogPost>({
+    resolver: zodResolver(insertBlogPostSchema),
+    defaultValues: {
+      title: "",
+      slug: "",
+      excerpt: "",
+      content: "",
+      featuredImage: "",
+      author: "",
+      category: "",
+      tags: [],
+      readTime: "",
+      isPublished: false,
+    },
+  });
+
+  useEffect(() => {
+    if (post) {
+      form.reset({
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        content: post.content,
+        featuredImage: post.featuredImage || "",
+        author: post.author,
+        category: post.category,
+        tags: post.tags || [],
+        readTime: post.readTime,
+        isPublished: post.isPublished,
+      });
+    }
+  }, [post, form]);
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  };
+
+  const updatePostMutation = useMutation({
+    mutationFn: async (postData: InsertBlogPost) => {
+      const res = await apiRequest("PUT", `/api/admin/posts/${params?.id}`, postData);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to update post");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/posts"] });
+      toast({
+        title: "Post updated",
+        description: "Blog post updated successfully",
+      });
+      setLocation("/admin-dashboard");
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to update post",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: InsertBlogPost) => {
+    updatePostMutation.mutate(data);
+  };
+
+  const saveDraft = () => {
+    const data = form.getValues();
+    data.isPublished = false;
+    updatePostMutation.mutate(data);
+  };
+
+  const publishPost = () => {
+    const data = form.getValues();
+    data.isPublished = true;
+    updatePostMutation.mutate(data);
+  };
+
+  const categories = [
+    "Social Media Management",
+    "Content Marketing",
+    "SEO",
+    "Digital Marketing",
+    "Brand Building",
+    "Analytics & Insights",
+    "Case Studies",
+    "Industry Trends",
+    "Tips & Tricks",
+  ];
+
+  const quillModules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
+      ['link', 'image'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'align': [] }],
+      ['clean']
+    ],
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6 max-w-4xl">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading post...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="container mx-auto p-6 max-w-4xl">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Post not found</h1>
+          <Button onClick={() => setLocation("/admin-dashboard")} className="mt-4">
+            Back to Dashboard
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-6 max-w-4xl">
+      <div className="mb-6">
+        <Button
+          variant="ghost"
+          onClick={() => setLocation("/admin-dashboard")}
+          className="mb-4"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Dashboard
+        </Button>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Edit Blog Post</h1>
+            <p className="text-muted-foreground">
+              Update your blog post content and settings
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Badge variant={post.isPublished ? "default" : "secondary"}>
+              {post.isPublished ? "Published" : "Draft"}
+            </Badge>
+            <Button
+              variant="outline"
+              onClick={() => setIsPreview(!isPreview)}
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              {isPreview ? "Edit" : "Preview"}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {isPreview ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Preview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="prose max-w-none">
+              <h1>{form.watch("title") || "Untitled Post"}</h1>
+              {form.watch("featuredImage") && (
+                <img src={form.watch("featuredImage")} alt="Featured" className="w-full h-64 object-cover rounded-lg" />
+              )}
+              <p className="text-muted-foreground">{form.watch("excerpt")}</p>
+              <div 
+                dangerouslySetInnerHTML={{ __html: form.watch("content") || "No content yet..." }}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Post Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Enter post title"
+                            onChange={(e) => {
+                              field.onChange(e);
+                              const slug = generateSlug(e.target.value);
+                              form.setValue("slug", slug);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="slug"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Slug</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="post-url-slug" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="author"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Author</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Author name" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {categories.map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="readTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Read Time</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="5 min read" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="featuredImage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Featured Image URL</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="https://..." />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="excerpt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Excerpt</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          {...field} 
+                          placeholder="Brief description of the post"
+                          rows={3}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Content</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="content"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Post Content</FormLabel>
+                      <FormControl>
+                        <div className="min-h-[400px]">
+                          <ReactQuill
+                            theme="snow"
+                            value={field.value}
+                            onChange={field.onChange}
+                            modules={quillModules}
+                            style={{ height: "350px" }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Publishing Options</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="isPublished"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">
+                          Publish immediately
+                        </FormLabel>
+                        <div className="text-sm text-muted-foreground">
+                          Make this post visible to the public
+                        </div>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-end space-x-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={saveDraft}
+                disabled={updatePostMutation.isPending}
+              >
+                <Save className="h-4 w-4 mr-2" />
+                Save as Draft
+              </Button>
+              <Button
+                type="button"
+                onClick={publishPost}
+                disabled={updatePostMutation.isPending}
+              >
+                {updatePostMutation.isPending ? "Updating..." : "Update & Publish"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
+    </div>
+  );
+}
