@@ -606,7 +606,7 @@ export default function Home() {
                 <a href="/contact" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-contact">
                   Contact
                 </a>
-                <a href="#" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-blog">
+                <a href="/blog" className="block text-gray-300 hover:text-brand-green transition-colors duration-300" data-testid="footer-link-blog">
                   Blog
                 </a>
               </div>

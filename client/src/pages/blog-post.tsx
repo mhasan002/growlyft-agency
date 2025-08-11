@@ -3,6 +3,7 @@ import { Link, useParams } from "wouter";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import LetsTalkPopup from "@/components/LetsTalkPopup";
 import { Menu, X, Calendar, Clock, ArrowLeft, Share2, Linkedin, Twitter, Facebook, Copy, ChevronLeft, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -170,6 +171,7 @@ export default function BlogPost() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLetsTalkOpen, setIsLetsTalkOpen] = useState(false);
 
   const post = blogPosts.find(p => p.id === id);
   
@@ -284,14 +286,25 @@ export default function BlogPost() {
               </Link>
             </nav>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-[#4CAF50] transition-colors duration-300"
-              data-testid="mobile-menu-toggle"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Contact Button & Mobile Menu */}
+            <div className="flex items-center space-x-4">
+              <Button 
+                onClick={() => setIsLetsTalkOpen(true)}
+                className="hidden md:inline-flex bg-[#4CAF50] text-white px-6 py-2 rounded-full hover:bg-[#45a049] hover:scale-105 transition-all duration-300"
+                data-testid="header-contact"
+              >
+                Let's Talk
+              </Button>
+              
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-gray-700 hover:text-[#4CAF50] transition-colors duration-300"
+                data-testid="mobile-menu-toggle"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -313,6 +326,16 @@ export default function BlogPost() {
                 <Link href="/blog" className="text-[#4CAF50] font-semibold transition-colors duration-300" data-testid="mobile-nav-blog">
                   Blog
                 </Link>
+                <Button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsLetsTalkOpen(true);
+                  }}
+                  className="bg-[#4CAF50] text-white px-6 py-2 rounded-full hover:bg-[#45a049] w-fit"
+                  data-testid="mobile-contact"
+                >
+                  Let's Talk
+                </Button>
               </nav>
             </div>
           )}
@@ -548,6 +571,12 @@ export default function BlogPost() {
           </div>
         </div>
       </footer>
+
+      {/* Let's Talk Popup */}
+      <LetsTalkPopup 
+        isOpen={isLetsTalkOpen} 
+        onClose={() => setIsLetsTalkOpen(false)} 
+      />
     </div>
   );
 }

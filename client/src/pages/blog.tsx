@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import LetsTalkPopup from "@/components/LetsTalkPopup";
 import { Menu, X, Calendar, Clock, ArrowRight, ChevronLeft, ChevronRight, Share2, Linkedin, Twitter, Facebook } from "lucide-react";
 
 // Mock blog data - in real app this would come from API
@@ -167,6 +168,7 @@ export default function Blog() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLetsTalkOpen, setIsLetsTalkOpen] = useState(false);
   const postsPerPage = 6;
 
   // Calculate pagination
@@ -260,7 +262,7 @@ export default function Blog() {
             {/* Contact Button & Mobile Menu */}
             <div className="flex items-center space-x-4">
               <Button 
-                onClick={() => scrollToSection('contact')}
+                onClick={() => setIsLetsTalkOpen(true)}
                 className="hidden md:inline-flex bg-[#4CAF50] text-white px-6 py-2 rounded-full hover:bg-[#45a049] hover:scale-105 transition-all duration-300"
                 data-testid="header-contact"
               >
@@ -300,7 +302,7 @@ export default function Blog() {
                 <Button 
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    scrollToSection('contact');
+                    setIsLetsTalkOpen(true);
                   }}
                   className="bg-[#4CAF50] text-white px-6 py-2 rounded-full hover:bg-[#45a049] w-fit"
                   data-testid="mobile-contact"
@@ -479,6 +481,12 @@ export default function Blog() {
           </div>
         </div>
       </footer>
+
+      {/* Let's Talk Popup */}
+      <LetsTalkPopup 
+        isOpen={isLetsTalkOpen} 
+        onClose={() => setIsLetsTalkOpen(false)} 
+      />
     </div>
   );
 }
