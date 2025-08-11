@@ -91,11 +91,19 @@
   }
 }
 
-/* Blog cover image sizing */
+/* Blog cover image sizing for list view */
 .blog-cover-image {
   aspect-ratio: 1.91/1;
   object-fit: cover;
   background-color: #f3f4f6;
+}
+
+/* Utility classes for content */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .dark {

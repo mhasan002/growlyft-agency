@@ -24,8 +24,24 @@ export default function BlogDetail() {
     queryFn: getQueryFn({ on401: "returnNull" }),
   });
 
+  // Fetch all posts for related content
+  const { data: allPosts = [] } = useQuery({
+    queryKey: ['/api/blog/posts'],
+    queryFn: getQueryFn({ on401: "returnNull" }),
+  });
+
   // Type-safe post object
   const typedPost = post as any;
+
+  // Filter related posts (same category, excluding current post)
+  const relatedPosts = Array.isArray(allPosts) ? allPosts.filter((p: any) => 
+    p.category === typedPost?.category && p.id !== typedPost?.id
+  ) : [];
+
+  // Get trending posts (most recent published posts)
+  const trendingPosts = Array.isArray(allPosts) ? allPosts.filter((p: any) => 
+    p.isPublished && p.id !== typedPost?.id
+  ).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) : [];
 
   // Scroll handlers
   useEffect(() => {
@@ -158,6 +174,18 @@ export default function BlogDetail() {
       <article className="pb-16">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
+            {/* Featured Image - MOVED to top before header */}
+            {(typedPost.featuredImage || typedPost.featured_image) && (
+              <div className="mb-8">
+                <img 
+                  src={typedPost.featuredImage || typedPost.featured_image} 
+                  alt={typedPost.title}
+                  className="w-full rounded-lg shadow-lg"
+                  style={{ aspectRatio: '2/1', objectFit: 'cover' }}
+                />
+              </div>
+            )}
+
             {/* Article Header */}
             <header className="mb-8">
               {/* Category */}
@@ -210,22 +238,78 @@ export default function BlogDetail() {
               </div>
             </header>
 
-            {/* Featured Image */}
+            {/* Featured Image - Now BEFORE the header */}
             {(typedPost.featuredImage || typedPost.featured_image) && (
               <div className="mb-8">
                 <img 
                   src={typedPost.featuredImage || typedPost.featured_image} 
                   alt={typedPost.title}
-                  className="blog-cover-image w-full rounded-lg shadow-lg"
+                  className="w-full rounded-lg shadow-lg"
+                  style={{ aspectRatio: '2/1', objectFit: 'cover' }}
                 />
               </div>
             )}
 
             {/* Article Content */}
             <div 
-              className="blog-content prose prose-lg max-w-none text-gray-800 leading-relaxed"
+              className="blog-content prose prose-lg max-w-none text-gray-800 leading-relaxed mb-12"
               dangerouslySetInnerHTML={{ __html: typedPost.content }}
             />
+
+            {/* Related Content Sections */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16 pt-8 border-t">
+              {/* More from Category */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">More from {typedPost.category}</h3>
+                <div className="space-y-4">
+                  {relatedPosts.slice(0, 3).map((post) => (
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="block group">
+                      <div className="flex space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                        {post.featuredImage && (
+                          <img 
+                            src={post.featuredImage} 
+                            alt={post.title}
+                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                          />
+                        )}
+                        <div>
+                          <h4 className="font-semibold text-gray-900 group-hover:text-[#4CAF50] transition-colors duration-300 line-clamp-2">
+                            {post.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 mt-1">{post.readTime}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Top Trending */}
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Top Trending</h3>
+                <div className="space-y-4">
+                  {trendingPosts.slice(0, 3).map((post) => (
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="block group">
+                      <div className="flex space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                        {post.featuredImage && (
+                          <img 
+                            src={post.featuredImage} 
+                            alt={post.title}
+                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                          />
+                        )}
+                        <div>
+                          <h4 className="font-semibold text-gray-900 group-hover:text-[#4CAF50] transition-colors duration-300 line-clamp-2">
+                            {post.title}
+                          </h4>
+                          <p className="text-sm text-gray-600 mt-1">{post.readTime}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </article>
