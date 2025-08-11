@@ -1,17 +1,40 @@
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { insertContactSchema, type InsertContact } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PhoneInput } from "@/components/ui/phone-input";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import { Calendar, CheckCircle, Mail, BarChart3, Hash, Eye, TrendingUp, Shield, Globe, Users, Heart, Linkedin, Twitter, Instagram, Menu, X, Send, Video, Palette } from "lucide-react";
+
+const budgetOptions = [
+  { value: "under_300", label: "Less than $300" },
+  { value: "500_1000", label: "$500-$1,000" },
+  { value: "1000_3000", label: "$1,000 – $3000" },
+  { value: "3000_5000", label: "$3000 – $5,000" },
+  { value: "5000_plus", label: "$5,000+" },
+];
+
+const letsTalkSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
+  businessName: z.string().min(2, "Business name must be at least 2 characters"),
+  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
+  email: z.string().email("Please enter a valid email address"),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+  minimumBudget: z.enum(["under_300", "500_1000", "1000_3000", "3000_5000", "5000_plus"], {
+    required_error: "Please select your minimum budget",
+  }),
+  message: z.string().optional(),
+});
+
+type LetsTalkForm = z.infer<typeof letsTalkSchema>;
 
 export default function Home() {
   const { toast } = useToast();
@@ -19,30 +42,45 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [countersAnimated, setCountersAnimated] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const countersRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
   // Form setup
-  const form = useForm<InsertContact>({
-    resolver: zodResolver(insertContactSchema),
+  const form = useForm<LetsTalkForm>({
+    resolver: zodResolver(letsTalkSchema),
     defaultValues: {
-      name: "",
+      fullName: "",
+      businessName: "",
+      websiteUrl: "",
       email: "",
+      phoneNumber: "",
+      minimumBudget: undefined,
       message: "",
     },
   });
 
   // Contact form mutation
   const contactMutation = useMutation({
-    mutationFn: async (data: InsertContact) => {
-      const response = await apiRequest("POST", "/api/contact", data);
+    mutationFn: async (data: LetsTalkForm) => {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          type: "lets_talk",
+        }),
+      });
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
+      setIsSubmitted(true);
+      queryClient.invalidateQueries({ queryKey: ["/api/contact"] });
       toast({
         title: "Message sent successfully!",
-        description: data.message,
+        description: "We'll get back to you soon!",
       });
-      form.reset();
     },
     onError: (error: any) => {
       toast({
@@ -53,7 +91,7 @@ export default function Home() {
     },
   });
 
-  const onSubmit = (data: InsertContact) => {
+  const onSubmit = (data: LetsTalkForm) => {
     contactMutation.mutate(data);
   };
 
@@ -347,74 +385,175 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 animate-on-scroll">
               <h2 className="text-4xl md:text-5xl font-bold mb-4" data-testid="contact-title">Let's Talk About Your Brand</h2>
-              <p className="text-xl text-gray-600" data-testid="contact-subtitle">Ready to take your social media to the next level? We're here to help.</p>
+              <p className="text-xl text-gray-600 mb-4" data-testid="contact-subtitle">Tell us a bit about your brand and goals so we can tailor our approach before we chat.</p>
             </div>
             
             <div className="bg-soft-gray rounded-3xl p-8 md:p-12 animate-on-scroll">
-              <Form {...form}>
+              {isSubmitted ? (
+                <div className="text-center space-y-6">
+                  <div className="w-16 h-16 bg-brand-green rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800">Thank You!</h3>
+                  <p className="text-gray-600">
+                    We've received your information and will be in touch within 24 hours to discuss your project.
+                  </p>
+                  <Button 
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      form.reset();
+                    }}
+                    className="bg-brand-green text-white px-6 py-3 rounded-full hover:scale-105 transition-all duration-300"
+                  >
+                    Send Another Message
+                  </Button>
+                </div>
+              ) : (
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="contact-form">
-                  {/* Name Field */}
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Your Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
-                            data-testid="input-name"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Full Name */}
+                    <div className="space-y-2">
+                      <Label htmlFor="fullName" className="text-gray-800 font-medium">
+                        Full Name *
+                      </Label>
+                      <Input
+                        {...form.register("fullName")}
+                        type="text"
+                        id="fullName"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                        placeholder="John Smith"
+                        data-testid="input-full-name"
+                      />
+                      {form.formState.errors.fullName && (
+                        <span className="text-red-500 text-sm mt-1" data-testid="error-full-name">
+                          {form.formState.errors.fullName.message}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Business Name */}
+                    <div className="space-y-2">
+                      <Label htmlFor="businessName" className="text-gray-800 font-medium">
+                        Business Name *
+                      </Label>
+                      <Input
+                        {...form.register("businessName")}
+                        type="text"
+                        id="businessName"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                        placeholder="Your Business Name"
+                        data-testid="input-business-name"
+                      />
+                      {form.formState.errors.businessName && (
+                        <span className="text-red-500 text-sm mt-1" data-testid="error-business-name">
+                          {form.formState.errors.businessName.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Website/Social Media */}
+                  <div className="space-y-2">
+                    <Label htmlFor="websiteUrl" className="text-gray-800 font-medium">
+                      Website/Social Media *
+                    </Label>
+                    <Input
+                      {...form.register("websiteUrl")}
+                      type="url"
+                      id="websiteUrl"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                      placeholder="https://yourwebsite.com or https://instagram.com/yourbrand"
+                      data-testid="input-website-url"
+                    />
+                    {form.formState.errors.websiteUrl && (
+                      <span className="text-red-500 text-sm mt-1" data-testid="error-website-url">
+                        {form.formState.errors.websiteUrl.message}
+                      </span>
                     )}
-                  />
-                  
-                  {/* Email Field */}
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="your@email.com"
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
-                            data-testid="input-email"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Contact Email */}
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-gray-800 font-medium">
+                        Contact Email *
+                      </Label>
+                      <Input
+                        {...form.register("email")}
+                        type="email"
+                        id="email"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300"
+                        placeholder="john@example.com"
+                        data-testid="input-email"
+                      />
+                      {form.formState.errors.email && (
+                        <span className="text-red-500 text-sm mt-1" data-testid="error-email">
+                          {form.formState.errors.email.message}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="space-y-2">
+                      <Label htmlFor="phoneNumber" className="text-gray-800 font-medium">
+                        Phone Number *
+                      </Label>
+                      <PhoneInput
+                        label=""
+                        required={false}
+                        phoneValue={form.watch("phoneNumber") || ""}
+                        countryCode={selectedCountryCode}
+                        onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
+                        onCountryCodeChange={(code: string) => setSelectedCountryCode(code)}
+                        placeholder="123-456-7890"
+                        variant="default"
+                        data-testid="input-phone-number"
+                      />
+                      {form.formState.errors.phoneNumber && (
+                        <span className="text-red-500 text-sm mt-1" data-testid="error-phone-number">
+                          {form.formState.errors.phoneNumber.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Minimum Budget */}
+                  <div className="space-y-2">
+                    <Label className="text-gray-800 font-medium">Minimum Budget *</Label>
+                    <Select onValueChange={(value) => form.setValue("minimumBudget", value as any)}>
+                      <SelectTrigger className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300" data-testid="select-minimum-budget">
+                        <SelectValue placeholder="Select your budget range" className="text-gray-500" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg">
+                        {budgetOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value} className="text-gray-800 hover:bg-gray-50 rounded-lg">
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {form.formState.errors.minimumBudget && (
+                      <span className="text-red-500 text-sm" data-testid="error-minimum-budget">
+                        {form.formState.errors.minimumBudget.message}
+                      </span>
                     )}
-                  />
-                  
-                  {/* Message Field */}
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tell us about your project</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            rows={5}
-                            placeholder="Describe your brand, goals, and how we can help you grow..."
-                            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 resize-none"
-                            data-testid="input-message"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
+                  </div>
+
+                  {/* Message */}
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-gray-800 font-medium">
+                      Tell us about your goals (Optional)
+                    </Label>
+                    <Textarea
+                      {...form.register("message")}
+                      id="message"
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-green focus:border-transparent transition-all duration-300 resize-none"
+                      placeholder="Describe your brand, goals, and how we can help you grow..."
+                      data-testid="input-message"
+                    />
+                  </div>
+
                   {/* Submit Button */}
                   <div className="text-center">
                     <Button 
@@ -428,7 +567,7 @@ export default function Home() {
                     </Button>
                   </div>
                 </form>
-              </Form>
+              )}
             </div>
           </div>
         </div>
