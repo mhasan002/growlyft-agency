@@ -182,17 +182,31 @@ export default function BlogDetail() {
               </div>
 
               {/* Share Buttons */}
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-600 font-medium">Share:</span>
-                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
-                  <Linkedin className="w-5 h-5 text-gray-600 hover:text-[#0077B5]" />
-                </button>
-                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
-                  <Twitter className="w-5 h-5 text-gray-600 hover:text-[#1DA1F2]" />
-                </button>
-                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
-                  <Facebook className="w-5 h-5 text-gray-600 hover:text-[#1877F2]" />
-                </button>
+              <div className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg border">
+                <span className="text-gray-700 font-semibold text-sm">Share this article:</span>
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank')}
+                    className="flex items-center space-x-1 px-3 py-2 bg-[#0077B5] text-white rounded-md hover:bg-[#005885] transition-colors duration-300 text-sm font-medium"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                    <span>LinkedIn</span>
+                  </button>
+                  <button 
+                    onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(typedPost.title)}`, '_blank')}
+                    className="flex items-center space-x-1 px-3 py-2 bg-[#1DA1F2] text-white rounded-md hover:bg-[#0d8bd9] transition-colors duration-300 text-sm font-medium"
+                  >
+                    <Twitter className="w-4 h-4" />
+                    <span>Twitter</span>
+                  </button>
+                  <button 
+                    onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                    className="flex items-center space-x-1 px-3 py-2 bg-[#1877F2] text-white rounded-md hover:bg-[#166fe5] transition-colors duration-300 text-sm font-medium"
+                  >
+                    <Facebook className="w-4 h-4" />
+                    <span>Facebook</span>
+                  </button>
+                </div>
               </div>
             </header>
 

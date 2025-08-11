@@ -216,11 +216,11 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).pick({
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
   excerpt: z.string().min(10, "Excerpt must be at least 10 characters"),
   content: z.string().min(50, "Content must be at least 50 characters"),
-  featuredImage: z.string().url().optional().or(z.literal("")),
+  featuredImage: z.string().optional().or(z.literal("")),
   author: z.string().min(1, "Author is required"),
   category: z.string().min(1, "Category is required"),
   tags: z.array(z.string()).default([]),
-  readTime: z.string().min(1, "Read time is required"),
+  readTime: z.string().optional().or(z.literal("")),
   isPublished: z.boolean().default(false),
 });
 

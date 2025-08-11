@@ -233,6 +233,7 @@ export class MemStorage implements IStorage {
       ...insertBlogPost,
       id,
       featuredImage: insertBlogPost.featuredImage || null,
+      readTime: insertBlogPost.readTime || "5 min read",
       publishedAt: insertBlogPost.isPublished ? new Date() : null,
       createdAt: new Date(),
       updatedAt: new Date(),
