@@ -367,7 +367,12 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-[#0F172A] border-[#04E762]/30 max-h-80">
-                      <div className="sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10">
+                      <div 
+                        className="sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <Input
                           type="text"
                           placeholder="Search countries..."
@@ -379,8 +384,21 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                           }}
                           onKeyDown={(e) => {
                             e.stopPropagation();
+                            // Prevent space and enter from closing the select
+                            if (e.key === ' ' || e.key === 'Enter') {
+                              e.preventDefault();
+                            }
                           }}
                           onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onPointerDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onFocus={(e) => {
                             e.stopPropagation();
                           }}
                           autoFocus={false}
