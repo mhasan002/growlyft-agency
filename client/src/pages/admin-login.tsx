@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,9 +17,15 @@ export default function AdminLoginPage() {
   const { admin, loginMutation } = useAdminAuth();
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redirect if already logged in
+  // Handle redirect using useEffect to avoid hooks issues
+  React.useEffect(() => {
+    if (admin) {
+      setLocation("/admin-dashboard");
+    }
+  }, [admin, setLocation]);
+
+  // Show loading state if already authenticated
   if (admin) {
-    setLocation("/admin-dashboard");
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4">
         <div className="text-center">
