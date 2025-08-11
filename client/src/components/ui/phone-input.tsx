@@ -94,7 +94,7 @@ interface PhoneInputProps {
   onCountryCodeChange: (value: string) => void;
   placeholder?: string;
   error?: string;
-  variant?: "default" | "popup" | "discovery";
+  variant?: "default" | "popup" | "discovery" | "contact";
   className?: string;
   testId?: string;
 }
@@ -166,6 +166,18 @@ export function PhoneInput({
           searchInput: "w-full p-2 border rounded text-sm border-gray-300",
           optionButton: "w-full text-left px-3 py-2 text-black hover:bg-gray-100 text-sm",
           phoneInput: "flex-1 border-2 rounded-xl border-gray-300 bg-white text-black px-3 py-3 focus:outline-none focus:border-emerald-500 transition-all duration-300 shadow-sm",
+          error: "text-red-500 text-sm mt-1"
+        };
+      case "contact":
+        return {
+          container: "space-y-2",
+          label: "text-gray-800 font-medium",
+          button: "w-32 border-2 border-gray-200 bg-white text-black text-left flex items-center justify-between px-4 py-3 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-0 transition-colors duration-300",
+          dropdown: "absolute z-50 w-80 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-80",
+          searchContainer: "sticky top-0 bg-white p-2 border-b border-gray-200 z-10",
+          searchInput: "w-full p-2 border rounded text-sm border-gray-200",
+          optionButton: "w-full text-left px-3 py-2 text-black hover:bg-gray-100 text-sm",
+          phoneInput: "flex-1 border-2 border-gray-200 bg-white text-black px-4 py-3 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-0 transition-colors duration-300",
           error: "text-red-500 text-sm mt-1"
         };
       default:
