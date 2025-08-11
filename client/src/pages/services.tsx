@@ -6,6 +6,8 @@ import LetsTalkPopup from "@/components/LetsTalkPopup";
 import SeeCapabilitiesModal from "@/components/SeeCapabilitiesModal";
 import PackageGetStartedPopup from "@/components/PackageGetStartedPopup";
 import CustomPlanPopup from "@/components/CustomPlanPopup";
+import CustomQuotePopup from "@/components/CustomQuotePopup";
+import StrategyCallPopup from "@/components/StrategyCallPopup";
 import { 
   Menu, X, Phone, Calendar, Star, Rocket, Crown, 
   Target, Palette, Video, MessageSquare, TrendingUp, 
@@ -25,6 +27,8 @@ export default function Services() {
   const [isPackageGetStartedOpen, setIsPackageGetStartedOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("");
   const [isCustomPlanOpen, setIsCustomPlanOpen] = useState(false);
+  const [isStrategyCallOpen, setIsStrategyCallOpen] = useState(false);
+  const [isCustomQuoteOpen, setIsCustomQuoteOpen] = useState(false);
 
   // Scroll handlers
   useEffect(() => {
@@ -401,13 +405,25 @@ export default function Services() {
           </div>
 
           <div className="text-center animate-on-scroll">
-            <Button 
-              onClick={() => setIsSeeCapabilitiesOpen(true)}
-              className="bg-black text-white px-12 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-gray-800 transition-all duration-300 ease-out h-auto"
-              data-testid="packages-cta"
-            >
-              Book a Discovery Call
-            </Button>
+            <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
+              <Button 
+                onClick={() => setIsSeeCapabilitiesOpen(true)}
+                className="bg-black text-white px-12 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-gray-800 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3"
+                data-testid="packages-cta"
+              >
+                <Calendar className="w-6 h-6" />
+                Book a Discovery Call
+              </Button>
+              
+              <Button 
+                onClick={() => setIsCustomPlanOpen(true)}
+                className="bg-emerald-500 text-black px-12 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-400 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3"
+                data-testid="cta-custom-plan"
+              >
+                <Settings className="w-6 h-6" />
+                Get Your Custom Plan
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -531,6 +547,7 @@ export default function Services() {
             
             <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
               <Button 
+                onClick={() => setIsStrategyCallOpen(true)}
                 className="bg-emerald-500 text-black px-12 py-6 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-400 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3"
                 data-testid="contact-primary"
               >
@@ -538,6 +555,7 @@ export default function Services() {
                 <Calendar className="w-6 h-6" />
               </Button>
               <Button 
+                onClick={() => setIsCustomQuoteOpen(true)}
                 variant="outline"
                 className="border-2 border-white text-white bg-transparent px-12 py-6 rounded-full text-xl font-bold hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 ease-out h-auto"
                 data-testid="contact-secondary"
@@ -634,6 +652,17 @@ export default function Services() {
       <CustomPlanPopup 
         isOpen={isCustomPlanOpen} 
         onClose={() => setIsCustomPlanOpen(false)} 
+      />
+
+      <StrategyCallPopup 
+        isOpen={isStrategyCallOpen} 
+        onClose={() => setIsStrategyCallOpen(false)} 
+        title="Strategy Call: Let's map out your growth plan together."
+      />
+
+      <CustomQuotePopup 
+        isOpen={isCustomQuoteOpen} 
+        onClose={() => setIsCustomQuoteOpen(false)} 
       />
     </div>
   );

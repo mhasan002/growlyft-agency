@@ -127,7 +127,7 @@ interface PhoneInputProps {
   phoneValue: string;
   countryCode: string;
   onPhoneChange: (value: string) => void;
-  onCountryCodeChange: (value: string) => void;
+  onCountryCodeChange?: (value: string) => void;
   placeholder?: string;
   error?: string;
   variant?: "default" | "popup" | "discovery" | "contact";
@@ -172,7 +172,9 @@ export function PhoneInput({
   const selectedCountry = countryCodeOptions.find(option => option.value === countryCode);
 
   const handleCountrySelect = (option: CountryOption) => {
-    onCountryCodeChange(option.value);
+    if (onCountryCodeChange) {
+      onCountryCodeChange(option.value);
+    }
     setIsDropdownOpen(false);
     setSearchQuery("");
   };
@@ -189,7 +191,7 @@ export function PhoneInput({
           searchContainer: "sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10",
           searchInput: "w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30",
           optionButton: "w-full text-left px-3 py-2 text-[#F8FAFC] hover:bg-[#04E762]/10 text-sm",
-          phoneInput: "flex-1 border-2 border-[#04E762]/30 bg-[#0F172A] text-white px-4 py-3 rounded-lg focus:outline-none focus:border-[#04E762] transition-colors duration-300",
+          phoneInput: "flex-1 border-2 border-[#04E762]/30 bg-[#0F172A] text-white px-4 py-3 rounded-lg focus:outline-none focus:border-[#04E762] transition-colors duration-300 placeholder:text-gray-400",
           error: "text-red-400 text-sm mt-1"
         };
       case "discovery":

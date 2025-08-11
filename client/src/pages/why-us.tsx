@@ -348,11 +348,11 @@ export default function WhyUs() {
               </Button>
               <Button 
                 onClick={() => setIsTalkGrowthPopupOpen(true)}
-                variant="outline"
-                className="border-2 border-yellow-400 text-yellow-400 bg-transparent px-12 py-6 rounded-full text-xl font-bold hover:bg-yellow-400 hover:text-black hover:scale-105 transition-all duration-300 ease-out h-auto"
+                className="bg-emerald-500 text-black px-12 py-6 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-400 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3 animate-glow"
                 data-testid="button-talk-growth"
               >
-                Let's Talk Growth
+                <span>Let's Talk Growth</span>
+                <MessageCircle className="w-6 h-6" />
               </Button>
             </div>
           </div>

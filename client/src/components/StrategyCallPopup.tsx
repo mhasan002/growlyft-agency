@@ -17,6 +17,7 @@ import { X, Sparkles, ArrowRight, CheckCircle, ChevronDown } from "lucide-react"
 interface StrategyCallPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
 }
 
 const budgetOptions = [
@@ -30,7 +31,7 @@ const budgetOptions = [
 
 // PhoneInput component handles country codes internally
 
-export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopupProps) {
+export default function StrategyCallPopup({ isOpen, onClose, title }: StrategyCallPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const queryClient = useQueryClient();
@@ -113,7 +114,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               <Sparkles className="w-6 h-6 text-[#0F172A]" />
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
-              Free Strategy Call
+              {title || "Free Strategy Call"}
             </DialogTitle>
           </div>
           
