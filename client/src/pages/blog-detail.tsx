@@ -180,8 +180,8 @@ export default function BlogDetail() {
                 <img 
                   src={typedPost.featuredImage || typedPost.featured_image} 
                   alt={typedPost.title}
-                  className="w-full rounded-lg shadow-lg"
-                  style={{ aspectRatio: '2/1', objectFit: 'cover' }}
+                  className="w-full rounded-lg shadow-lg object-cover"
+                  style={{ height: '300px', maxHeight: '300px' }}
                 />
               </div>
             )}
@@ -238,17 +238,7 @@ export default function BlogDetail() {
               </div>
             </header>
 
-            {/* Featured Image - Now BEFORE the header */}
-            {(typedPost.featuredImage || typedPost.featured_image) && (
-              <div className="mb-8">
-                <img 
-                  src={typedPost.featuredImage || typedPost.featured_image} 
-                  alt={typedPost.title}
-                  className="w-full rounded-lg shadow-lg"
-                  style={{ aspectRatio: '2/1', objectFit: 'cover' }}
-                />
-              </div>
-            )}
+
 
             {/* Article Content */}
             <div 

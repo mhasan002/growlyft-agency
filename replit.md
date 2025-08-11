@@ -27,6 +27,14 @@ This is a modern, responsive website for Growlyft, a social media agency. The ap
 - ✓ Completed Supabase database connection and migration
 - ✓ Project fully operational in Replit environment
 
+**August 12, 2025 - Evening**: Blog layout and video embedding improvements
+- ✓ Fixed duplicate cover photo issue by removing redundant image display
+- ✓ Repositioned cover photo to appear before title as requested
+- ✓ Reduced cover photo height to 300px for better proportions
+- ✓ Added video embedding support for YouTube, Facebook, Instagram, TikTok
+- ✓ Implemented "More from category" and "Top trending" sections in blog posts
+- ✓ Enhanced video auto-sizing with responsive containers
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

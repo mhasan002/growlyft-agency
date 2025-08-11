@@ -24,6 +24,7 @@ export default function AdminBlogCreate() {
   const { toast } = useToast();
   const [isPreview, setIsPreview] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<InsertBlogPost>({
@@ -130,11 +131,51 @@ export default function AdminBlogCreate() {
       ['bold', 'italic', 'underline', 'strike'],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image'],
+      ['link', 'image', 'video'],
       [{ 'color': [] }, { 'background': [] }],
       [{ 'align': [] }],
       ['clean']
     ],
+  };
+
+  // Function to embed video from social media platforms
+  const embedVideo = (url: string) => {
+    let embedHtml = '';
+    
+    // YouTube
+    if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
+      let videoId = '';
+      if (url.includes('youtube.com/watch')) {
+        videoId = url.split('v=')[1]?.split('&')[0];
+      } else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      }
+      if (videoId) {
+        embedHtml = `<div class="video-container"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+      }
+    }
+    
+    // Facebook
+    else if (url.includes('facebook.com')) {
+      embedHtml = `<div class="video-container"><iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}" frameborder="0" allowfullscreen></iframe></div>`;
+    }
+    
+    // Instagram
+    else if (url.includes('instagram.com')) {
+      embedHtml = `<div class="video-container"><iframe src="${url}/embed" frameborder="0" allowfullscreen></iframe></div>`;
+    }
+    
+    // TikTok
+    else if (url.includes('tiktok.com')) {
+      embedHtml = `<div class="video-container"><iframe src="${url}" frameborder="0" allowfullscreen></iframe></div>`;
+    }
+    
+    // Generic video URL
+    else if (url.includes('.mp4') || url.includes('.webm') || url.includes('.ogg')) {
+      embedHtml = `<video controls style="width: 100%; height: auto; margin: 2rem auto; display: block; border-radius: 8px;"><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+    }
+    
+    return embedHtml;
   };
 
   return (
@@ -417,14 +458,48 @@ export default function AdminBlogCreate() {
                     <FormItem>
                       <FormLabel>Post Content</FormLabel>
                       <FormControl>
-                        <div className="min-h-[400px]">
-                          <ReactQuill
-                            theme="snow"
-                            value={field.value}
-                            onChange={field.onChange}
-                            modules={quillModules}
-                            style={{ height: "350px" }}
-                          />
+                        <div className="space-y-4">
+                          <div className="min-h-[400px]">
+                            <ReactQuill
+                              theme="snow"
+                              value={field.value}
+                              onChange={field.onChange}
+                              modules={quillModules}
+                              style={{ height: "350px" }}
+                            />
+                          </div>
+                          
+                          {/* Video Embed Section */}
+                          <div className="border-t pt-4">
+                            <h4 className="text-sm font-medium mb-2">Add Video</h4>
+                            <div className="flex space-x-2">
+                              <Input
+                                placeholder="Paste YouTube, Facebook, Instagram, TikTok URL or direct video link..."
+                                value={videoUrl}
+                                onChange={(e) => setVideoUrl(e.target.value)}
+                                className="flex-1"
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => {
+                                  if (videoUrl) {
+                                    const embedHtml = embedVideo(videoUrl);
+                                    if (embedHtml) {
+                                      const currentContent = field.value || '';
+                                      field.onChange(currentContent + '<br>' + embedHtml + '<br>');
+                                      setVideoUrl('');
+                                    }
+                                  }
+                                }}
+                              >
+                                Add Video
+                              </Button>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Supports YouTube, Facebook, Instagram, TikTok, and direct video file URLs. Videos will be automatically resized for optimal viewing.
+                            </p>
+                          </div>
                         </div>
                       </FormControl>
                       <FormMessage />
