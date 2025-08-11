@@ -42,6 +42,7 @@ type CustomPlanForm = z.infer<typeof customPlanSchema>;
 
 export default function CustomPlanPopup({ isOpen, onClose }: CustomPlanPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
   const queryClient = useQueryClient();
 
   const form = useForm<CustomPlanForm>({
@@ -222,9 +223,9 @@ export default function CustomPlanPopup({ isOpen, onClose }: CustomPlanPopupProp
                   label=""
                   required={false}
                   phoneValue={form.watch("phoneNumber") || ""}
-                  countryCode="+1"
+                  countryCode={selectedCountryCode}
                   onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
-                  onCountryCodeChange={() => {}}
+                  onCountryCodeChange={(code: string) => setSelectedCountryCode(code)}
                   placeholder="123-456-7890"
                   variant="popup"
                   data-testid="input-phone-number"
