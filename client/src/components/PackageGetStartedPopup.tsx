@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { PhoneInput } from "@/components/ui/phone-input";
 import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Package, ArrowRight, CheckCircle, Rocket, TrendingUp, Crown } from "lucide-react";
+import { X, Package, ArrowRight, CheckCircle, Rocket, TrendingUp, Crown, Star } from "lucide-react";
 
 interface PackageGetStartedPopupProps {
   isOpen: boolean;
@@ -117,10 +117,10 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
           
           <div className="flex items-center space-x-3 mb-4">
             <div className="p-2 bg-gradient-to-r from-[#04E762] to-[#04E762] rounded-lg">
-              {packageName === "Starter" && <Rocket className="w-6 h-6 text-[#0F172A]" />}
-              {packageName === "Growth" && <TrendingUp className="w-6 h-6 text-[#0F172A]" />}
-              {packageName === "Premium" && <Crown className="w-6 h-6 text-[#0F172A]" />}
-              {!["Starter", "Growth", "Premium"].includes(packageName) && <Package className="w-6 h-6 text-[#0F172A]" />}
+              {packageName === "Starter" && <Star className="w-6 h-6 text-[#0F172A]" />}
+              {packageName === "Growth" && <Rocket className="w-6 h-6 text-[#0F172A]" />}
+              {packageName === "Authority" && <Crown className="w-6 h-6 text-[#0F172A]" />}
+              {!["Starter", "Growth", "Authority"].includes(packageName) && <Package className="w-6 h-6 text-[#0F172A]" />}
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
               {packageName} Package
