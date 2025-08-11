@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from "react";
 import { useLocation } from "wouter";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,13 @@ export default function AdminDashboard() {
   const { admin, isLoading, logoutMutation } = useAdminAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
 
+  // Handle authentication redirects using useEffect to avoid hooks issues
+  React.useEffect(() => {
+    if (!isLoading && !admin) {
+      setLocation("/admin/login");
+    }
+  }, [admin, isLoading, setLocation]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -41,8 +49,14 @@ export default function AdminDashboard() {
   }
 
   if (!admin) {
-    setLocation("/admin/login");
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600">Redirecting to login...</p>
+        </div>
+      </div>
+    );
   }
 
   const handleLogout = async () => {
