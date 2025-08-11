@@ -242,88 +242,131 @@ export default function Blog() {
         </section>
       )}
 
-      {/* Latest Articles Grid */}
-      <section className="py-16 bg-gray-50">
+      {/* Latest Articles Section */}
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Latest</h2>
-            <div className="w-20 h-1 bg-[#4CAF50] mx-auto"></div>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Latest</h2>
+            <Button 
+              variant="outline"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              View all
+            </Button>
           </div>
 
-          {/* Trending Posts Row */}
-          {trendingPosts.length > 0 && (
-            <div className="mb-16">
-              <h3 className="text-xl font-semibold text-gray-900 mb-8">Trending</h3>
-              <div className="grid md:grid-cols-3 gap-8">
-                {trendingPosts.map((post: BlogPost) => (
-                  <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                    <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                      <img 
-                        src={post.featuredImage || post.featured_image || "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop"} 
-                        alt={post.title}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                          <span className="px-2 py-1 bg-[#4CAF50]/10 text-[#4CAF50] rounded text-xs font-medium">
-                            {post.category}
-                          </span>
-                          <Calendar className="w-3 h-3" />
-                          <span>{formatDate(post.createdAt || post.publishDate || '')}</span>
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-[#4CAF50] transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>By {post.author}</span>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            <span>{post.readTime}</span>
-                          </div>
-                        </div>
-                      </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            {(posts as BlogPost[]).slice(0, 3).map((post: BlogPost) => (
+              <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+                <div className="bg-white hover:shadow-lg transition-shadow duration-300">
+                  <img 
+                    src={post.featuredImage || post.featured_image || "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop"} 
+                    alt={post.title}
+                    className="w-full h-48 object-cover group-hover:opacity-90 transition-opacity duration-300"
+                  />
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                        {post.category}
+                      </span>
+                      <span>{formatDate(post.createdAt || post.publishDate || '')}</span>
                     </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Main Articles Grid */}
+      {/* Featured Section */}
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Featured</h2>
+            <Button 
+              variant="outline"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              Browse all
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {(posts as BlogPost[]).slice(3, 9).map((post: BlogPost) => (
+              <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+                <div className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                  <img 
+                    src={post.featuredImage || post.featured_image || "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop"} 
+                    alt={post.title}
+                    className="w-full h-48 object-cover group-hover:opacity-90 transition-opacity duration-300"
+                  />
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                        {post.category}
+                      </span>
+                      <span>{formatDate(post.createdAt || post.publishDate || '')}</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* More Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">More</h2>
+              <p className="text-gray-600 mt-1">Discover more insights and strategies</p>
+            </div>
+            <Button 
+              variant="outline"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              Browse all
+            </Button>
+          </div>
+
           {filteredPosts.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.slice(0, 12).map((post: BlogPost) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredPosts.slice(9, 15).map((post: BlogPost) => (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                  <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full">
+                  <div className="bg-white hover:shadow-lg transition-shadow duration-300">
                     <img 
                       src={post.featuredImage || post.featured_image || "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=200&fit=crop"} 
                       alt={post.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-48 object-cover group-hover:opacity-90 transition-opacity duration-300"
                     />
-                    <div className="p-6 flex flex-col h-full">
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                        <span className="px-2 py-1 bg-[#4CAF50]/10 text-[#4CAF50] rounded text-xs font-medium">
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
                           {post.category}
                         </span>
-                        <Calendar className="w-3 h-3" />
                         <span>{formatDate(post.createdAt || post.publishDate || '')}</span>
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-[#4CAF50] transition-colors line-clamp-2 flex-grow">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+                      <p className="text-gray-600 text-sm line-clamp-2">
                         {post.excerpt}
                       </p>
-                      <div className="flex items-center justify-between text-sm text-gray-500 mt-auto">
-                        <span>By {post.author}</span>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </Link>
