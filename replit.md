@@ -4,6 +4,14 @@
 
 This is a modern, responsive website for Growlyft, a social media agency. The application is built as a full-stack solution featuring a React frontend with shadcn/ui components and an Express.js backend. The website showcases the agency's services with a clean, futuristic design using Tailwind CSS, includes animated sections, and provides a contact form for lead generation. The architecture follows a monorepo structure with shared schema validation between frontend and backend.
 
+## Recent Changes
+
+**August 11, 2025**: Successfully migrated project from Replit Agent to Replit environment
+- ✓ Set up PostgreSQL database with all required tables
+- ✓ Configured database migrations using Drizzle ORM
+- ✓ Resolved tsx dependency and environment configuration
+- ✓ Application now running properly on port 5000 with full functionality
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
