@@ -57,6 +57,7 @@ type TalkGrowthForm = z.infer<typeof talkGrowthSchema>;
 export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
   const queryClient = useQueryClient();
 
   const form = useForm<TalkGrowthForm>({
@@ -232,9 +233,14 @@ export default function TalkGrowthPopup({ isOpen, onClose }: TalkGrowthPopupProp
                   Phone Number *
                 </Label>
                 <PhoneInput
-                  value={form.watch("phoneNumber")}
-                  onChange={(value) => form.setValue("phoneNumber", value)}
-                  className="popup-input text-white"
+                  label=""
+                  required={false}
+                  phoneValue={form.watch("phoneNumber") || ""}
+                  countryCode={selectedCountryCode}
+                  onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
+                  onCountryCodeChange={(code: string) => setSelectedCountryCode(code)}
+                  placeholder="123-456-7890"
+                  variant="popup"
                   data-testid="input-phone-number"
                 />
                 {form.formState.errors.phoneNumber && (

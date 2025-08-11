@@ -407,7 +407,7 @@ export default function Services() {
           <div className="text-center animate-on-scroll">
             <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
               <Button 
-                onClick={() => setIsSeeCapabilitiesOpen(true)}
+                onClick={() => setIsStrategyCallOpen(true)}
                 className="bg-black text-white px-12 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-gray-800 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3"
                 data-testid="packages-cta"
               >
@@ -547,7 +547,7 @@ export default function Services() {
             
             <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
               <Button 
-                onClick={() => setIsSeeCapabilitiesOpen(true)}
+                onClick={() => setIsStrategyCallOpen(true)}
                 className="bg-emerald-500 text-black px-12 py-6 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-400 transition-all duration-300 ease-out h-auto inline-flex items-center space-x-3"
                 data-testid="contact-primary"
               >

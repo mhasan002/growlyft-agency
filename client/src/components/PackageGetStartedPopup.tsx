@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { PhoneInput } from "@/components/ui/phone-input";
 import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Package, ArrowRight, CheckCircle } from "lucide-react";
+import { X, Package, ArrowRight, CheckCircle, Rocket, TrendingUp, Crown } from "lucide-react";
 
 interface PackageGetStartedPopupProps {
   isOpen: boolean;
@@ -42,6 +42,7 @@ type PackageGetStartedForm = z.infer<typeof packageGetStartedSchema>;
 
 export default function PackageGetStartedPopup({ isOpen, onClose, packageName }: PackageGetStartedPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
   const queryClient = useQueryClient();
 
   const form = useForm<PackageGetStartedForm>({
@@ -116,10 +117,13 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
           
           <div className="flex items-center space-x-3 mb-4">
             <div className="p-2 bg-gradient-to-r from-[#04E762] to-[#04E762] rounded-lg">
-              <Package className="w-6 h-6 text-[#0F172A]" />
+              {packageName === "Starter" && <Rocket className="w-6 h-6 text-[#0F172A]" />}
+              {packageName === "Growth" && <TrendingUp className="w-6 h-6 text-[#0F172A]" />}
+              {packageName === "Premium" && <Crown className="w-6 h-6 text-[#0F172A]" />}
+              {!["Starter", "Growth", "Premium"].includes(packageName) && <Package className="w-6 h-6 text-[#0F172A]" />}
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
-              Get Started - {packageName} Package
+              {packageName} Package
             </DialogTitle>
           </div>
           
@@ -222,9 +226,9 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
                   label=""
                   required={false}
                   phoneValue={form.watch("phoneNumber") || ""}
-                  countryCode="+1"
+                  countryCode={selectedCountryCode}
                   onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
-                  onCountryCodeChange={() => {}}
+                  onCountryCodeChange={(code: string) => setSelectedCountryCode(code)}
                   placeholder="123-456-7890"
                   variant="popup"
                   data-testid="input-phone-number"
@@ -259,12 +263,22 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
               )}
             </div>
 
-            {/* Selected Package - Hidden */}
-            <input 
-              type="hidden" 
-              {...form.register("selectedPackage")} 
-              value={packageName}
-            />
+            {/* Package Selection (Auto-filled) */}
+            <div className="space-y-2">
+              <Label className="text-white/90 font-medium">Package *</Label>
+              <div className="popup-input text-white bg-gray-700/50 px-4 py-3 rounded-lg border border-[#04E762]/30 flex items-center space-x-3">
+                {packageName === "Starter" && <Rocket className="w-5 h-5 text-[#04E762]" />}
+                {packageName === "Growth" && <TrendingUp className="w-5 h-5 text-[#04E762]" />}
+                {packageName === "Premium" && <Crown className="w-5 h-5 text-[#04E762]" />}
+                {!["Starter", "Growth", "Premium"].includes(packageName) && <Package className="w-5 h-5 text-[#04E762]" />}
+                <span>{packageName} Package</span>
+              </div>
+              <input 
+                type="hidden" 
+                {...form.register("selectedPackage")} 
+                value={packageName}
+              />
+            </div>
 
             {/* Submit Button */}
             <Button
