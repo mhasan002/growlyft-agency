@@ -26,19 +26,23 @@ import AdminProfile from "@/components/admin/AdminProfile";
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
-  const { admin, logoutMutation } = useAdminAuth();
+  const { admin, isLoading, logoutMutation } = useAdminAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  if (!admin) {
-    setLocation("/admin/login");
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-green-600 mx-auto mb-4" />
-          <p className="text-gray-600">Redirecting to login...</p>
+          <p className="text-gray-600">Loading admin dashboard...</p>
         </div>
       </div>
     );
+  }
+
+  if (!admin) {
+    setLocation("/admin/login");
+    return null;
   }
 
   const handleLogout = async () => {

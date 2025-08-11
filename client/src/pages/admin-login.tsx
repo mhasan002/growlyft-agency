@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
 
   // Redirect if already logged in
   if (admin) {
-    setLocation("/admin/dashboard");
+    setLocation("/admin-dashboard");
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4">
         <div className="text-center">
@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
   const onSubmit = async (data: LoginAdmin) => {
     try {
       await loginMutation.mutateAsync(data);
-      setLocation("/admin/dashboard");
+      setLocation("/admin-dashboard");
     } catch (error) {
       // Error is handled in the mutation's onError callback
     }
