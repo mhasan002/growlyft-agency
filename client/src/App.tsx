@@ -11,6 +11,10 @@ import Contact from "@/pages/contact";
 import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import NotFound from "@/pages/not-found";
+import AdminLogin from "@/pages/admin-login";
+import AdminDashboard from "@/pages/admin-dashboard";
+import { AdminAuthProvider } from "@/hooks/use-admin-auth";
+import { AdminProtectedRoute } from "@/lib/admin-protected-route";
 
 function Router() {
   return (
@@ -22,6 +26,16 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:id" component={BlogPost} />
+      
+      {/* Admin Routes */}
+      <AdminAuthProvider>
+        <Route path="/admin/login" component={AdminLogin} />
+        <AdminProtectedRoute 
+          path="/admin/dashboard" 
+          component={AdminDashboard} 
+        />
+      </AdminAuthProvider>
+      
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

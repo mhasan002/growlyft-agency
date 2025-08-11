@@ -3,8 +3,15 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema, insertDiscoveryCallSchema, insertTalkGrowthSchema } from "@shared/schema";
 import { z } from "zod";
+import { setupAdminAuth } from "./admin-auth";
+import { registerAdminRoutes } from "./admin-routes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup admin authentication
+  setupAdminAuth(app);
+  
+  // Register admin routes
+  registerAdminRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
