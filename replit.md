@@ -26,9 +26,10 @@ Preferred communication style: Simple, everyday language.
 - **Development**: Hot module replacement with Vite integration for seamless development experience
 
 ### Database Design
-- **ORM**: Drizzle ORM configured for PostgreSQL
-- **Schema**: Two main entities - users (id, username, password) and contact submissions (id, name, email, message, timestamp)
-- **Migrations**: Automated migration system with drizzle-kit
+- **Database**: Supabase PostgreSQL database with secure connection
+- **ORM**: Drizzle ORM configured for PostgreSQL via postgres-js
+- **Schema**: Comprehensive schema including users, admin users, contact submissions, discovery calls, blog posts, form configurations, and password reset tokens
+- **Migrations**: Automated migration system with drizzle-kit using `npm run db:push`
 - **Type Safety**: Generated TypeScript types from database schema
 
 ### Authentication & Security
