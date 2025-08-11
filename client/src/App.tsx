@@ -9,7 +9,7 @@ import WhyUs from "@/pages/why-us";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
 import Blog from "@/pages/blog";
-import BlogPost from "@/pages/blog-post";
+import BlogDetail from "@/pages/blog-detail";
 import NotFound from "@/pages/not-found";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
@@ -27,7 +27,7 @@ function Router() {
       <Route path="/services" component={Services} />
       <Route path="/contact" component={Contact} />
       <Route path="/blog" component={Blog} />
-      <Route path="/blog/:id" component={BlogPost} />
+      <Route path="/blog/:slug" component={BlogDetail} />
       
       {/* Admin Routes */}
       <AdminAuthProvider>

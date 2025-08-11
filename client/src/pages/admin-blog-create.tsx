@@ -289,11 +289,17 @@ export default function AdminBlogCreate() {
                     name="featuredImage"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Featured Image URL</FormLabel>
+                        <FormLabel>Cover Photo URL <span className="text-red-500">*</span></FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="https://..." />
                         </FormControl>
                         <FormMessage />
+                        <div className="text-sm text-gray-500 space-y-1">
+                          <p><strong>Recommended sizes:</strong></p>
+                          <p>• Cover photo: 1200x630px (aspect ratio 1.91:1)</p>
+                          <p>• Will be auto-resized to fit website design</p>
+                          <p>• Use high-quality images for best results</p>
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -325,6 +331,12 @@ export default function AdminBlogCreate() {
             <Card>
               <CardHeader>
                 <CardTitle>Content</CardTitle>
+                <div className="text-sm text-gray-500 space-y-1">
+                  <p><strong>Image guidelines for content:</strong></p>
+                  <p>• In-content images: 800x400px recommended</p>
+                  <p>• Images will be auto-resized to fit article width</p>
+                  <p>• Use descriptive alt text for accessibility</p>
+                </div>
               </CardHeader>
               <CardContent>
                 <FormField

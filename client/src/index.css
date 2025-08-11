@@ -264,6 +264,32 @@
   z-index: 2;
 }
 
+/* Auto-sizing for blog images */
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blog-content img[width] {
+  width: auto !important;
+  max-width: 100%;
+}
+
+.blog-content img[height] {
+  height: auto !important;
+}
+
+/* Cover photo styling */
+.blog-cover-image {
+  width: 100%;
+  aspect-ratio: 1.91 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 /* Textarea specific floating labels */
 .floating-textarea {
   width: 100%;

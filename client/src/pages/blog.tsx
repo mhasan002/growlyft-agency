@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import LetsTalkPopup from "@/components/LetsTalkPopup";
+import { getQueryFn } from "@/lib/queryClient";
 import { Menu, X, Calendar, Clock, ArrowRight, ChevronLeft, ChevronRight, Share2, Linkedin, Twitter, Facebook } from "lucide-react";
 
-// Mock blog data - in real app this would come from API
-const blogPosts = [
+// Mock blog data for fallback - real data comes from API
+const fallbackBlogPosts = [
   {
     id: "1",
     title: "10 Social Media Trends That Will Dominate 2025",
@@ -171,6 +173,26 @@ export default function Blog() {
   const [isLetsTalkOpen, setIsLetsTalkOpen] = useState(false);
   const postsPerPage = 6;
 
+  // Fetch blog posts from API
+  const { data: apiPosts, isLoading } = useQuery({
+    queryKey: ['/api/blog/posts'],
+    queryFn: getQueryFn({ on401: "returnNull" }),
+  });
+
+  // Use API data if available, otherwise fallback to mock data
+  const blogPosts = (Array.isArray(apiPosts) && apiPosts.length > 0) ? apiPosts.map((post: any) => ({
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt,
+    content: post.content,
+    image: post.featuredImage || post.featured_image || "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=400&fit=crop",
+    publishDate: post.publishDate || post.publish_date || new Date(post.createdAt || post.created_at).toISOString().split('T')[0],
+    author: post.author,
+    readTime: post.readTime || post.read_time || "5 min read",
+    category: post.category || "Social Media",
+    slug: post.slug
+  })) : fallbackBlogPosts;
+
   // Calculate pagination
   const totalPages = Math.ceil(blogPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
@@ -333,7 +355,7 @@ export default function Blog() {
       <section className="py-16">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {currentPosts.map((post, index) => (
+            {currentPosts.map((post: any, index: number) => (
               <article 
                 key={post.id}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group animate-on-scroll"
@@ -373,7 +395,7 @@ export default function Blog() {
                   
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500">By {post.author}</span>
-                    <Link href={`/blog/${post.id}`}>
+                    <Link href={`/blog/${post.slug || post.id}`}>
                       <Button 
                         className="bg-[#4CAF50] text-white px-4 py-2 rounded-full text-sm hover:bg-[#45a049] hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
                         data-testid={`read-more-${post.id}`}
