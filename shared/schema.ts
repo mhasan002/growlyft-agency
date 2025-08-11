@@ -28,6 +28,7 @@ export const formConfigs = pgTable("form_configs", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   formName: text("form_name").notNull().unique(), // lets_talk, discovery_call, etc.
   displayName: text("display_name").notNull(),
+  buttonName: text("button_name"), // "Let's Work Together", "Get Discovery Call", etc.
   location: text("location").notNull(), // "Home Page", "Services Page", etc.
   recipientEmails: json("recipient_emails").$type<string[]>().notNull().default([]),
   googleSheetUrl: text("google_sheet_url"),
@@ -184,6 +185,7 @@ export const loginAdminSchema = z.object({
 export const insertFormConfigSchema = createInsertSchema(formConfigs).pick({
   formName: true,
   displayName: true,
+  buttonName: true,
   location: true,
   recipientEmails: true,
   googleSheetUrl: true,
@@ -191,6 +193,7 @@ export const insertFormConfigSchema = createInsertSchema(formConfigs).pick({
 }).extend({
   formName: z.string().min(1, "Form name is required"),
   displayName: z.string().min(1, "Display name is required"),
+  buttonName: z.string().optional(),
   location: z.string().min(1, "Location is required"),
   recipientEmails: z.array(z.string().email()).min(1, "At least one recipient email is required"),
   googleSheetUrl: z.string().url().optional().or(z.literal("")),

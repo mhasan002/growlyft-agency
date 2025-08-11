@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import RichTextEditor from "./RichTextEditor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -338,13 +339,13 @@ export default function AdminBlogManager() {
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Content (Markdown)</FormLabel>
+                      <FormLabel>Content</FormLabel>
                       <FormControl>
-                        <Textarea
-                          {...field}
-                          placeholder="Write your post content in markdown..."
-                          className="min-h-[200px]"
-                          data-testid="textarea-post-content"
+                        <RichTextEditor
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Write your post content here..."
+                          height="300px"
                         />
                       </FormControl>
                       <FormMessage />
@@ -632,12 +633,13 @@ export default function AdminBlogManager() {
                 name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Content (Markdown)</FormLabel>
+                    <FormLabel>Content</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Write your post content in markdown..."
-                        className="min-h-[200px]"
+                      <RichTextEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Write your post content here..."
+                        height="300px"
                       />
                     </FormControl>
                     <FormMessage />

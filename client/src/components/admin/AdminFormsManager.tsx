@@ -96,11 +96,18 @@ export default function AdminFormsManager() {
     return (
       <TableRow key={form.id}>
         <TableCell className="font-medium">
-          <div className="flex items-center space-x-2">
-            <span>{form.displayName}</span>
-            <Badge variant={form.isActive ? "default" : "secondary"}>
-              {form.isActive ? "Active" : "Inactive"}
-            </Badge>
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span>{form.displayName}</span>
+              <Badge variant={form.isActive ? "default" : "secondary"}>
+                {form.isActive ? "Active" : "Inactive"}
+              </Badge>
+            </div>
+            {form.buttonName && (
+              <div className="text-sm text-muted-foreground">
+                Button: "{form.buttonName}"
+              </div>
+            )}
           </div>
         </TableCell>
         <TableCell>
@@ -242,7 +249,7 @@ export default function AdminFormsManager() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Form Name</TableHead>
+                  <TableHead>Form Name & Button</TableHead>
                   <TableHead>Page Location</TableHead>
                   <TableHead>Recipient Email(s)</TableHead>
                   <TableHead>Google Sheet Link</TableHead>
