@@ -219,7 +219,14 @@ export default function CustomPlanPopup({ isOpen, onClose }: CustomPlanPopupProp
                   Phone Number *
                 </Label>
                 <PhoneInput
-                  onChange={(value: string) => form.setValue("phoneNumber", value)}
+                  label=""
+                  required={false}
+                  phoneValue={form.watch("phoneNumber") || ""}
+                  countryCode="+1"
+                  onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
+                  onCountryCodeChange={() => {}}
+                  placeholder="Your phone number"
+                  variant="popup"
                   className="popup-input text-white"
                   data-testid="input-phone-number"
                 />

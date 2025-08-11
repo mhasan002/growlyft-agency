@@ -213,8 +213,14 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   Phone Number *
                 </Label>
                 <PhoneInput
-                  value={form.watch("phoneNumber")}
-                  onChange={(value) => form.setValue("phoneNumber", value)}
+                  label=""
+                  required={false}
+                  phoneValue={form.watch("phoneNumber") || ""}
+                  countryCode="+1"
+                  onPhoneChange={(value) => form.setValue("phoneNumber", value)}
+                  onCountryCodeChange={() => {}}
+                  placeholder="Your phone number"
+                  variant="popup"
                   className="popup-input text-white"
                   data-testid="input-phone-number"
                 />
