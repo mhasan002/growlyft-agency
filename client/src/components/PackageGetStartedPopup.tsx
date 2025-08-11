@@ -1,84 +1,86 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { insertDiscoveryCallSchema, type InsertDiscoveryCall } from "@shared/schema";
+import { z } from "zod";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Sparkles, ArrowRight, CheckCircle, ChevronDown } from "lucide-react";
+import { X, Package, ArrowRight, CheckCircle } from "lucide-react";
 
-interface StrategyCallPopupProps {
+interface PackageGetStartedPopupProps {
   isOpen: boolean;
   onClose: () => void;
+  packageName: string;
 }
 
 const budgetOptions = [
-  { value: "under_300", label: "< $300" },
-  { value: "300_500", label: "$300-$500" },
-  { value: "500_1000", label: "$500-$1k" },
-  { value: "1000_3000", label: "$1k–$3k" },
-  { value: "3000_10000", label: "$3k–$10k" },
-  { value: "10000_plus", label: "$10k+" },
+  { value: "under_300", label: "Less than $300" },
+  { value: "500_1000", label: "$500-$1,000" },
+  { value: "1000_3000", label: "$1,000 – $3000" },
+  { value: "3000_5000", label: "$3000 – $5,000" },
+  { value: "5000_plus", label: "$5,000+" },
 ];
 
-// PhoneInput component handles country codes internally
+const packageGetStartedSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
+  businessName: z.string().min(2, "Business name must be at least 2 characters"),
+  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
+  email: z.string().email("Please enter a valid email address"),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+  minimumBudget: z.enum(["under_300", "500_1000", "1000_3000", "3000_5000", "5000_plus"], {
+    required_error: "Please select your minimum budget",
+  }),
+  selectedPackage: z.string(),
+});
 
-export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopupProps) {
+type PackageGetStartedForm = z.infer<typeof packageGetStartedSchema>;
+
+export default function PackageGetStartedPopup({ isOpen, onClose, packageName }: PackageGetStartedPopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [shouldRedirect, setShouldRedirect] = useState(false);
   const queryClient = useQueryClient();
 
-  const form = useForm<InsertDiscoveryCall>({
-    resolver: zodResolver(insertDiscoveryCallSchema),
+  const form = useForm<PackageGetStartedForm>({
+    resolver: zodResolver(packageGetStartedSchema),
     defaultValues: {
       fullName: "",
       businessName: "",
       websiteUrl: "",
       email: "",
       phoneNumber: "",
-      monthlyBudget: undefined,
-      mainGoal: "",
-      readyToInvest: undefined,
+      minimumBudget: undefined,
+      selectedPackage: packageName,
     },
   });
 
   const mutation = useMutation({
-    mutationFn: (data: InsertDiscoveryCall) => apiRequest("POST", "/api/discovery-calls", data),
-    onSuccess: (response, variables) => {
-      // Check if they qualify for the Calendly redirect
-      const qualifiesForCall = 
-        variables.readyToInvest === "yes" && 
-        (variables.monthlyBudget === "500_1000" || 
-         variables.monthlyBudget === "1000_3000" || 
-         variables.monthlyBudget === "3000_10000" || 
-         variables.monthlyBudget === "10000_plus");
-      
-      setShouldRedirect(qualifiesForCall);
+    mutationFn: async (data: PackageGetStartedForm) => {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          type: "package_get_started",
+        }),
+      });
+      return response.json();
+    },
+    onSuccess: () => {
       setIsSubmitted(true);
-      queryClient.invalidateQueries({ queryKey: ['/api/discovery-calls'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/contact"] });
     },
   });
 
-  const onSubmit = (data: InsertDiscoveryCall) => {
+  const onSubmit = (data: PackageGetStartedForm) => {
     mutation.mutate(data);
-  };
-
-  const handleCalendlyRedirect = () => {
-    // Replace with actual Calendly link
-    window.open("https://calendly.com/growlyft/free-strategy-call", "_blank");
-    onClose();
   };
 
   const handleClose = () => {
     setIsSubmitted(false);
-    setShouldRedirect(false);
     form.reset();
     onClose();
   };
@@ -86,12 +88,16 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent 
-        className="max-w-2xl max-h-[85vh] popup-form-background border-2 border-[#04E762]/40 shadow-2xl backdrop-blur-xl overflow-hidden p-0 
-                   fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50"
-        style={{ 
+        className="popup-glass-effect border-0 max-w-2xl w-full mx-4 p-0 overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(4, 231, 98, 0.2)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(4, 231, 98, 0.1)',
+          borderRadius: '16px',
           position: 'fixed',
-          top: '50%', 
-          left: '50%', 
+          top: '50%',
+          left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 50,
           maxHeight: '85vh'
@@ -110,20 +116,20 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
           
           <div className="flex items-center space-x-3 mb-4">
             <div className="p-2 bg-gradient-to-r from-[#04E762] to-[#04E762] rounded-lg">
-              <Sparkles className="w-6 h-6 text-[#0F172A]" />
+              <Package className="w-6 h-6 text-[#0F172A]" />
             </div>
             <DialogTitle className="text-2xl font-bold text-white">
-              Free Strategy Call
+              Get Started - {packageName} Package
             </DialogTitle>
           </div>
           
           <DialogDescription className="text-white/80 text-base leading-relaxed mb-6">
-            Get a personalized growth strategy for your business. Our experts will analyze your current approach and provide actionable recommendations.
+            You're one step closer to growing your brand. Let's collect some details to get started with your {packageName} package.
           </DialogDescription>
         </DialogHeader>
 
         {!isSubmitted ? (
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="strategy-call-form">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="package-get-started-form">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div className="space-y-2">
@@ -166,10 +172,10 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               </div>
             </div>
 
-            {/* Website or Social Media Link */}
+            {/* Website/Social Media */}
             <div className="space-y-2">
               <Label htmlFor="websiteUrl" className="text-white font-medium">
-                Website or Social Media Link *
+                Website/Social Media *
               </Label>
               <Input
                 {...form.register("websiteUrl")}
@@ -213,8 +219,7 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   Phone Number *
                 </Label>
                 <PhoneInput
-                  value={form.watch("phoneNumber")}
-                  onChange={(value) => form.setValue("phoneNumber", value)}
+                  onChange={(value: string) => form.setValue("phoneNumber", value)}
                   className="popup-input text-white"
                   data-testid="input-phone-number"
                 />
@@ -226,11 +231,11 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
               </div>
             </div>
 
-            {/* Monthly Marketing Budget */}
+            {/* Minimum Budget */}
             <div className="space-y-2">
-              <Label className="text-white/90 font-medium">Monthly Marketing Budget *</Label>
-              <Select onValueChange={(value) => form.setValue("monthlyBudget", value as any)}>
-                <SelectTrigger className="popup-input text-white" data-testid="select-monthly-budget">
+              <Label className="text-white/90 font-medium">Minimum Budget *</Label>
+              <Select onValueChange={(value) => form.setValue("minimumBudget", value as any)}>
+                <SelectTrigger className="popup-input text-white" data-testid="select-minimum-budget">
                   <SelectValue placeholder="Select your budget range" className="text-white/70" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0F172A] border-[#04E762]/30">
@@ -241,60 +246,19 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   ))}
                 </SelectContent>
               </Select>
-              {form.formState.errors.monthlyBudget && (
-                <span className="text-red-400 text-sm" data-testid="error-monthly-budget">
-                  {form.formState.errors.monthlyBudget.message}
+              {form.formState.errors.minimumBudget && (
+                <span className="text-red-400 text-sm" data-testid="error-minimum-budget">
+                  {form.formState.errors.minimumBudget.message}
                 </span>
               )}
             </div>
 
-            {/* Main Goal for This Call */}
-            <div className="space-y-2">
-              <Label htmlFor="mainGoal" className="text-white font-medium">
-                Main Goal for This Call *
-              </Label>
-              <Textarea
-                {...form.register("mainGoal")}
-                id="mainGoal"
-                rows={4}
-                className="popup-input text-white resize-none"
-                placeholder="Tell us about your main goals, challenges, or what you'd like to achieve..."
-                data-testid="textarea-main-goal"
-              />
-              {form.formState.errors.mainGoal && (
-                <span className="text-red-400 text-sm mt-1" data-testid="error-main-goal">
-                  {form.formState.errors.mainGoal.message}
-                </span>
-              )}
-            </div>
-
-            {/* Are You Ready to Invest */}
-            <div className="space-y-4">
-              <Label className="text-white/90 font-medium">Are You Ready to Invest in Marketing if We're a Fit? *</Label>
-              <RadioGroup 
-                onValueChange={(value) => form.setValue("readyToInvest", value as any)}
-                className="space-y-3"
-                data-testid="radio-ready-to-invest"
-              >
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
-                  <RadioGroupItem value="yes" id="yes" className="border-[#04E762] text-[#04E762]" />
-                  <Label htmlFor="yes" className="text-[#F8FAFC] cursor-pointer flex-1">Yes</Label>
-                </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
-                  <RadioGroupItem value="not_sure" id="not_sure" className="border-[#04E762] text-[#04E762]" />
-                  <Label htmlFor="not_sure" className="text-[#F8FAFC] cursor-pointer flex-1">Not Sure</Label>
-                </div>
-                <div className="flex items-center space-x-3 p-3 rounded-lg border border-[#04E762]/20 hover:bg-[#04E762]/5 transition-colors">
-                  <RadioGroupItem value="no" id="no" className="border-[#04E762] text-[#04E762]" />
-                  <Label htmlFor="no" className="text-[#F8FAFC] cursor-pointer flex-1">No</Label>
-                </div>
-              </RadioGroup>
-              {form.formState.errors.readyToInvest && (
-                <span className="text-red-400 text-sm" data-testid="error-ready-to-invest">
-                  {form.formState.errors.readyToInvest.message}
-                </span>
-              )}
-            </div>
+            {/* Selected Package - Hidden */}
+            <input 
+              type="hidden" 
+              {...form.register("selectedPackage")} 
+              value={packageName}
+            />
 
             {/* Submit Button */}
             <Button
@@ -307,55 +271,25 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                 "Submitting..."
               ) : (
                 <div className="flex items-center justify-center space-x-2">
-                  <span>Get My Free Strategy Call</span>
+                  <span>Get Started with {packageName}</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               )}
             </Button>
           </form>
-        ) : shouldRedirect ? (
-          // Success - Qualified for Calendly
-          <div className="text-center space-y-6 py-8">
-            <div className="flex justify-center">
-              <div className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full">
-                <CheckCircle className="w-12 h-12 text-black" />
-              </div>
-            </div>
-            
-            <div className="space-y-3">
-              <h3 className="text-2xl font-bold text-white">Perfect! You Qualify!</h3>
-              <p className="text-white/80 text-lg leading-relaxed max-w-md mx-auto">
-                Based on your responses, you're an ideal fit for our free strategy call. Let's schedule your session now!
-              </p>
-            </div>
-
-            <Button
-              onClick={handleCalendlyRedirect}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-400/25"
-              data-testid="button-schedule-call"
-            >
-              <div className="flex items-center space-x-2">
-                <span>Schedule My Call Now</span>
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </Button>
-          </div>
         ) : (
-          // Success - Not qualified
+          // Success Message
           <div className="text-center space-y-6 py-8">
             <div className="flex justify-center">
-              <div className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full">
-                <CheckCircle className="w-12 h-12 text-black" />
+              <div className="p-4 bg-gradient-to-r from-green-400 to-green-500 rounded-full">
+                <CheckCircle className="w-12 h-12 text-white" />
               </div>
             </div>
             
             <div className="space-y-3">
-              <h3 className="text-2xl font-bold text-white">Thank You!</h3>
+              <h3 className="text-2xl font-bold text-white">You're one step closer!</h3>
               <p className="text-white/80 text-lg leading-relaxed max-w-md mx-auto">
-                Thanks for your interest — at the moment, our free call slots are reserved for businesses actively investing in growth.
-              </p>
-              <p className="text-yellow-400 text-base">
-                Feel free to reach out when you're ready to scale your marketing efforts!
+                Our team will contact you to discuss your {packageName} plan and next steps.
               </p>
             </div>
 

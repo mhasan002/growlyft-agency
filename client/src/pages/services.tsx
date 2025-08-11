@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import LetsTalkPopup from "@/components/LetsTalkPopup";
+import SeeCapabilitiesModal from "@/components/SeeCapabilitiesModal";
+import PackageGetStartedPopup from "@/components/PackageGetStartedPopup";
+import CustomPlanPopup from "@/components/CustomPlanPopup";
 import { 
   Menu, X, Phone, Calendar, Star, Rocket, Crown, 
   Target, Palette, Video, MessageSquare, TrendingUp, 
   Hash, BarChart3, Users, ChevronDown, ChevronUp,
-  Linkedin, Twitter, Instagram, Settings
+  Linkedin, Twitter, Instagram, Settings, ArrowRight
 } from "lucide-react";
 
 export default function Services() {
@@ -14,6 +18,13 @@ export default function Services() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [animatedElements, setAnimatedElements] = useState(new Set<Element>());
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  
+  // Popup states
+  const [isLetsTalkOpen, setIsLetsTalkOpen] = useState(false);
+  const [isSeeCapabilitiesOpen, setIsSeeCapabilitiesOpen] = useState(false);
+  const [isPackageGetStartedOpen, setIsPackageGetStartedOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("");
+  const [isCustomPlanOpen, setIsCustomPlanOpen] = useState(false);
 
   // Scroll handlers
   useEffect(() => {
@@ -52,6 +63,11 @@ export default function Services() {
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const handlePackageGetStarted = (packageName: string) => {
+    setSelectedPackage(packageName);
+    setIsPackageGetStartedOpen(true);
   };
 
   const servicePackages = [
@@ -298,12 +314,14 @@ export default function Services() {
             {/* CTA Buttons */}
             <div className="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center animate-fadeIn" style={{animationDelay: '0.8s'}}>
               <Button 
+                onClick={() => setIsLetsTalkOpen(true)}
                 className="bg-emerald-500 text-white px-10 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-600 transition-all duration-300 ease-out h-auto"
                 data-testid="cta-primary"
               >
                 Let's Talk
               </Button>
               <Button 
+                onClick={() => setIsSeeCapabilitiesOpen(true)}
                 variant="outline"
                 className="border-2 border-gray-800 text-gray-800 bg-transparent px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-800 hover:text-white hover:scale-105 transition-all duration-300 ease-out h-auto"
                 data-testid="cta-secondary"
@@ -368,6 +386,7 @@ export default function Services() {
                 </div>
                 
                 <Button 
+                  onClick={() => handlePackageGetStarted(pkg.name)}
                   className={`w-full py-3 rounded-full font-semibold transition-all duration-300 ${
                     pkg.highlight 
                       ? 'bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-lg' 
@@ -383,6 +402,7 @@ export default function Services() {
 
           <div className="text-center animate-on-scroll">
             <Button 
+              onClick={() => setIsSeeCapabilitiesOpen(true)}
               className="bg-black text-white px-12 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-gray-800 transition-all duration-300 ease-out h-auto"
               data-testid="packages-cta"
             >
@@ -449,6 +469,7 @@ export default function Services() {
                 Let's figure it out — together.
               </p>
               <Button 
+                onClick={() => setIsCustomPlanOpen(true)}
                 className="bg-emerald-500 text-white px-10 py-4 rounded-full text-lg font-bold hover:scale-105 hover:shadow-2xl hover:bg-emerald-600 transition-all duration-300 ease-out h-auto"
                 data-testid="custom-cta"
               >
@@ -592,6 +613,28 @@ export default function Services() {
           </div>
         </div>
       </footer>
+
+      {/* All Popup Forms */}
+      <LetsTalkPopup 
+        isOpen={isLetsTalkOpen} 
+        onClose={() => setIsLetsTalkOpen(false)} 
+      />
+      
+      <SeeCapabilitiesModal 
+        isOpen={isSeeCapabilitiesOpen} 
+        onClose={() => setIsSeeCapabilitiesOpen(false)} 
+      />
+      
+      <PackageGetStartedPopup 
+        isOpen={isPackageGetStartedOpen} 
+        onClose={() => setIsPackageGetStartedOpen(false)} 
+        packageName={selectedPackage}
+      />
+      
+      <CustomPlanPopup 
+        isOpen={isCustomPlanOpen} 
+        onClose={() => setIsCustomPlanOpen(false)} 
+      />
     </div>
   );
 }

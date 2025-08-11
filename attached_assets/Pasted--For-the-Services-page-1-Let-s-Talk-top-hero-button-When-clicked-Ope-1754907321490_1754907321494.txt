@@ -1,0 +1,192 @@
+
+
+
+
+
+
+
+
+
+
+
+---
+For the Services page :
+## **1️⃣ Let’s Talk (top hero button)**
+
+When clicked:
+
+* Opens a **pop-up form** (modal) or takes them to the **Contact Page form** directly.
+* Fields (all required except message):
+
+  1. Full Name
+  2. Business Name
+  3. Website or Social Media Link
+  4. Contact Email
+  5.Phone number(country code add)
+  6. Minimum Budget
+  7. Message (optional)
+* After submission → Success message:
+
+  > ✅ Thanks for reaching out! We’ll review your details and get back to you within 24 hours.
+
+---
+
+## **2️⃣ See Capabilities (top hero button)**
+
+When clicked:
+
+* Smooth scroll or open a modal listing **main service capabilities** (but **without revealing all services or prices**).
+* Content Example:
+
+  * Content Strategy & Planning
+  * Post Design & Captions
+  * Short Video Scripting
+  * Engagement (DMs & Comments)
+ * Video Editing
+  * Trend Analysis
+  * Performance Optimization
+* Include a **"Book a Discovery Call"** button at the bottom.
+—
+Here’s the **full form structure** for **Book a Discovery Call** based on your brand style and user flow:
+
+---
+
+## **📅 Book a Discovery Call Form**
+
+**Title:**
+
+> Schedule Your Free Discovery Call
+> Let’s explore how we can grow your brand — together.
+
+**Form Fields (all required unless noted):**
+
+1. **Full Name** *(required)*
+
+   * Text input
+
+2. **Business Name** *(required)*
+
+   * Text input
+
+3. **Website or Social Media Link** *(required)*
+
+   * Text input (URL format)
+
+4. **Contact Email** *(required)*
+
+   * Email input
+
+5.phne number with country code(required)
+5. **Minimum Budget** *(required)*
+
+   * Dropdown or radio options:
+
+     * Less than $300 
+     *\$500-$1,000
+     * \$1,000 – \$3000
+     * \$3000 – \$5,000
+     * \$5,000+
+
+8. **What would you like to discuss?** *(optional)*
+
+   * Large text area for free input
+
+---
+
+**Buttons:**
+
+* **Submit & Book My Call** (primary, green)
+* **Cancel** (secondary, light outline)
+
+---
+
+**Post-Submission Confirmation:**
+
+> ✅ Your discovery call is booked!
+> You’ll receive a confirmation email with your meeting link and details within the next few minutes.
+
+---
+
+
+
+## **3️⃣ Package → Get Started (Starter, Growth, Authority)**
+
+When clicked:
+
+* Opens a **short intake form specific to that package**.
+* Form:
+* Fields (all required):
+  1. Full Name
+  2. Business Name
+  3. Website/Social Media
+  4. Contact Email
+5.Phone number(country code add)
+  6. Minimum Budget
+5. Select Package (auto-filled)
+
+* After submission:
+
+  > 🎉 You’re one step closer! Our team will contact you to discuss your plan and next steps.
+
+---
+
+## **4️⃣ Book a Discovery Call**
+
+When clicked:
+
+* Opens **Discovery Call Booking Form** (from our earlier conversation).
+* Key features:
+
+  * Contact details
+  * Goal selection
+* After booking: Confirmation page + email with call link.
+
+---
+
+## **5️⃣ “Get Your Custom Plan” (new button next to Discovery Call)**
+
+* Will open a **Custom Plan Form**:
+* Fields (all required except Briefly describe your needs ):
+  1. Full Name
+  2. Business Name
+  3. Website/Social Media
+  4. Contact Email
+  5.Phone number(country code add)
+  6. Minimum Budget
+  7. Briefly describe your needs (optional)
+* After submission:
+
+  > 📋 Thanks! We’ll prepare a tailored proposal and send a meeting link to your email.
+
+---
+
+## **6️⃣ Book Your Strategy Call (footer)**
+
+When clicked:
+
+* Same as **Discovery Call Form**, but titled:
+
+  > “Strategy Call: Let’s map out your growth plan together.”
+
+---
+
+## **7️⃣ Get a Custom Quote (footer)**
+
+When clicked:
+
+* Opens **Custom Quote Request Form**:
+ Fields (all required except Any deadlines or launch dates? ):
+
+  1. Full Name
+  2. Business Name
+  3. Website/Social Media
+  4. Contact Email
+  5.Phone number(country code add)
+ 6. Which services you’re interested in (checkbox list)
+  5. Minimum Budget
+  8. Any deadlines or launch dates? (optional)
+* After submission:
+
+  > 💌 Your quote request has been sent. We’ll get back to you with an estimate and next steps.
+
+---
