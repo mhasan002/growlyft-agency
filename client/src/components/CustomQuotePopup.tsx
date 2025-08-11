@@ -54,6 +54,7 @@ const budgetOptions = [
 
 export default function CustomQuotePopup({ isOpen, onClose }: CustomQuotePopupProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
 
   const form = useForm<CustomQuoteFormData>({
     resolver: zodResolver(customQuoteSchema),
@@ -199,8 +200,9 @@ export default function CustomQuotePopup({ isOpen, onClose }: CustomQuotePopupPr
                   label=""
                   required={false}
                   phoneValue={form.watch("phoneNumber") || ""}
-                  countryCode="+1"
+                  countryCode={selectedCountryCode}
                   onPhoneChange={(value: string) => form.setValue("phoneNumber", value)}
+                  onCountryCodeChange={(code: string) => setSelectedCountryCode(code)}
                   placeholder="123-456-7890"
                   variant="popup"
                   data-testid="input-phone-number"
