@@ -184,6 +184,7 @@ export class MemStorage implements IStorage {
     const formConfig: FormConfig = {
       ...insertFormConfig,
       id,
+      googleSheetUrl: insertFormConfig.googleSheetUrl || null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -230,6 +231,7 @@ export class MemStorage implements IStorage {
     const blogPost: BlogPost = {
       ...insertBlogPost,
       id,
+      featuredImage: insertBlogPost.featuredImage || null,
       publishedAt: insertBlogPost.isPublished ? new Date() : null,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -465,11 +467,13 @@ export class DatabaseStorage implements IStorage {
   // Blog post methods
   async getAllBlogPosts(publishedOnly = false): Promise<BlogPost[]> {
     try {
-      let query = db.select().from(blogPosts);
+      let result;
       if (publishedOnly) {
-        query = query.where(eq(blogPosts.isPublished, true));
+        result = await db.select().from(blogPosts).where(eq(blogPosts.isPublished, true));
+      } else {
+        result = await db.select().from(blogPosts);
       }
-      return await query.orderBy(blogPosts.createdAt);
+      return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
     } catch (error) {
       console.error("Error getting blog posts:", error);
       return [];
