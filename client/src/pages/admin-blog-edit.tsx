@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -11,10 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { BlogPost, InsertBlogPost, insertBlogPostSchema } from "@shared/schema";
-import { ArrowLeft, Save, Eye } from "lucide-react";
+import { ArrowLeft, Save, Eye, Upload, Link } from "lucide-react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -23,6 +24,8 @@ export default function AdminBlogEdit() {
   const [match, params] = useRoute("/admin-blog-edit/:id");
   const { toast } = useToast();
   const [isPreview, setIsPreview] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: post, isLoading } = useQuery<BlogPost>({
     queryKey: ["/api/admin/posts", params?.id],
@@ -318,11 +321,85 @@ export default function AdminBlogEdit() {
                     name="featuredImage"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Featured Image URL</FormLabel>
+                        <FormLabel>Cover Photo</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="https://..." />
+                          <Tabs defaultValue="url" className="w-full">
+                            <TabsList className="grid w-full grid-cols-2">
+                              <TabsTrigger value="url" className="flex items-center gap-2">
+                                <Link className="h-4 w-4" />
+                                URL
+                              </TabsTrigger>
+                              <TabsTrigger value="upload" className="flex items-center gap-2">
+                                <Upload className="h-4 w-4" />
+                                Upload
+                              </TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="url" className="space-y-2">
+                              <Input 
+                                {...field} 
+                                placeholder="https://..." 
+                                value={uploadedImageUrl || field.value || ""}
+                                onChange={(e) => {
+                                  setUploadedImageUrl("");
+                                  field.onChange(e.target.value);
+                                }}
+                              />
+                            </TabsContent>
+                            <TabsContent value="upload" className="space-y-2">
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  onClick={() => fileInputRef.current?.click()}
+                                  className="flex items-center gap-2"
+                                >
+                                  <Upload className="h-4 w-4" />
+                                  Choose Image
+                                </Button>
+                                <input
+                                  ref={fileInputRef}
+                                  type="file"
+                                  accept="image/*"
+                                  className="hidden"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      // Convert file to data URL
+                                      const reader = new FileReader();
+                                      reader.onload = (event) => {
+                                        const dataUrl = event.target?.result as string;
+                                        setUploadedImageUrl(dataUrl);
+                                        field.onChange(dataUrl);
+                                      };
+                                      reader.readAsDataURL(file);
+                                    }
+                                  }}
+                                />
+                                {(uploadedImageUrl || field.value) && (
+                                  <span className="text-sm text-green-600">
+                                    ✓ Image selected
+                                  </span>
+                                )}
+                              </div>
+                              {uploadedImageUrl && (
+                                <div className="mt-2">
+                                  <img 
+                                    src={uploadedImageUrl} 
+                                    alt="Preview" 
+                                    className="max-w-xs max-h-32 object-cover rounded border"
+                                  />
+                                </div>
+                              )}
+                            </TabsContent>
+                          </Tabs>
                         </FormControl>
                         <FormMessage />
+                        <div className="text-sm text-gray-500 space-y-1">
+                          <p><strong>Recommended sizes:</strong></p>
+                          <p>• Cover photo: 1200x630px (aspect ratio 1.91:1)</p>
+                          <p>• Will be auto-resized to fit website design</p>
+                          <p>• Use high-quality images for best results</p>
+                        </div>
                       </FormItem>
                     )}
                   />
