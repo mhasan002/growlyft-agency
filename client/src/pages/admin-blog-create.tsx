@@ -72,19 +72,40 @@ export default function AdminBlogCreate() {
     },
   });
 
+  // Function to estimate reading time based on content
+  const estimateReadTime = (content: string) => {
+    const wordsPerMinute = 200;
+    const textContent = content.replace(/<[^>]*>/g, ''); // Remove HTML tags
+    const wordCount = textContent.trim().split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return `${minutes} min read`;
+  };
+
   const onSubmit = (data: InsertBlogPost) => {
+    // Auto-generate read time if empty
+    if (!data.readTime && data.content) {
+      data.readTime = estimateReadTime(data.content);
+    }
     createPostMutation.mutate(data);
   };
 
   const saveDraft = () => {
     const data = form.getValues();
     data.isPublished = false;
+    // Auto-generate read time if empty
+    if (!data.readTime && data.content) {
+      data.readTime = estimateReadTime(data.content);
+    }
     createPostMutation.mutate(data);
   };
 
   const publishPost = () => {
     const data = form.getValues();
     data.isPublished = true;
+    // Auto-generate read time if empty
+    if (!data.readTime && data.content) {
+      data.readTime = estimateReadTime(data.content);
+    }
     createPostMutation.mutate(data);
   };
 
@@ -254,9 +275,12 @@ export default function AdminBlogCreate() {
                       <FormItem>
                         <FormLabel>Read Time</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="5 min read" />
+                          <Input {...field} placeholder="Auto-calculated if empty" />
                         </FormControl>
                         <FormMessage />
+                        <div className="text-sm text-gray-500">
+                          Leave empty to auto-calculate from content
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -280,15 +304,18 @@ export default function AdminBlogCreate() {
                   name="excerpt"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Excerpt</FormLabel>
+                      <FormLabel>Excerpt <span className="text-red-500">*</span></FormLabel>
                       <FormControl>
                         <Textarea 
                           {...field} 
-                          placeholder="Brief description of the post"
+                          placeholder="Brief description of the post (minimum 10 characters)"
                           rows={3}
                         />
                       </FormControl>
                       <FormMessage />
+                      <div className="text-sm text-gray-500">
+                        {field.value?.length || 0}/10 characters minimum
+                      </div>
                     </FormItem>
                   )}
                 />
