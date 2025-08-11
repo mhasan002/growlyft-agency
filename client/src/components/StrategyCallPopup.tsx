@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { insertDiscoveryCallSchema, type InsertDiscoveryCall } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { X, Sparkles, ArrowRight, CheckCircle } from "lucide-react";
+import { X, Sparkles, ArrowRight, CheckCircle, ChevronDown } from "lucide-react";
 
 interface StrategyCallPopupProps {
   isOpen: boolean;
@@ -158,12 +158,36 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [countryCode, setCountryCode] = useState("+1");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const queryClient = useQueryClient();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const filteredCountries = countryCodeOptions.filter(option =>
     option.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
     option.value.includes(searchQuery)
   );
+
+  const selectedCountry = countryCodeOptions.find(option => option.value === countryCode);
+
+  const handleCountrySelect = (country: typeof countryCodeOptions[0]) => {
+    setCountryCode(country.value);
+    setIsCountryDropdownOpen(false);
+    setSearchQuery("");
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+
+    if (isCountryDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isCountryDropdownOpen]);
 
   const form = useForm<InsertDiscoveryCall>({
     resolver: zodResolver(insertDiscoveryCallSchema),
@@ -343,61 +367,43 @@ export default function StrategyCallPopup({ isOpen, onClose }: StrategyCallPopup
                   Phone Number *
                 </Label>
                 <div className="flex gap-3">
-                  <Select value={countryCode} onValueChange={setCountryCode}>
-                    <SelectTrigger className="w-32 popup-input text-white" data-testid="select-country-code">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#0F172A] border-[#04E762]/30 max-h-80">
-                      <div 
-                        className="sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10"
-                        onPointerDown={(e) => e.stopPropagation()}
-                        onMouseDown={(e) => e.stopPropagation()}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Input
-                          type="text"
-                          placeholder="Search countries..."
-                          className="w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30"
-                          value={searchQuery}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            setSearchQuery(e.target.value);
-                          }}
-                          onKeyDown={(e) => {
-                            e.stopPropagation();
-                            // Prevent space and enter from closing the select
-                            if (e.key === ' ' || e.key === 'Enter') {
-                              e.preventDefault();
-                            }
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                          onPointerDown={(e) => {
-                            e.stopPropagation();
-                          }}
-                          onMouseDown={(e) => {
-                            e.stopPropagation();
-                          }}
-                          onFocus={(e) => {
-                            e.stopPropagation();
-                          }}
-                          autoFocus={false}
-                        />
+                  <div className="relative w-32" ref={dropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                      className="w-full popup-input text-white text-left flex items-center justify-between"
+                      data-testid="select-country-code"
+                    >
+                      <span className="truncate">{selectedCountry?.value || "+1"}</span>
+                      <ChevronDown className="w-4 h-4 shrink-0" />
+                    </button>
+                    {isCountryDropdownOpen && (
+                      <div className="absolute z-50 w-80 mt-1 bg-[#0F172A] border border-[#04E762]/30 rounded-md shadow-lg max-h-80">
+                        <div className="sticky top-0 bg-[#0F172A] p-2 border-b border-[#04E762]/30 z-10">
+                          <Input
+                            type="text"
+                            placeholder="Search countries..."
+                            className="w-full p-2 border rounded text-sm bg-[#0F172A] text-white border-[#04E762]/30"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            autoFocus
+                          />
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                          {filteredCountries.map((option) => (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => handleCountrySelect(option)}
+                              className="w-full text-left px-3 py-2 text-[#F8FAFC] hover:bg-[#04E762]/10 text-sm"
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      <div className="max-h-60 overflow-y-auto">
-                        {filteredCountries.map((option) => (
-                          <SelectItem 
-                            key={option.id} 
-                            value={option.value} 
-                            className="text-[#F8FAFC] hover:bg-[#04E762]/10"
-                          >
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </div>
-                    </SelectContent>
-                  </Select>
+                    )}
+                  </div>
                   <Input
                     {...form.register("phoneNumber")}
                     type="tel"
