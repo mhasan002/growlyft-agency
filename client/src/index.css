@@ -414,3 +414,58 @@
   background-size: 30px 30px;
   pointer-events: none;
 }
+
+/* Blog Animations */
+.blog-card-hover {
+  transition: all 0.3s ease;
+}
+
+.blog-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(76, 175, 80, 0.15);
+}
+
+.blog-image-zoom {
+  transition: transform 0.5s ease;
+}
+
+.blog-image-zoom:hover {
+  transform: scale(1.05);
+}
+
+/* Prose Styles for Blog Content */
+.prose {
+  max-width: none;
+}
+
+.prose h2 {
+  color: #1F1F1F;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.prose h3 {
+  color: #1F1F1F;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose p {
+  color: #4B5563;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+
+.prose a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}

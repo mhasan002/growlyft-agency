@@ -1,0 +1,553 @@
+import { useState, useEffect } from "react";
+import { Link, useParams } from "wouter";
+import { Button } from "@/components/ui/button";
+import logoPath from "@assets/growlyft black logo_1754568178227.png";
+import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
+import { Menu, X, Calendar, Clock, ArrowLeft, Share2, Linkedin, Twitter, Facebook, Copy, ChevronLeft, ChevronRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+// Mock blog data - same as in blog.tsx
+const blogPosts = [
+  {
+    id: "1",
+    title: "10 Social Media Trends That Will Dominate 2025",
+    excerpt: "Stay ahead of the curve with these emerging trends that are reshaping the social media landscape. From AI-powered content to immersive experiences.",
+    content: `
+      <p>Social media is constantly evolving, and 2025 promises to bring revolutionary changes that will reshape how brands connect with their audiences. As we enter this new era, understanding these trends isn't just advantageous—it's essential for survival in the digital marketplace.</p>
+      
+      <h2>1. AI-Powered Personalization</h2>
+      <p>Artificial intelligence is no longer a futuristic concept; it's here and transforming how we create and distribute content. Brands are using AI to analyze user behavior, predict preferences, and deliver hyper-personalized experiences that feel tailor-made for each individual.</p>
+      
+      <h2>2. Interactive Content Revolution</h2>
+      <p>Static posts are becoming obsolete. Interactive content—polls, quizzes, AR filters, and live experiences—is driving engagement rates through the roof. Brands that embrace interactivity are seeing 3x higher engagement rates.</p>
+      
+      <h2>3. Micro-Communities Over Mass Following</h2>
+      <p>The era of chasing millions of followers is ending. Successful brands are focusing on building tight-knit communities of engaged users who genuinely care about their message and products.</p>
+      
+      <h2>4. Video-First Strategy</h2>
+      <p>If you're not thinking video-first, you're already behind. Short-form videos continue to dominate, but long-form content is making a comeback as audiences crave deeper connections and authentic storytelling.</p>
+      
+      <h2>5. Social Commerce Integration</h2>
+      <p>The line between social media and e-commerce is blurring. Platforms are becoming shopping destinations, and brands need to optimize their social presence for direct sales.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200&h=600&fit=crop",
+    publishDate: "2025-01-15",
+    author: "Sarah Chen",
+    readTime: "8 min read",
+    category: "Trends"
+  },
+  {
+    id: "2",
+    title: "The Ultimate Guide to Instagram Reels for Business",
+    excerpt: "Master the art of Instagram Reels with proven strategies that drive engagement, reach new audiences, and convert followers into customers.",
+    content: `
+      <p>Instagram Reels have become the platform's most powerful feature for business growth. With over 2 billion users watching Reels daily, mastering this format is crucial for any brand looking to expand their reach and engagement.</p>
+      
+      <h2>Understanding the Algorithm</h2>
+      <p>Instagram's algorithm favors Reels that keep users engaged. The key factors include watch time, engagement rate within the first hour, and how quickly people interact with your content.</p>
+      
+      <h2>Content Planning Strategy</h2>
+      <p>Successful Reels start with strategic planning. Focus on trending audio, relevant hashtags, and content that provides value—whether that's entertainment, education, or inspiration.</p>
+      
+      <h2>Production Tips</h2>
+      <p>You don't need expensive equipment to create compelling Reels. Good lighting, steady shots, and clear audio are more important than high-end cameras. Use your smartphone effectively with these tips.</p>
+      
+      <h2>Optimization Techniques</h2>
+      <p>Post timing matters. Analyze your audience insights to determine when your followers are most active. Engage with comments quickly to boost your Reel's performance.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=1200&h=600&fit=crop",
+    publishDate: "2025-01-10",
+    author: "Marcus Rodriguez",
+    readTime: "12 min read",
+    category: "Instagram"
+  },
+  {
+    id: "3",
+    title: "Building Authentic Brand Communities on Social Media",
+    excerpt: "Learn how to foster genuine connections and build loyal communities that drive long-term business growth through authentic engagement strategies.",
+    content: `
+      <p>In an age where consumers are bombarded with marketing messages, authenticity has become the currency of trust. Building genuine brand communities isn't just about follower counts—it's about creating meaningful relationships that drive real business results.</p>
+      
+      <h2>The Foundation of Authentic Communities</h2>
+      <p>Authentic communities start with a clear brand purpose and values. Your community should rally around something bigger than your products—a mission, belief, or cause that resonates with your audience.</p>
+      
+      <h2>Engagement Strategies That Work</h2>
+      <p>Effective community building requires consistent, genuine interaction. Respond to comments personally, share user-generated content, and create opportunities for community members to connect with each other.</p>
+      
+      <h2>Content That Builds Connections</h2>
+      <p>Share behind-the-scenes content, celebrate community achievements, and be vulnerable about your brand's journey. Authenticity breeds connection.</p>
+      
+      <h2>Measuring Community Health</h2>
+      <p>Look beyond vanity metrics. Track engagement quality, community sentiment, customer lifetime value from community members, and user-generated content volume.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop",
+    publishDate: "2025-01-05",
+    author: "Emma Thompson",
+    readTime: "10 min read",
+    category: "Community"
+  },
+  {
+    id: "4",
+    title: "ROI-Driven Social Media Strategy: Metrics That Matter",
+    excerpt: "Discover which social media metrics actually impact your bottom line and how to build a data-driven strategy that delivers measurable results.",
+    content: `
+      <p>Too many businesses get lost in vanity metrics that look impressive but don't drive real business value. It's time to focus on metrics that actually matter for your bottom line and build strategies around data-driven decisions.</p>
+      
+      <h2>Beyond Likes and Followers</h2>
+      <p>While engagement metrics provide insights into content performance, they don't tell the complete story. Focus on metrics that directly correlate with business outcomes: lead generation, conversion rates, and customer acquisition costs.</p>
+      
+      <h2>Setting Up Proper Tracking</h2>
+      <p>Implement UTM parameters, set up conversion tracking, and use platform-specific analytics tools to measure the customer journey from social media to purchase.</p>
+      
+      <h2>Key Performance Indicators</h2>
+      <p>Track metrics like cost per lead, customer lifetime value from social, social media attribution to revenue, and engagement-to-conversion ratios.</p>
+      
+      <h2>Optimization Strategies</h2>
+      <p>Use data insights to refine your content strategy, allocate budget to high-performing platforms, and optimize your funnel for better conversion rates.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop",
+    publishDate: "2024-12-28",
+    author: "David Park",
+    readTime: "15 min read",
+    category: "Analytics"
+  },
+  {
+    id: "5",
+    title: "The Psychology of Social Media Engagement",
+    excerpt: "Understand the psychological triggers that drive social media behavior and use these insights to create more compelling, shareable content.",
+    content: `
+      <p>Understanding what drives people to engage on social media goes far beyond creating pretty visuals. It's about tapping into fundamental psychological principles that motivate human behavior online.</p>
+      
+      <h2>The Dopamine Factor</h2>
+      <p>Social media platforms are designed to trigger dopamine releases through likes, comments, and shares. Understanding this helps you create content that naturally encourages engagement.</p>
+      
+      <h2>Social Proof and FOMO</h2>
+      <p>People are influenced by what others do and fear missing out on experiences. Use testimonials, user-generated content, and time-sensitive offers to leverage these psychological triggers.</p>
+      
+      <h2>Emotional Triggers</h2>
+      <p>Content that evokes strong emotions—joy, surprise, anger, or inspiration—is more likely to be shared. Learn how to ethically use emotional triggers in your content strategy.</p>
+      
+      <h2>The Reciprocity Principle</h2>
+      <p>When you provide value first, people feel compelled to reciprocate. Share useful insights, helpful tips, and valuable resources to build goodwill with your audience.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1200&h=600&fit=crop",
+    publishDate: "2024-12-20",
+    author: "Dr. Lisa Foster",
+    readTime: "11 min read",
+    category: "Psychology"
+  },
+  {
+    id: "6",
+    title: "Crisis Management in the Social Media Age",
+    excerpt: "Navigate social media crises with confidence using proven strategies that protect your brand reputation and turn challenges into opportunities.",
+    content: `
+      <p>In today's connected world, a social media crisis can escalate within minutes and impact your brand's reputation permanently. Being prepared with a solid crisis management strategy isn't optional—it's essential for business survival.</p>
+      
+      <h2>Early Warning Systems</h2>
+      <p>Set up monitoring tools to track brand mentions, sentiment changes, and emerging issues before they become full-blown crises. Early detection gives you more options for response.</p>
+      
+      <h2>Response Protocols</h2>
+      <p>Develop clear protocols for different types of crises, assign roles to team members, and establish approval processes that allow for quick but thoughtful responses.</p>
+      
+      <h2>Communication Strategies</h2>
+      <p>Transparency, empathy, and accountability are crucial during a crisis. Learn when to respond publicly versus privately, and how to craft messages that de-escalate situations.</p>
+      
+      <h2>Recovery and Learning</h2>
+      <p>After managing the immediate crisis, focus on rebuilding trust and implementing lessons learned to prevent future issues.</p>
+    `,
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=600&fit=crop",
+    publishDate: "2024-12-15",
+    author: "Rachel Kim",
+    readTime: "9 min read",
+    category: "Crisis Management"
+  }
+];
+
+export default function BlogPost() {
+  const { id } = useParams();
+  const { toast } = useToast();
+  const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showSharePopup, setShowSharePopup] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const post = blogPosts.find(p => p.id === id);
+  
+  // Get related articles (excluding current post)
+  const relatedPosts = blogPosts.filter(p => p.id !== id).slice(0, 3);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsHeaderScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  const handleShare = (platform: string) => {
+    const url = window.location.href;
+    const title = post?.title || '';
+    
+    let shareUrl = '';
+    
+    switch (platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        toast({
+          title: "Link copied!",
+          description: "Post URL has been copied to your clipboard.",
+        });
+        return;
+    }
+    
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+    setShowSharePopup(false);
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % relatedPosts.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + relatedPosts.length) % relatedPosts.length);
+  };
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-[#1F1F1F] mb-4">Post Not Found</h1>
+          <p className="text-gray-600 mb-8">The blog post you're looking for doesn't exist.</p>
+          <Link href="/blog">
+            <Button className="bg-[#4CAF50] text-white px-6 py-3 rounded-full hover:bg-[#45a049]">
+              Back to Blog
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#FAFAFA]">
+      {/* Header */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isHeaderScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      }`}>
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300" data-testid="header-logo">
+              <img src={logoPath} alt="Growlyft Logo" className="w-10 h-10" />
+              <div className="text-xl font-bold">
+                <span className="text-[#1F1F1F]">Grow</span><span className="text-[#4CAF50]">lyft</span>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link href="/" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="nav-home">
+                Home
+              </Link>
+              <Link href="/services" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="nav-services">
+                Services
+              </Link>
+              <Link href="/about" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="nav-about">
+                About
+              </Link>
+              <Link href="/why-us" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="nav-why-us">
+                Why Us
+              </Link>
+              <Link href="/blog" className="text-[#4CAF50] font-semibold transition-colors duration-300" data-testid="nav-blog">
+                Blog
+              </Link>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-gray-700 hover:text-[#4CAF50] transition-colors duration-300"
+              data-testid="mobile-menu-toggle"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 py-4 border-t border-gray-200 animate-fadeIn">
+              <nav className="flex flex-col space-y-4">
+                <Link href="/" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="mobile-nav-home">
+                  Home
+                </Link>
+                <Link href="/services" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="mobile-nav-services">
+                  Services
+                </Link>
+                <Link href="/about" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="mobile-nav-about">
+                  About
+                </Link>
+                <Link href="/why-us" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300" data-testid="mobile-nav-why-us">
+                  Why Us
+                </Link>
+                <Link href="/blog" className="text-[#4CAF50] font-semibold transition-colors duration-300" data-testid="mobile-nav-blog">
+                  Blog
+                </Link>
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Back to Blog */}
+      <div className="pt-24 pb-8">
+        <div className="container mx-auto px-6">
+          <Link href="/blog">
+            <Button 
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-50 inline-flex items-center space-x-2"
+              data-testid="back-to-blog"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Blog</span>
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Hero Image */}
+      <div className="relative h-96 mb-8">
+        <img 
+          src={post.image} 
+          alt={post.title}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute bottom-6 left-6">
+          <span className="bg-[#4CAF50] text-white px-4 py-2 rounded-full text-sm font-medium">
+            {post.category}
+          </span>
+        </div>
+      </div>
+
+      {/* Article Content */}
+      <article className="container mx-auto px-6 max-w-4xl">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Main Content */}
+          <div className="lg:w-2/3">
+            {/* Article Header */}
+            <header className="mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-[#1F1F1F] mb-6 leading-tight" data-testid="post-title">
+                {post.title}
+              </h1>
+              
+              <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
+                <div className="flex items-center">
+                  <Calendar className="w-5 h-5 mr-2" />
+                  <span>{formatDate(post.publishDate)}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock className="w-5 h-5 mr-2" />
+                  <span>{post.readTime}</span>
+                </div>
+                <div className="flex items-center">
+                  <span>By {post.author}</span>
+                </div>
+              </div>
+            </header>
+
+            {/* Article Body */}
+            <div 
+              className="prose prose-lg max-w-none prose-headings:text-[#1F1F1F] prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-[#4CAF50] prose-a:no-underline hover:prose-a:underline"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+              data-testid="post-content"
+            />
+          </div>
+
+          {/* Sidebar */}
+          <aside className="lg:w-1/3">
+            {/* Sticky Share Buttons */}
+            <div className="sticky top-24 bg-white rounded-2xl p-6 shadow-lg mb-8">
+              <h3 className="font-bold text-[#1F1F1F] mb-4">Share this article</h3>
+              <div className="space-y-3">
+                <Button
+                  onClick={() => handleShare('twitter')}
+                  className="w-full bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white px-4 py-3 rounded-lg inline-flex items-center justify-center space-x-2"
+                  data-testid="share-twitter"
+                >
+                  <Twitter className="w-5 h-5" />
+                  <span>Share on Twitter</span>
+                </Button>
+                
+                <Button
+                  onClick={() => handleShare('facebook')}
+                  className="w-full bg-[#4267B2] hover:bg-[#365899] text-white px-4 py-3 rounded-lg inline-flex items-center justify-center space-x-2"
+                  data-testid="share-facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                  <span>Share on Facebook</span>
+                </Button>
+                
+                <Button
+                  onClick={() => handleShare('linkedin')}
+                  className="w-full bg-[#0077B5] hover:bg-[#005885] text-white px-4 py-3 rounded-lg inline-flex items-center justify-center space-x-2"
+                  data-testid="share-linkedin"
+                >
+                  <Linkedin className="w-5 h-5" />
+                  <span>Share on LinkedIn</span>
+                </Button>
+                
+                <Button
+                  onClick={() => handleShare('copy')}
+                  className="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-lg inline-flex items-center justify-center space-x-2"
+                  data-testid="share-copy"
+                >
+                  <Copy className="w-5 h-5" />
+                  <span>Copy Link</span>
+                </Button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+
+      {/* Related Articles */}
+      {relatedPosts.length > 0 && (
+        <section className="py-16 bg-white mt-16">
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-bold text-[#1F1F1F] text-center mb-12" data-testid="related-title">
+              Related Articles
+            </h2>
+            
+            <div className="relative max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {relatedPosts.map((relatedPost) => (
+                  <article 
+                    key={relatedPost.id}
+                    className="bg-[#FAFAFA] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    data-testid={`related-post-${relatedPost.id}`}
+                  >
+                    {/* Featured Image */}
+                    <div className="relative overflow-hidden h-48">
+                      <img 
+                        src={relatedPost.image} 
+                        alt={relatedPost.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-[#4CAF50] text-white px-3 py-1 rounded-full text-sm font-medium">
+                          {relatedPost.category}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <div className="flex items-center text-sm text-gray-500 mb-3">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span>{formatDate(relatedPost.publishDate)}</span>
+                        <Clock className="w-4 h-4 ml-4 mr-2" />
+                        <span>{relatedPost.readTime}</span>
+                      </div>
+                      
+                      <h3 className="text-xl font-bold text-[#1F1F1F] mb-3 line-clamp-2 group-hover:text-[#4CAF50] transition-colors duration-300">
+                        {relatedPost.title}
+                      </h3>
+                      
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {relatedPost.excerpt}
+                      </p>
+                      
+                      <Link href={`/blog/${relatedPost.id}`}>
+                        <Button 
+                          className="bg-[#4CAF50] text-white px-4 py-2 rounded-full text-sm hover:bg-[#45a049] hover:scale-105 transition-all duration-300 inline-flex items-center space-x-2"
+                          data-testid={`read-related-${relatedPost.id}`}
+                        >
+                          <span>Read More</span>
+                          <ArrowLeft className="w-4 h-4 rotate-180" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer className="bg-[#1F1F1F] text-white py-16">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            {/* Logo and About */}
+            <div className="lg:col-span-2">
+              <Link href="/" className="flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity duration-300" data-testid="footer-logo">
+                <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" />
+                <div className="text-xl font-bold">
+                  <span className="text-white">Grow</span><span className="text-[#4CAF50]">lyft</span>
+                </div>
+              </Link>
+              <p className="text-gray-300 max-w-md leading-relaxed" data-testid="footer-description">
+                Growlyft is your trusted partner in social media growth. We combine creativity, strategy, and genuine care to help brands build meaningful connections with their audience.
+              </p>
+            </div>
+            
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold mb-4 text-white" data-testid="footer-links-title">Quick Links</h4>
+              <ul className="space-y-2">
+                <li><Link href="/" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-home">Home</Link></li>
+                <li><Link href="/services" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-services">Services</Link></li>
+                <li><Link href="/about" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-about">About</Link></li>
+                <li><Link href="/why-us" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-why-us">Why Us</Link></li>
+                <li><Link href="/blog" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-blog">Blog</Link></li>
+              </ul>
+            </div>
+            
+            {/* Contact Info */}
+            <div>
+              <h4 className="font-semibold mb-4 text-white" data-testid="footer-contact-title">Follow Us</h4>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-linkedin">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-twitter">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-300 hover:text-[#4CAF50] transition-colors duration-300" data-testid="footer-facebook">
+                  <Facebook className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-8 text-center">
+            <p className="text-gray-400" data-testid="footer-copyright">
+              © 2025 Growlyft. All rights reserved. Built with passion for social media excellence.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

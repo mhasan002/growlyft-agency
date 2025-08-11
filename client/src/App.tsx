@@ -8,6 +8,8 @@ import About from "@/pages/about";
 import WhyUs from "@/pages/why-us";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
+import Blog from "@/pages/blog";
+import BlogPost from "@/pages/blog-post";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +20,8 @@ function Router() {
       <Route path="/why-us" component={WhyUs} />
       <Route path="/services" component={Services} />
       <Route path="/contact" component={Contact} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/blog/:id" component={BlogPost} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
