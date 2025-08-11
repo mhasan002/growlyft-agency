@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
@@ -389,9 +390,9 @@ export default function WhyUs() {
                 <a href="/why-us" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-why-us">
                   Why Us
                 </a>
-                <a href="#" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-blog">
+                <Link href="/blog" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-blog">
                   Blog
-                </a>
+                </Link>
                 <button 
                   onClick={() => scrollToSection('cta')} 
                   className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300"

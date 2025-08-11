@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -527,9 +528,9 @@ export default function Contact() {
                 <a href="/services" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-services">
                   Services
                 </a>
-                <a href="#" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-blog">
+                <Link href="/blog" className="block text-gray-300 hover:text-emerald-500 transition-colors duration-300" data-testid="footer-link-blog">
                   Blog
-                </a>
+                </Link>
               </div>
             </div>
             
