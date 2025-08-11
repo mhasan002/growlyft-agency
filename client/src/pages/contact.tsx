@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import logoPath from "@assets/growlyft black logo_1754568178227.png";
 import whiteLogoPath from "@assets/growlyft white logo_1754569148752.png";
 import { 
@@ -20,6 +21,8 @@ export default function Contact() {
     businessName: '',
     website: '',
     email: '',
+    phoneNumber: '',
+    countryCode: '+1',
     budget: '',
     message: ''
   });
@@ -82,6 +85,8 @@ export default function Contact() {
         businessName: '',
         website: '',
         email: '',
+        phoneNumber: '',
+        countryCode: '+1',
         budget: '',
         message: ''
       });
@@ -346,6 +351,21 @@ export default function Contact() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300"
                       placeholder="your@email.com"
                       data-testid="input-email"
+                    />
+                  </div>
+
+                  {/* Phone Number */}
+                  <div className="space-y-2">
+                    <PhoneInput
+                      label="Phone Number"
+                      required={true}
+                      phoneValue={formData.phoneNumber}
+                      countryCode={formData.countryCode}
+                      onPhoneChange={(value) => handleInputChange('phoneNumber', value)}
+                      onCountryCodeChange={(value) => handleInputChange('countryCode', value)}
+                      placeholder="Your phone number"
+                      variant="contact"
+                      testId="contact-phone"
                     />
                   </div>
 
