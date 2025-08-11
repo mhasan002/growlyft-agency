@@ -1,5 +1,7 @@
-import { type User, type InsertUser, type ContactSubmission, type InsertContact, type DiscoveryCallSubmission, type InsertDiscoveryCall, type TalkGrowthSubmission, type InsertTalkGrowth } from "@shared/schema";
+import { type User, type InsertUser, type ContactSubmission, type InsertContact, type DiscoveryCallSubmission, type InsertDiscoveryCall, type TalkGrowthSubmission, type InsertTalkGrowth, users, contactSubmissions, discoveryCallSubmissions, talkGrowthSubmissions } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { eq } from "drizzle-orm";
+import { db } from "./db";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -74,4 +76,68 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database storage implementation using Drizzle and Supabase
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    try {
+      const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+      return result[0];
+    } catch (error) {
+      console.error("Error getting user:", error);
+      return undefined;
+    }
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    try {
+      const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+      return result[0];
+    } catch (error) {
+      console.error("Error getting user by username:", error);
+      return undefined;
+    }
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    try {
+      const result = await db.insert(users).values(insertUser).returning();
+      return result[0];
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
+  }
+
+  async createContactSubmission(insertContact: InsertContact): Promise<ContactSubmission> {
+    try {
+      const result = await db.insert(contactSubmissions).values(insertContact).returning();
+      return result[0];
+    } catch (error) {
+      console.error("Error creating contact submission:", error);
+      throw error;
+    }
+  }
+
+  async createDiscoveryCallSubmission(insertDiscoveryCall: InsertDiscoveryCall): Promise<DiscoveryCallSubmission> {
+    try {
+      const result = await db.insert(discoveryCallSubmissions).values(insertDiscoveryCall).returning();
+      return result[0];
+    } catch (error) {
+      console.error("Error creating discovery call submission:", error);
+      throw error;
+    }
+  }
+
+  async createTalkGrowthSubmission(insertTalkGrowth: InsertTalkGrowth): Promise<TalkGrowthSubmission> {
+    try {
+      const result = await db.insert(talkGrowthSubmissions).values(insertTalkGrowth).returning();
+      return result[0];
+    } catch (error) {
+      console.error("Error creating talk growth submission:", error);
+      throw error;
+    }
+  }
+}
+
+// Use DATABASE_URL environment variable to determine storage type
+export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
