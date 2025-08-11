@@ -220,6 +220,79 @@ export function setupAdminAuth(app: Express) {
       next(error);
     }
   });
+
+  // Change password (for logged-in users)
+  app.post("/api/admin/change-password", requireAdminAuth, async (req, res, next) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Current password and new password are required' });
+      }
+
+      const adminUser = req.user;
+      if (!adminUser) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+
+      const isValidPassword = await comparePasswords(currentPassword, adminUser.password);
+      
+      if (!isValidPassword) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      const hashedPassword = await hashPassword(newPassword);
+      await storage.updateAdminUser(adminUser.id, { password: hashedPassword });
+
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Update profile
+  app.put("/api/admin/profile", requireAdminAuth, async (req, res, next) => {
+    try {
+      const { firstName, lastName, email } = req.body;
+      
+      if (!firstName || !lastName || !email) {
+        return res.status(400).json({ error: 'First name, last name, and email are required' });
+      }
+
+      const adminUser = req.user;
+      if (!adminUser) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+      
+      // Check if email is already taken by another user
+      if (email !== adminUser.email) {
+        const existingUser = await storage.getAdminUserByEmail(email);
+        if (existingUser && existingUser.id !== adminUser.id) {
+          return res.status(400).json({ error: 'Email is already taken' });
+        }
+      }
+
+      const updatedUser = await storage.updateAdminUser(adminUser.id, {
+        firstName,
+        lastName,
+        email,
+      });
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      res.json({
+        id: updatedUser.id,
+        email: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        role: updatedUser.role,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 }
 
 // Middleware to require admin authentication

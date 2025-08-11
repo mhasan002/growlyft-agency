@@ -20,7 +20,14 @@ const passwordChangeSchema = z.object({
   path: ["confirmPassword"],
 });
 
+const profileUpdateSchema = z.object({
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+});
+
 type PasswordChangeData = z.infer<typeof passwordChangeSchema>;
+type ProfileUpdateData = z.infer<typeof profileUpdateSchema>;
 
 export default function AdminProfile() {
   const { admin } = useAdminAuth();
@@ -29,7 +36,7 @@ export default function AdminProfile() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<PasswordChangeData>({
+  const passwordForm = useForm<PasswordChangeData>({
     resolver: zodResolver(passwordChangeSchema),
     defaultValues: {
       currentPassword: "",
@@ -38,22 +45,32 @@ export default function AdminProfile() {
     },
   });
 
+  const profileForm = useForm<ProfileUpdateData>({
+    resolver: zodResolver(profileUpdateSchema),
+    defaultValues: {
+      firstName: admin?.firstName || "",
+      lastName: admin?.lastName || "",
+      email: admin?.email || "",
+    },
+  });
+
   const passwordChangeMutation = useMutation({
     mutationFn: async (data: PasswordChangeData) => {
-      // For now, this is a placeholder since the API endpoint needs to be implemented
-      // In a real implementation, this would call an API endpoint to change the password
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (data.currentPassword === "admin123") {
-            resolve({ success: true });
-          } else {
-            reject(new Error("Current password is incorrect"));
-          }
-        }, 1000);
+      const response = await fetch('/api/admin/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to change password');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
-      form.reset();
+      passwordForm.reset();
       toast({
         title: "Password changed",
         description: "Your password has been updated successfully.",
@@ -68,8 +85,44 @@ export default function AdminProfile() {
     },
   });
 
-  const onSubmit = (data: PasswordChangeData) => {
+  const profileUpdateMutation = useMutation({
+    mutationFn: async (data: ProfileUpdateData) => {
+      const response = await fetch('/api/admin/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update profile');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been updated successfully.",
+      });
+      // Refresh the page to update the admin context
+      window.location.reload();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onPasswordSubmit = (data: PasswordChangeData) => {
     passwordChangeMutation.mutate(data);
+  };
+
+  const onProfileSubmit = (data: ProfileUpdateData) => {
+    profileUpdateMutation.mutate(data);
   };
 
   if (!admin) {
@@ -112,20 +165,56 @@ export default function AdminProfile() {
             <span>Profile Information</span>
           </CardTitle>
           <CardDescription>
-            Your account details and role information
+            Update your personal information and account details
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center space-x-6">
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-              <User className="h-8 w-8 text-gray-600" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-semibold text-gray-900">
-                {admin.firstName} {admin.lastName}
-              </h3>
-              <p className="text-gray-600">{admin.email}</p>
-              <div className="flex items-center space-x-3 mt-2">
+        <CardContent>
+          <Form {...profileForm}>
+            <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={profileForm.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} data-testid="input-profile-first-name" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={profileForm.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} data-testid="input-profile-last-name" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <FormField
+                control={profileForm.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="email" data-testid="input-profile-email" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex items-center space-x-3 pt-4 border-t">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRoleColor(admin.role)}`}>
                   {admin.role.replace("_", " ").toUpperCase()}
                 </span>
@@ -133,15 +222,23 @@ export default function AdminProfile() {
                   Member since {new Date(admin.createdAt).toLocaleDateString()}
                 </span>
               </div>
-            </div>
-          </div>
-          
-          <div className="border-t pt-4">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Role Permissions</h4>
-            <p className="text-sm text-gray-600">
-              {getRoleDescription(admin.role)}
-            </p>
-          </div>
+
+              <div className="pt-2">
+                <p className="text-sm text-gray-600">
+                  {getRoleDescription(admin.role)}
+                </p>
+              </div>
+              
+              <Button 
+                type="submit" 
+                disabled={profileUpdateMutation.isPending}
+                data-testid="button-update-profile"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                {profileUpdateMutation.isPending ? "Updating..." : "Update Profile"}
+              </Button>
+            </form>
+          </Form>
         </CardContent>
       </Card>
 
@@ -157,10 +254,10 @@ export default function AdminProfile() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <Form {...passwordForm}>
+            <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
               <FormField
-                control={form.control}
+                control={passwordForm.control}
                 name="currentPassword"
                 render={({ field }) => (
                   <FormItem>
@@ -193,7 +290,7 @@ export default function AdminProfile() {
               />
               
               <FormField
-                control={form.control}
+                control={passwordForm.control}
                 name="newPassword"
                 render={({ field }) => (
                   <FormItem>
@@ -210,7 +307,7 @@ export default function AdminProfile() {
                           variant="ghost"
                           size="sm"
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          onClick={() => setShowConfirmPassword(!showNewPassword)}
                         >
                           {showNewPassword ? (
                             <EyeOff className="h-4 w-4" />
@@ -226,7 +323,7 @@ export default function AdminProfile() {
               />
               
               <FormField
-                control={form.control}
+                control={passwordForm.control}
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
