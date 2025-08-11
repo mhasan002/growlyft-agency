@@ -267,10 +267,10 @@ export default function PackageGetStartedPopup({ isOpen, onClose, packageName }:
             <div className="space-y-2">
               <Label className="text-white/90 font-medium">Package *</Label>
               <div className="popup-input text-white bg-gray-700/50 px-4 py-3 rounded-lg border border-[#04E762]/30 flex items-center space-x-3">
-                {packageName === "Starter" && <Rocket className="w-5 h-5 text-[#04E762]" />}
-                {packageName === "Growth" && <TrendingUp className="w-5 h-5 text-[#04E762]" />}
-                {packageName === "Premium" && <Crown className="w-5 h-5 text-[#04E762]" />}
-                {!["Starter", "Growth", "Premium"].includes(packageName) && <Package className="w-5 h-5 text-[#04E762]" />}
+                {packageName === "Starter" && <Star className="w-5 h-5 text-[#04E762]" />}
+                {packageName === "Growth" && <Rocket className="w-5 h-5 text-[#04E762]" />}
+                {packageName === "Authority" && <Crown className="w-5 h-5 text-[#04E762]" />}
+                {!["Starter", "Growth", "Authority"].includes(packageName) && <Package className="w-5 h-5 text-[#04E762]" />}
                 <span>{packageName} Package</span>
               </div>
               <input 
