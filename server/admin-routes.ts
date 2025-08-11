@@ -9,6 +9,17 @@ import {
 } from "@shared/schema";
 
 export function registerAdminRoutes(app: Express) {
+  // Admin Users Routes - only admins can access these
+  app.get("/api/admin/users", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
+    try {
+      // For now, return the current admin user as we don't have a getAllAdminUsers method yet
+      const currentUser = req.user;
+      res.json([currentUser]);
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Form Configuration Routes
   app.get("/api/admin/forms", requireAdminAuth, requireAdminRole(['admin', 'form_manager']), async (req, res, next) => {
     try {

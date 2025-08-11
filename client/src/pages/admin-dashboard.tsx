@@ -3,8 +3,8 @@ import { useLocation } from "wouter";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { 
   LayoutDashboard, 
   FileText, 
@@ -14,11 +14,15 @@ import {
   Mail,
   BarChart3,
   Plus,
-  Loader2
+  Loader2,
+  User,
+  Shield
 } from "lucide-react";
-import AdminFormsManager from "../components/admin/AdminFormsManager";
-import AdminBlogManager from "../components/admin/AdminBlogManager";
-import AdminAnalytics from "../components/admin/AdminAnalytics";
+import AdminFormsManager from "@/components/admin/AdminFormsManager";
+import AdminBlogManager from "@/components/admin/AdminBlogManager";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import AdminTeamManager from "@/components/admin/AdminTeamManager";
+import AdminProfile from "@/components/admin/AdminProfile";
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -61,66 +65,113 @@ export default function AdminDashboard() {
 
   const canAccessForms = admin.role === "admin" || admin.role === "form_manager";
   const canAccessBlog = admin.role === "admin" || admin.role === "editor";
+  const canAccessTeam = admin.role === "admin";
+
+  const navigation = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, show: true },
+    { id: "forms", label: "Forms", icon: Mail, show: canAccessForms },
+    { id: "blog", label: "Blog", icon: FileText, show: canAccessBlog },
+    { id: "analytics", label: "Analytics", icon: BarChart3, show: true },
+    { id: "team", label: "Team", icon: Users, show: canAccessTeam },
+    { id: "profile", label: "Profile", icon: User, show: true },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">Growlyft Admin</h1>
-              <Badge className={getRoleColor(admin.role)}>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+        {/* Logo/Header */}
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">Growlyft Admin</h1>
+              <Badge className={cn("text-xs", getRoleColor(admin.role))}>
                 {admin.role.replace("_", " ").toUpperCase()}
               </Badge>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                Welcome, {admin.firstName} {admin.lastName}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleLogout}
-                disabled={logoutMutation.isPending}
-                data-testid="button-logout"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
           </div>
         </div>
-      </header>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-2">
+          {navigation.filter(item => item.show).map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={cn(
+                  "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors",
+                  activeTab === item.id
+                    ? "bg-green-100 text-green-900 font-medium"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                )}
+                data-testid={`nav-${item.id}`}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* User Info & Logout */}
+        <div className="p-4 border-t border-gray-200">
+          <div className="flex items-center space-x-3 mb-3">
+            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+              <User className="w-4 h-4 text-gray-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {admin.firstName} {admin.lastName}
+              </p>
+              <p className="text-xs text-gray-500 truncate">{admin.email}</p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+            className="w-full"
+            data-testid="button-logout"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div className="px-6 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[400px]">
-            <TabsTrigger value="dashboard" data-testid="tab-dashboard">
-              <LayoutDashboard className="h-4 w-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            {canAccessForms && (
-              <TabsTrigger value="forms" data-testid="tab-forms">
-                <Mail className="h-4 w-4 mr-2" />
-                Forms
-              </TabsTrigger>
-            )}
-            {canAccessBlog && (
-              <TabsTrigger value="blog" data-testid="tab-blog">
-                <FileText className="h-4 w-4 mr-2" />
-                Blog
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="analytics" data-testid="tab-analytics">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Analytics
-            </TabsTrigger>
-          </TabsList>
+      <div className="flex-1 flex flex-col">
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 capitalize">
+                {activeTab === "profile" ? "My Profile" : activeTab}
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                {activeTab === "dashboard" && "Overview of your admin panel"}
+                {activeTab === "forms" && "Manage contact forms and configurations"}
+                {activeTab === "blog" && "Create and manage blog posts"}
+                {activeTab === "analytics" && "View performance metrics and analytics"}
+                {activeTab === "team" && "Manage team members and permissions"}
+                {activeTab === "profile" && "Manage your account settings"}
+              </p>
+            </div>
+          </div>
+        </header>
 
-          <TabsContent value="dashboard" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Content Area */}
+        <div className="flex-1 p-6 overflow-auto">
+          <div className="max-w-7xl mx-auto">
+            {activeTab === "dashboard" && (
+              <div className="space-y-6">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
@@ -213,24 +264,30 @@ export default function AdminDashboard() {
                 </Button>
               </CardContent>
             </Card>
-          </TabsContent>
+              </div>
+            )}
 
-          {canAccessForms && (
-            <TabsContent value="forms">
+            {canAccessForms && activeTab === "forms" && (
               <AdminFormsManager />
-            </TabsContent>
-          )}
+            )}
 
-          {canAccessBlog && (
-            <TabsContent value="blog">
+            {canAccessBlog && activeTab === "blog" && (
               <AdminBlogManager />
-            </TabsContent>
-          )}
+            )}
 
-          <TabsContent value="analytics">
-            <AdminAnalytics />
-          </TabsContent>
-        </Tabs>
+            {activeTab === "analytics" && (
+              <AdminAnalytics />
+            )}
+
+            {canAccessTeam && activeTab === "team" && (
+              <AdminTeamManager />
+            )}
+
+            {activeTab === "profile" && (
+              <AdminProfile />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
