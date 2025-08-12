@@ -58,10 +58,7 @@ export default function Blog() {
     return matchesCategory && matchesSearch;
   });
 
-  // Debug logging for search
-  console.log("Search query:", searchQuery);
-  console.log("Published posts count:", publishedPosts.length);
-  console.log("Filtered posts count:", filteredPosts.length);
+
 
   // Get featured post (latest published)
   const featuredPost = publishedPosts[0];
