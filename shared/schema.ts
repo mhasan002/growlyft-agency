@@ -114,7 +114,7 @@ export const insertContactSchema = createInsertSchema(contactSubmissions).pick({
   message: z.string().min(10, "Message must be at least 10 characters").optional().or(z.literal("")),
   businessName: z.string().min(2, "Business name must be at least 2 characters").optional().or(z.literal("")),
   website: z.string().url("Please enter a valid website URL").optional().or(z.literal("")),
-  phoneNumber: z.string().min(10, "Please enter a valid phone number").optional().or(z.literal("")),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
   budget: z.enum(["under_1000", "1000_3000", "3000_5000", "5000_10000", "10000_plus"], {
     required_error: "Please select your budget range",
   }),

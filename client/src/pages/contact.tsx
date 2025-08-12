@@ -72,6 +72,14 @@ export default function Contact() {
       ...prev,
       [field]: value
     }));
+    
+    // Clear validation error for this field when user starts typing
+    if (validationErrors[field]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -94,6 +102,12 @@ export default function Contact() {
     
     if (!formData.budget) {
       errors.budget = "Please select your budget range";
+    }
+    
+    if (!formData.phoneNumber.trim()) {
+      errors.phoneNumber = "Phone number is required";
+    } else if (formData.phoneNumber.length < 10) {
+      errors.phoneNumber = "Please enter a valid phone number (at least 10 digits)";
     }
     
     if (Object.keys(errors).length > 0) {
@@ -441,6 +455,9 @@ export default function Contact() {
                       variant="contact"
                       testId="contact-phone"
                     />
+                    {validationErrors.phoneNumber && (
+                      <span className="text-red-500 text-sm">{validationErrors.phoneNumber}</span>
+                    )}
                   </div>
 
                   {/* Budget */}
