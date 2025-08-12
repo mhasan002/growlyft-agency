@@ -49,6 +49,7 @@ This is a modern, responsive website for Growlyft, a social media agency. The ap
 - ✓ Fixed form configuration validation error for recipient emails and Google Sheets URL
 - ✓ Added proper TypeScript types and validation schemas for admin updates
 - ✓ Enhanced error handling in admin routes with proper Zod validation
+- ✓ Added missing "Schedule a Discovery Call" button from About page to form configurations
 - ✓ Successfully migrated project to Replit environment with Supabase database integration
 
 ## User Preferences
