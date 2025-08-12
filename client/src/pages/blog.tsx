@@ -101,7 +101,7 @@ export default function Blog() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300">
               <img src={logoPath} alt="Growlyft Logo" className="w-10 h-10" />
-              <div className="text-xl font-bold">
+              <div className="text-2xl font-bold">
                 <span className="text-[#1F1F1F]">Grow</span><span className="text-[#4CAF50]">lyft</span>
               </div>
             </Link>
@@ -250,6 +250,12 @@ export default function Blog() {
             <Button 
               variant="outline"
               className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              onClick={() => {
+                setSelectedCategory("All");
+                setSearchQuery("");
+                // Scroll to all posts section
+                document.getElementById('all-posts-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               View all
             </Button>
@@ -293,6 +299,12 @@ export default function Blog() {
             <Button 
               variant="outline"
               className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              onClick={() => {
+                setSelectedCategory("All");
+                setSearchQuery("");
+                // Scroll to all posts section
+                document.getElementById('all-posts-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Browse all
             </Button>
@@ -329,7 +341,7 @@ export default function Blog() {
       </section>
 
       {/* More Section */}
-      <section className="py-12 bg-white">
+      <section id="all-posts-section" className="py-12 bg-white">
         <div className="container mx-auto px-6">
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -339,6 +351,10 @@ export default function Blog() {
             <Button 
               variant="outline"
               className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              onClick={() => {
+                setSelectedCategory("All");
+                setSearchQuery("");
+              }}
             >
               Browse all
             </Button>
