@@ -25,20 +25,15 @@ const updateFormSchema = z.object({
 // Helper function to get the link for each form location
 function getLocationLink(location: string): string | null {
   const locationMap: Record<string, string> = {
-    "Homepage": "/",
-    "Homepage Hero Section": "/#hero",
-    "Homepage CTA": "/#cta",
-    "Homepage Footer": "/#footer",
+    "Services/Blog Pages": "/services",
     "Services Page": "/services",
     "Services Page Packages": "/services#packages",
-    "Services Page Bottom": "/services#bottom",
-    "Services Page CTA": "/services#cta",
-    "Contact Page": "/contact",
-    "Contact Page Main": "/contact#main",
     "About Page": "/about",
-    "Footer": "#footer",
-    "All Pages Footer": "#footer",
-    "Footer and Contact Page": "/contact#footer"
+    "Why Us Page": "/why-us", 
+    "Contact Page": "/contact",
+    "Blog Page": "/blog",
+    "Homepage": "/",
+    "Homepage Hero": "/"
   };
   return locationMap[location] || null;
 }

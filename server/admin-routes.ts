@@ -19,6 +19,23 @@ export function registerAdminRoutes(app: Express) {
     }
   });
 
+  app.put("/api/admin/users/:id", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
+    try {
+      const validation = insertAdminUserSchema.partial().safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ error: validation.error.errors });
+      }
+
+      const user = await storage.updateAdminUser(req.params.id, validation.data);
+      if (!user) {
+        return res.status(404).json({ error: 'Admin user not found' });
+      }
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  });
+
   app.delete("/api/admin/users/:id", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
     try {
       const success = await storage.deleteAdminUser(req.params.id);
