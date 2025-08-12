@@ -23,7 +23,18 @@ const createAdminSchema = z.object({
   }),
 });
 
+const editAdminSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().optional(), // Password is optional for editing
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  role: z.enum(["admin", "editor", "form_manager"], {
+    required_error: "Please select a role",
+  }),
+});
+
 type CreateAdminData = z.infer<typeof createAdminSchema>;
+type EditAdminData = z.infer<typeof editAdminSchema>;
 
 interface AdminUser {
   id: string;
@@ -89,8 +100,8 @@ export default function AdminTeamManager() {
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const editForm = useForm<CreateAdminData>({
-    resolver: zodResolver(createAdminSchema),
+  const editForm = useForm<EditAdminData>({
+    resolver: zodResolver(editAdminSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -101,7 +112,7 @@ export default function AdminTeamManager() {
   });
 
   const updateUserMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<CreateAdminData> }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<EditAdminData> }) => {
       const response = await fetch(`/api/admin/users/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -146,7 +157,7 @@ export default function AdminTeamManager() {
     setIsEditDialogOpen(true);
   };
 
-  const onEditSubmit = (data: CreateAdminData) => {
+  const onEditSubmit = (data: EditAdminData) => {
     if (!editingUser) return;
     
     // Remove password if it's empty (don't update password)

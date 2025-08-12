@@ -538,8 +538,8 @@ export class DatabaseStorage implements IStorage {
       const blogPostData = {
         ...insertBlogPost,
         publishedAt: insertBlogPost.isPublished ? new Date() : null,
-        readTime: insertBlogPost.readTime || null,
-        featuredImage: insertBlogPost.featuredImage || null,
+        readTime: insertBlogPost.readTime || "",
+        featuredImage: insertBlogPost.featuredImage || "",
       };
       const result = await db.insert(blogPosts).values([blogPostData]).returning();
       return result[0];

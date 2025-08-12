@@ -1,10 +1,71 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import sgMail from '@sendgrid/mail';
 import { storage } from "./storage";
 import { insertContactSchema, insertDiscoveryCallSchema, insertTalkGrowthSchema } from "@shared/schema";
 import { z } from "zod";
 import { setupAdminAuth } from "./admin-auth";
 import { registerAdminRoutes } from "./admin-routes";
+
+// Configure SendGrid
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+}
+
+// Helper function to send notification emails
+async function sendFormNotification(formType: string, formData: any, recipientEmails: string[]) {
+  if (!process.env.SENDGRID_API_KEY) {
+    console.warn('SendGrid API key not configured, skipping email notification');
+    return;
+  }
+
+  const subject = `New ${formType} submission - Growlyft`;
+  const text = `New form submission received:
+
+Form Type: ${formType}
+${Object.entries(formData).map(([key, value]) => `${key}: ${value}`).join('\n')}
+
+Submitted at: ${new Date().toLocaleString()}`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #52C251;">New ${formType} Submission</h2>
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        ${Object.entries(formData).map(([key, value]) => 
+          `<p><strong>${key}:</strong> ${value}</p>`
+        ).join('')}
+      </div>
+      <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
+    </div>
+  `;
+
+  try {
+    await sgMail.sendMultiple({
+      to: recipientEmails,
+      from: 'noreply@growlyft.com', // You should replace this with your verified sender email
+      subject,
+      text,
+      html,
+    });
+    console.log(`Email notification sent to ${recipientEmails.join(', ')}`);
+  } catch (error) {
+    console.error('Failed to send email notification:', error);
+  }
+}
+
+// Helper function to get recipient emails for a form
+async function getFormRecipients(formName: string): Promise<string[]> {
+  try {
+    const formConfig = await storage.getFormConfigByName(formName);
+    if (formConfig && formConfig.recipientEmails && Array.isArray(formConfig.recipientEmails)) {
+      return formConfig.recipientEmails;
+    }
+    return ['admin@growlyft.com']; // Fallback email
+  } catch (error) {
+    console.error(`Failed to get recipients for form ${formName}:`, error);
+    return ['admin@growlyft.com']; // Fallback email
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup admin authentication
@@ -17,6 +78,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertContactSchema.parse(req.body);
       const contactSubmission = await storage.createContactSubmission(validatedData);
+      
+      // Send email notification
+      const recipientEmails = await getFormRecipients('contact_send_message');
+      await sendFormNotification('Contact Form', validatedData, recipientEmails);
       
       res.status(201).json({ 
         success: true, 
@@ -46,6 +111,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertDiscoveryCallSchema.parse(req.body);
       const discoveryCallSubmission = await storage.createDiscoveryCallSubmission(validatedData);
       
+      // Send email notification
+      const recipientEmails = await getFormRecipients('about_schedule_discovery_call');
+      await sendFormNotification('Discovery Call Request', validatedData, recipientEmails);
+      
       res.status(201).json({ 
         success: true, 
         message: "Thank you for your discovery call request! We'll contact you within 24 hours.",
@@ -73,6 +142,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertTalkGrowthSchema.parse(req.body);
       const talkGrowthSubmission = await storage.createTalkGrowthSubmission(validatedData);
+      
+      // Send email notification
+      const recipientEmails = await getFormRecipients('home_work_with_us');
+      await sendFormNotification('Talk Growth Request', validatedData, recipientEmails);
       
       res.status(201).json({ 
         success: true, 
