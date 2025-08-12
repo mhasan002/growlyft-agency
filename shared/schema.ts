@@ -112,12 +112,12 @@ export const insertContactSchema = createInsertSchema(contactSubmissions).pick({
   email: z.string().email("Please enter a valid email address"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
-  businessName: z.string().min(2, "Business name must be at least 2 characters"),
+  businessName: z.string().min(2, "Business name must be at least 2 characters").optional().or(z.literal("")),
   website: z.string().url("Please enter a valid website URL").optional().or(z.literal("")),
-  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number").optional().or(z.literal("")),
   budget: z.enum(["under_1000", "1000_3000", "3000_5000", "5000_10000", "10000_plus"], {
     required_error: "Please select your budget range",
-  }),
+  }).optional(),
 });
 
 export const insertDiscoveryCallSchema = createInsertSchema(discoveryCallSubmissions).pick({

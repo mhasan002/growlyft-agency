@@ -415,14 +415,15 @@ export default function Contact() {
 
                   {/* Message */}
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-gray-800 font-medium">Message</Label>
+                    <Label htmlFor="message" className="text-gray-800 font-medium">Message *</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       rows={4}
+                      required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300 resize-none"
-                      placeholder="What do you need help with?"
+                      placeholder="What do you need help with? (minimum 10 characters)"
                       data-testid="textarea-message"
                     />
                   </div>
