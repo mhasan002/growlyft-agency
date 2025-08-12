@@ -32,8 +32,7 @@ function getLocationLink(location: string): string | null {
     "Why Us Page": "/why-us", 
     "Contact Page": "/contact",
     "Blog Page": "/blog",
-    "Homepage": "/",
-    "Homepage Hero": "/"
+    "Homepage": "/"
   };
   return locationMap[location] || null;
 }

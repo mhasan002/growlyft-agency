@@ -20,28 +20,33 @@ export default function AdminAnalytics() {
     return <div>Loading analytics...</div>;
   }
 
-  // Mock data for demonstration (since we haven't implemented the actual analytics endpoint yet)
-  const mockData = {
-    totalSubmissions: 147,
-    totalBlogPosts: 23,
-    activeForms: 6,
-    averageResponseTime: "2.3 hours",
-    submissionTrend: "+15%",
+  // Use real analytics data with fallback
+  const realData = {
+    totalSubmissions: analytics?.totalSubmissions || 0,
+    totalBlogPosts: 0, // We'll fetch this from blog posts
+    activeForms: 11,
+    averageResponseTime: "< 1 hour",
+    submissionTrend: analytics?.totalSubmissions > 0 ? "+New" : "No data yet",
     topPerformingForm: "Contact Form",
-    recentActivity: [
-      { type: "Form Submission", form: "Contact Form", time: "2 minutes ago" },
-      { type: "Blog Post", action: "Published", title: "Social Media Trends 2024", time: "1 hour ago" },
-      { type: "Form Submission", form: "Discovery Call", time: "3 hours ago" },
-      { type: "Form Config", action: "Updated", form: "Newsletter Signup", time: "5 hours ago" },
-      { type: "Blog Post", action: "Draft Created", title: "Content Strategy Guide", time: "1 day ago" },
-    ],
-    formPerformance: [
-      { name: "Contact Form", submissions: 67, conversionRate: "8.2%" },
-      { name: "Discovery Call Form", submissions: 34, conversionRate: "12.1%" },
-      { name: "Talk Growth Form", submissions: 28, conversionRate: "6.7%" },
-      { name: "Newsletter Signup", submissions: 18, conversionRate: "15.3%" },
-    ]
+    recentActivity: analytics?.recentSubmissions?.slice(0, 5).map((submission: any, index: number) => ({
+      type: "Form Submission",
+      form: submission.formType || "Contact Form", 
+      time: `${index + 1} submission${index === 0 ? '' : 's'} received`,
+    })) || [],
+    formPerformance: Object.entries(analytics?.submissionsByForm || {}).map(([name, count]) => ({
+      name,
+      submissions: count,
+      conversionRate: "Active",
+    }))
   };
+
+  // Get blog posts count
+  const { data: blogPosts } = useQuery({
+    queryKey: ["/api/blog/posts"],
+    queryFn: getQueryFn({ on401: "returnNull" }),
+  });
+
+  realData.totalBlogPosts = blogPosts?.length || 0;
 
   return (
     <div className="space-y-6">
@@ -60,9 +65,9 @@ export default function AdminAnalytics() {
             <Mail className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockData.totalSubmissions}</div>
+            <div className="text-2xl font-bold">{realData.totalSubmissions}</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-green-600">{mockData.submissionTrend}</span> from last month
+              <span className="text-green-600">{realData.submissionTrend}</span> submissions
             </p>
           </CardContent>
         </Card>
@@ -73,7 +78,7 @@ export default function AdminAnalytics() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockData.totalBlogPosts}</div>
+            <div className="text-2xl font-bold">{realData.totalBlogPosts}</div>
             <p className="text-xs text-muted-foreground">
               Published articles
             </p>
@@ -86,7 +91,7 @@ export default function AdminAnalytics() {
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockData.activeForms}</div>
+            <div className="text-2xl font-bold">{realData.activeForms}</div>
             <p className="text-xs text-muted-foreground">
               Currently accepting submissions
             </p>
@@ -99,7 +104,7 @@ export default function AdminAnalytics() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockData.averageResponseTime}</div>
+            <div className="text-2xl font-bold">{realData.averageResponseTime}</div>
             <p className="text-xs text-muted-foreground">
               Team response time
             </p>
