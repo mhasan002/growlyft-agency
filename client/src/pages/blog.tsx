@@ -253,6 +253,11 @@ export default function Blog() {
               onClick={() => {
                 setSelectedCategory("All");
                 setSearchQuery("");
+                // Scroll to all posts section
+                document.getElementById('all-posts-section')?.scrollIntoView({ 
+                  behavior: 'smooth',
+                  block: 'start'
+                });
               }}
             >
               View all
@@ -300,6 +305,11 @@ export default function Blog() {
               onClick={() => {
                 setSelectedCategory("All");
                 setSearchQuery("");
+                // Scroll to all posts section
+                document.getElementById('all-posts-section')?.scrollIntoView({ 
+                  behavior: 'smooth',
+                  block: 'start'
+                });
               }}
             >
               Browse all
@@ -350,6 +360,7 @@ export default function Blog() {
               onClick={() => {
                 setSelectedCategory("All");
                 setSearchQuery("");
+                // Reset filters to show all posts
               }}
             >
               Browse all
