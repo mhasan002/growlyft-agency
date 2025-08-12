@@ -30,6 +30,7 @@ export default function Contact() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   // Scroll handlers
   useEffect(() => {
@@ -76,6 +77,30 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setValidationErrors({});
+    
+    // Client-side validation
+    const errors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Please enter a valid email address";
+    }
+    
+    if (!formData.budget) {
+      errors.budget = "Please select your budget range";
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      setIsSubmitting(false);
+      return;
+    }
     
     try {
       const response = await fetch('/api/contact', {
@@ -86,7 +111,7 @@ export default function Contact() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          message: formData.message,
+          message: formData.message || '', // Make message optional
           businessName: formData.businessName,
           website: formData.website,
           phoneNumber: formData.phoneNumber,
@@ -110,7 +135,19 @@ export default function Contact() {
       } else {
         const errorData = await response.json();
         console.error('Form submission error:', errorData);
-        alert('Failed to submit form. Please try again.');
+        
+        // Handle server validation errors
+        if (errorData.errors) {
+          const serverErrors: Record<string, string> = {};
+          errorData.errors.forEach((error: any) => {
+            if (error.path && error.path.length > 0) {
+              serverErrors[error.path[0]] = error.message;
+            }
+          });
+          setValidationErrors(serverErrors);
+        } else {
+          alert('Failed to submit form. Please try again.');
+        }
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -330,10 +367,15 @@ export default function Contact() {
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300"
+                      className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition-colors duration-300 ${
+                        validationErrors.name ? 'border-red-500' : 'border-gray-200 focus:border-emerald-500'
+                      }`}
                       placeholder="Your full name"
                       data-testid="input-name"
                     />
+                    {validationErrors.name && (
+                      <span className="text-red-500 text-sm">{validationErrors.name}</span>
+                    )}
                   </div>
 
                   {/* Business Name */}
@@ -375,10 +417,15 @@ export default function Contact() {
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300"
+                      className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition-colors duration-300 ${
+                        validationErrors.email ? 'border-red-500' : 'border-gray-200 focus:border-emerald-500'
+                      }`}
                       placeholder="your@email.com"
                       data-testid="input-email"
                     />
+                    {validationErrors.email && (
+                      <span className="text-red-500 text-sm">{validationErrors.email}</span>
+                    )}
                   </div>
 
                   {/* Phone Number */}
@@ -400,7 +447,9 @@ export default function Contact() {
                   <div className="space-y-2">
                     <Label htmlFor="budget" className="text-gray-800 font-medium">Minimum Budget *</Label>
                     <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)} required>
-                      <SelectTrigger className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300" data-testid="select-budget">
+                      <SelectTrigger className={`w-full px-4 py-3 border-2 rounded-lg focus:ring-0 transition-colors duration-300 ${
+                        validationErrors.budget ? 'border-red-500' : 'border-gray-200 focus:border-emerald-500'
+                      }`} data-testid="select-budget">
                         <SelectValue placeholder="Select your budget range" />
                       </SelectTrigger>
                       <SelectContent>
@@ -411,19 +460,21 @@ export default function Contact() {
                         ))}
                       </SelectContent>
                     </Select>
+                    {validationErrors.budget && (
+                      <span className="text-red-500 text-sm">{validationErrors.budget}</span>
+                    )}
                   </div>
 
                   {/* Message */}
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-gray-800 font-medium">Message *</Label>
+                    <Label htmlFor="message" className="text-gray-800 font-medium">Message</Label>
                     <Textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       rows={4}
-                      required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300 resize-none"
-                      placeholder="What do you need help with? (minimum 10 characters)"
+                      placeholder="Tell us about your project or any specific requirements (optional)"
                       data-testid="textarea-message"
                     />
                   </div>
