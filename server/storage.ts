@@ -28,6 +28,7 @@ export interface IStorage {
   createAdminUser(adminUser: InsertAdminUser): Promise<AdminUser>;
   updateAdminUser(id: string, updates: Partial<InsertAdminUser>): Promise<AdminUser | undefined>;
   updateAdminLastLogin(id: string): Promise<void>;
+  deleteAdminUser(id: string): Promise<boolean>;
   
   // Form configurations
   getAllFormConfigs(): Promise<FormConfig[]>;
@@ -169,6 +170,10 @@ export class MemStorage implements IStorage {
     if (existing) {
       this.adminUsers.set(id, { ...existing, lastLoginAt: new Date() });
     }
+  }
+
+  async deleteAdminUser(id: string): Promise<boolean> {
+    return this.adminUsers.delete(id);
   }
 
   // Form config methods for MemStorage
@@ -416,6 +421,16 @@ export class DatabaseStorage implements IStorage {
         .where(eq(adminUsers.id, id));
     } catch (error) {
       console.error("Error updating admin last login:", error);
+    }
+  }
+
+  async deleteAdminUser(id: string): Promise<boolean> {
+    try {
+      const result = await db.delete(adminUsers).where(eq(adminUsers.id, id)).returning();
+      return result.length > 0;
+    } catch (error) {
+      console.error("Error deleting admin user:", error);
+      return false;
     }
   }
 

@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Users, Edit, Trash2, Shield, User, Settings } from "lucide-react";
+import { Plus, Users, Edit, Edit2, Trash2, Shield, User, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const createAdminSchema = z.object({
@@ -56,6 +56,48 @@ export default function AdminTeamManager() {
   const { data: users = [], isLoading } = useQuery<AdminUser[]>({
     queryKey: ['/api/admin/users'],
   });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete user');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
+      toast({
+        title: "User deleted",
+        description: "The user has been deleted successfully.",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleEditUser = (user: AdminUser) => {
+    toast({
+      title: "Feature Coming Soon",
+      description: "User editing functionality will be available in the next update.",
+    });
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+      deleteUserMutation.mutate(userId);
+    }
+  };
 
   const createUserMutation = useMutation({
     mutationFn: async (data: CreateAdminData) => {
@@ -289,6 +331,25 @@ export default function AdminTeamManager() {
                         {user.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEditUser(user)}
+                      data-testid={`button-edit-user-${user.id}`}
+                    >
+                      <Edit2 className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-800"
+                      data-testid={`button-delete-user-${user.id}`}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
                   </div>
                 </div>
               </div>

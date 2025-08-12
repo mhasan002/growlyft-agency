@@ -19,6 +19,18 @@ export function registerAdminRoutes(app: Express) {
     }
   });
 
+  app.delete("/api/admin/users/:id", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
+    try {
+      const success = await storage.deleteAdminUser(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'Admin user not found' });
+      }
+      res.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // Form Configuration Routes
   app.get("/api/admin/forms", requireAdminAuth, requireAdminRole(['admin', 'form_manager']), async (req, res, next) => {
     try {
