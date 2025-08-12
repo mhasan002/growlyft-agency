@@ -120,7 +120,6 @@ export default function Blog() {
               <Link href="/services" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Services</Link>
               <Link href="/why-us" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Why Us</Link>
               <Link href="/blog" className="text-[#4CAF50] font-medium">Blog</Link>
-              <Link href="/contact" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Contact</Link>
               <Button 
                 onClick={() => setIsLetsTalkOpen(true)}
                 className="bg-[#4CAF50] text-white hover:bg-[#45a049] transition-all duration-300 transform hover:scale-105"
@@ -148,7 +147,6 @@ export default function Blog() {
                 <Link href="/services" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Services</Link>
                 <Link href="/why-us" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Why Us</Link>
                 <Link href="/blog" className="text-[#4CAF50] font-medium">Blog</Link>
-                <Link href="/contact" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Contact</Link>
                 <Button 
                   onClick={() => setIsLetsTalkOpen(true)}
                   className="bg-[#4CAF50] text-white hover:bg-[#45a049] w-full"
