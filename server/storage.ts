@@ -304,6 +304,41 @@ export class MemStorage implements IStorage {
       this.passwordResetTokens.set(token, { ...existing, usedAt: new Date() });
     }
   }
+
+  async getSubmissionAnalytics(): Promise<{
+    totalSubmissions: number;
+    recentSubmissions: any[];
+    submissionsByForm: Record<string, number>;
+  }> {
+    // Calculate total submissions across all types
+    const totalSubmissions = 
+      this.contactSubmissions.size + 
+      this.discoveryCallSubmissions.size + 
+      this.talkGrowthSubmissions.size;
+
+    // Get recent submissions (last 10)
+    const allSubmissions = [
+      ...Array.from(this.contactSubmissions.values()).map(s => ({ ...s, type: 'Contact Form', date: s.createdAt })),
+      ...Array.from(this.discoveryCallSubmissions.values()).map(s => ({ ...s, type: 'Discovery Call', date: s.createdAt })),
+      ...Array.from(this.talkGrowthSubmissions.values()).map(s => ({ ...s, type: 'Talk Growth', date: s.createdAt }))
+    ];
+
+    const recentSubmissions = allSubmissions
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .slice(0, 10);
+
+    const submissionsByForm = {
+      'Contact Forms': this.contactSubmissions.size,
+      'Discovery Calls': this.discoveryCallSubmissions.size,
+      'Talk Growth Requests': this.talkGrowthSubmissions.size
+    };
+
+    return {
+      totalSubmissions,
+      recentSubmissions,
+      submissionsByForm
+    };
+  }
 }
 
 // Database storage implementation using Drizzle and Supabase
@@ -513,7 +548,7 @@ export class DatabaseStorage implements IStorage {
       } else {
         result = await db.select().from(blogPosts);
       }
-      return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      return result.sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime());
     } catch (error) {
       console.error("Error getting blog posts:", error);
       return [];
@@ -634,9 +669,9 @@ export class DatabaseStorage implements IStorage {
       
       // Get recent submissions (last 10)
       const recentSubmissions = [
-        ...contactCount.map(s => ({ ...s, type: 'Contact Form', date: s.createdAt })),
-        ...discoveryCount.map(s => ({ ...s, type: 'Discovery Call', date: s.createdAt })),
-        ...talkGrowthCount.map(s => ({ ...s, type: 'Talk Growth', date: s.createdAt }))
+        ...contactCount.map((s: any) => ({ ...s, type: 'Contact Form', date: s.createdAt })),
+        ...discoveryCount.map((s: any) => ({ ...s, type: 'Discovery Call', date: s.createdAt })),
+        ...talkGrowthCount.map((s: any) => ({ ...s, type: 'Talk Growth', date: s.createdAt }))
       ]
       .sort((a, b) => b.date.getTime() - a.date.getTime())
       .slice(0, 10);
@@ -663,5 +698,14 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-// Use DATABASE_URL environment variable to determine storage type
-export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
+// Use database storage if db is available, otherwise use memory storage
+export const storage: IStorage = (() => {
+  const databaseUrl = process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL;
+  if (databaseUrl && db) {
+    console.log("Using database storage");
+    return new DatabaseStorage();
+  } else {
+    console.log("Using in-memory storage");
+    return new MemStorage();
+  }
+})();
