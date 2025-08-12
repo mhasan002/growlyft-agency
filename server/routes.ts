@@ -73,14 +73,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register admin routes
   registerAdminRoutes(app);
-  // Contact form submission endpoint
+  // Contact form submission endpoint (handles all contact-type submissions)
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = insertContactSchema.parse(req.body);
       const contactSubmission = await storage.createContactSubmission(validatedData);
       
+      // Determine which form config to use based on the type field
+      let formConfigName = 'contact_send_message'; // default
+      const submissionType = (req.body as any).type; // Get type from request body directly
+      if (submissionType) {
+        switch (submissionType) {
+          case 'lets_talk':
+            formConfigName = 'about_lets_talk';
+            break;
+          case 'custom_plan':
+            formConfigName = 'services_custom_plan';
+            break;
+          case 'package_get_started':
+            formConfigName = 'services_get_started';
+            break;
+          case 'contact':
+          default:
+            formConfigName = 'contact_send_message';
+            break;
+        }
+      }
+      
       // Send email notification
-      const recipientEmails = await getFormRecipients('contact_send_message');
+      const recipientEmails = await getFormRecipients(formConfigName);
       await sendFormNotification('Contact Form', validatedData, recipientEmails);
       
       res.status(201).json({ 
@@ -112,7 +133,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const discoveryCallSubmission = await storage.createDiscoveryCallSubmission(validatedData);
       
       // Send email notification
-      const recipientEmails = await getFormRecipients('about_schedule_discovery_call');
+      const recipientEmails = await getFormRecipients('discovery_call');
       await sendFormNotification('Discovery Call Request', validatedData, recipientEmails);
       
       res.status(201).json({ 
