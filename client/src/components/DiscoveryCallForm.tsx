@@ -217,7 +217,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
                   {...form.register("websiteUrl")}
                   className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
                   style={{borderColor: '#DDDDDD', color: '#000000'}}
-                  placeholder="https://yourwebsite.com"
+                  placeholder="yourwebsite.com or @yourbrand"
                   data-testid="input-website-url"
                 />
                 {form.formState.errors.websiteUrl && (
@@ -306,7 +306,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
                   </Label>
                   <Select
                     value={form.watch("monthlyBudget") || ""}
-                    onValueChange={(value) => {
+                    onValueChange={(value: "under_300" | "300_500" | "500_1000" | "1000_3000" | "3000_10000" | "10000_plus") => {
                       form.setValue("monthlyBudget", value);
                       validateForm(value, form.watch("readyToInvest"));
                     }}
@@ -339,7 +339,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
                   </Label>
                   <Select
                     value={form.watch("readyToInvest") || ""}
-                    onValueChange={(value) => {
+                    onValueChange={(value: "yes" | "not_sure" | "no") => {
                       form.setValue("readyToInvest", value);
                       validateForm(form.watch("monthlyBudget"), value);
                     }}

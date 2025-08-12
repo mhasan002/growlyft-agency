@@ -132,7 +132,7 @@ export const insertDiscoveryCallSchema = createInsertSchema(discoveryCallSubmiss
 }).extend({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   businessName: z.string().min(2, "Business name must be at least 2 characters"),
-  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
+  websiteUrl: z.string().min(3, "Please enter your website or social media profile"),
   email: z.string().email("Please enter a valid email address"),
   phoneNumber: z.string().min(10, "Please enter a valid phone number"),
   monthlyBudget: z.enum(["under_300", "300_500", "500_1000", "1000_3000", "3000_10000", "10000_plus"], {
@@ -156,7 +156,7 @@ export const insertTalkGrowthSchema = createInsertSchema(talkGrowthSubmissions).
 }).extend({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   businessName: z.string().min(2, "Business name must be at least 2 characters"),
-  websiteUrl: z.string().url("Please enter a valid website or social media URL"),
+  websiteUrl: z.string().min(3, "Please enter your website or social media profile"),
   email: z.string().email("Please enter a valid email address"),
   phoneNumber: z.string().min(10, "Please enter a valid phone number"),
   monthlyBudget: z.enum(["under_300", "500_1000", "1000_3000", "3000_5000", "5000_10000", "10000_plus"], {

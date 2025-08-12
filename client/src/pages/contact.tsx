@@ -403,7 +403,7 @@ export default function Contact() {
                       onChange={(e) => handleInputChange('website', e.target.value)}
                       required
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-0 transition-colors duration-300"
-                      placeholder="Your website or social media profile"
+                      placeholder="yourwebsite.com or @yourbrand"
                       data-testid="input-website"
                     />
                   </div>
