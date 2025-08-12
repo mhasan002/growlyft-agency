@@ -449,13 +449,13 @@ export default function Blog() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black text-white py-16">
+      <footer className="bg-black text-white py-16 relative z-10 min-h-[400px]">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 animate-on-scroll">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             {/* Logo and About */}
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center space-x-3 mb-6 hover:opacity-80 transition-opacity duration-300" data-testid="footer-logo">
-                <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" />
+                <img src={whiteLogoPath} alt="Growlyft Logo" className="w-10 h-10" onError={(e) => { console.log('Logo failed to load'); }} />
                 <div className="text-xl font-bold">
                   <span className="text-white">Grow</span><span className="text-[#4CAF50]">lyft</span>
                 </div>
@@ -505,7 +505,7 @@ export default function Blog() {
           </div>
           
           {/* Copyright */}
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400 animate-on-scroll">
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
             <p data-testid="footer-copyright">&copy; 2025 Growlyft. All rights reserved.</p>
           </div>
         </div>
