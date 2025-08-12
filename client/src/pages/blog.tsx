@@ -52,11 +52,16 @@ export default function Blog() {
   const filteredPosts = publishedPosts.filter((post: BlogPost) => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
     const matchesSearch = searchQuery === "" || 
-                         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchQuery.toLowerCase());
+                         (post.title && post.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         (post.excerpt && post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         (post.content && post.content.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
+
+  // Debug logging for search
+  console.log("Search query:", searchQuery);
+  console.log("Published posts count:", publishedPosts.length);
+  console.log("Filtered posts count:", filteredPosts.length);
 
   // Get featured post (latest published)
   const featuredPost = publishedPosts[0];
