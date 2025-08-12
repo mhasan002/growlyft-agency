@@ -17,7 +17,7 @@ if (process.env.SENDGRID_API_KEY) {
 let transporter: nodemailer.Transporter | null = null;
 
 if (process.env.SMTP_HOST && process.env.SMTP_EMAIL && process.env.SMTP_PASSWORD) {
-  transporter = nodemailer.createTransporter({
+  transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports

@@ -417,6 +417,7 @@ Ready to build a powerful LinkedIn presence? We can help you create a strategy t
     const contactSubmission: ContactSubmission = {
       ...insertContact,
       id,
+      message: insertContact.message || "",
       createdAt: new Date(),
     };
     this.contactSubmissions.set(id, contactSubmission);
