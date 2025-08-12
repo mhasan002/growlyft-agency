@@ -22,6 +22,7 @@ export interface IStorage {
   createTalkGrowthSubmission(talkGrowth: InsertTalkGrowth): Promise<TalkGrowthSubmission>;
   
   // Admin users
+  getAllAdminUsers(): Promise<AdminUser[]>;
   getAdminUser(id: string): Promise<AdminUser | undefined>;
   getAdminUserByEmail(email: string): Promise<AdminUser | undefined>;
   createAdminUser(adminUser: InsertAdminUser): Promise<AdminUser>;
@@ -122,6 +123,12 @@ export class MemStorage implements IStorage {
   }
 
   // Admin user methods for MemStorage
+  async getAllAdminUsers(): Promise<AdminUser[]> {
+    return Array.from(this.adminUsers.values()).sort((a, b) => 
+      a.firstName.localeCompare(b.firstName) || a.lastName.localeCompare(b.lastName)
+    );
+  }
+
   async getAdminUser(id: string): Promise<AdminUser | undefined> {
     return this.adminUsers.get(id);
   }
@@ -350,6 +357,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Admin user methods
+  async getAllAdminUsers(): Promise<AdminUser[]> {
+    try {
+      return await db.select().from(adminUsers).orderBy(adminUsers.firstName, adminUsers.lastName);
+    } catch (error) {
+      console.error("Error getting all admin users:", error);
+      return [];
+    }
+  }
+
   async getAdminUser(id: string): Promise<AdminUser | undefined> {
     try {
       const result = await db.select().from(adminUsers).where(eq(adminUsers.id, id)).limit(1);
@@ -507,8 +523,10 @@ export class DatabaseStorage implements IStorage {
       const blogPostData = {
         ...insertBlogPost,
         publishedAt: insertBlogPost.isPublished ? new Date() : null,
+        readTime: insertBlogPost.readTime || null,
+        featuredImage: insertBlogPost.featuredImage || null,
       };
-      const result = await db.insert(blogPosts).values(blogPostData).returning();
+      const result = await db.insert(blogPosts).values([blogPostData]).returning();
       return result[0];
     } catch (error) {
       console.error("Error creating blog post:", error);

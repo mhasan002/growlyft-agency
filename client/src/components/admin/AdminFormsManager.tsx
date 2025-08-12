@@ -22,6 +22,27 @@ const updateFormSchema = z.object({
   location: z.string().min(1, "Location is required"),
 });
 
+// Helper function to get the link for each form location
+function getLocationLink(location: string): string | null {
+  const locationMap: Record<string, string> = {
+    "Homepage": "/",
+    "Homepage Hero Section": "/#hero",
+    "Homepage CTA": "/#cta",
+    "Homepage Footer": "/#footer",
+    "Services Page": "/services",
+    "Services Page Packages": "/services#packages",
+    "Services Page Bottom": "/services#bottom",
+    "Services Page CTA": "/services#cta",
+    "Contact Page": "/contact",
+    "Contact Page Main": "/contact#main",
+    "About Page": "/about",
+    "Footer": "#footer",
+    "All Pages Footer": "#footer",
+    "Footer and Contact Page": "/contact#footer"
+  };
+  return locationMap[location] || null;
+}
+
 export default function AdminFormsManager() {
   const { toast } = useToast();
   const [editingForm, setEditingForm] = useState<string | null>(null);
@@ -134,7 +155,20 @@ export default function AdminFormsManager() {
               </SelectContent>
             </Select>
           ) : (
-            <span>{location}</span>
+            <div className="flex items-center space-x-2">
+              <span>{location}</span>
+              {getLocationLink(location) != null && (
+                <a
+                  href={getLocationLink(location)!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800"
+                  title="View this form on the website"
+                >
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+            </div>
           )}
         </TableCell>
         <TableCell>

@@ -52,25 +52,9 @@ export default function AdminTeamManager() {
     },
   });
 
-  // For now, we'll use mock data since the API endpoint needs to be implemented
-  const { data: users = [], isLoading } = useQuery({
+  // Fetch real admin users data
+  const { data: users = [], isLoading } = useQuery<AdminUser[]>({
     queryKey: ['/api/admin/users'],
-    queryFn: () => {
-      // This would be the real API call once implemented
-      // return apiRequest('/api/admin/users');
-      return Promise.resolve([
-        {
-          id: "1",
-          email: "admin@growlyft.com",
-          firstName: "Admin",
-          lastName: "User",
-          role: "admin",
-          isActive: true,
-          lastLoginAt: new Date().toISOString(),
-          createdAt: new Date().toISOString(),
-        }
-      ] as AdminUser[]);
-    },
   });
 
   const createUserMutation = useMutation({

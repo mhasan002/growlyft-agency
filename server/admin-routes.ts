@@ -12,9 +12,8 @@ export function registerAdminRoutes(app: Express) {
   // Admin Users Routes - only admins can access these
   app.get("/api/admin/users", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
     try {
-      // For now, return the current admin user as we don't have a getAllAdminUsers method yet
-      const currentUser = req.user;
-      res.json([currentUser]);
+      const users = await storage.getAllAdminUsers();
+      res.json(users);
     } catch (error) {
       next(error);
     }
