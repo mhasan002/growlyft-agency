@@ -40,14 +40,21 @@ export default function Blog() {
   // Filter published posts
   const publishedPosts = Array.isArray(posts) ? posts.filter((post: BlogPost) => post.isPublished) : [];
 
-  // Get unique categories
-  const categories = ["All", ...Array.from(new Set(publishedPosts.map((post: BlogPost) => post.category)))];
+  // Get unique categories from published posts
+  const uniqueCategories = Array.from(new Set(
+    publishedPosts
+      .map((post: BlogPost) => post.category)
+      .filter(category => category && category.trim() !== "")
+  ));
+  const categories = ["All", ...uniqueCategories];
 
   // Filter posts based on category and search
   const filteredPosts = publishedPosts.filter((post: BlogPost) => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery === "" || 
+                         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.content.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -178,17 +185,26 @@ export default function Blog() {
                 />
               </div>
               <div className="relative">
-                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-10" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent appearance-none bg-white"
+                  className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent appearance-none bg-white text-gray-900 min-w-[200px] cursor-pointer shadow-sm"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 12px center',
+                    backgroundSize: '16px',
+                    color: '#1f2937'
+                  }}
                 >
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
+                  {categories.length > 0 ? categories.map((category) => (
+                    <option key={category} value={category} className="bg-white text-gray-900 py-2">
+                      {category === "All" ? "All Categories" : category}
                     </option>
-                  ))}
+                  )) : (
+                    <option value="All" className="bg-white text-gray-900 py-2">All Categories</option>
+                  )}
                 </select>
               </div>
             </div>
