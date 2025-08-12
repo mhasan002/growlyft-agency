@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import sgMail from '@sendgrid/mail';
+import nodemailer from "nodemailer";
 import { storage } from "./storage";
 import { insertContactSchema, insertDiscoveryCallSchema, insertTalkGrowthSchema } from "@shared/schema";
 import { z } from "zod";
@@ -12,13 +13,24 @@ if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
 
+// Configure Nodemailer (simple SMTP alternative to SendGrid)
+let transporter: nodemailer.Transporter | null = null;
+
+if (process.env.SMTP_HOST && process.env.SMTP_EMAIL && process.env.SMTP_PASSWORD) {
+  transporter = nodemailer.createTransporter({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+    auth: {
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
+  console.log('Nodemailer configured with SMTP settings');
+}
+
 // Helper function to send notification emails
 async function sendFormNotification(formType: string, formData: any, recipientEmails: string[]) {
-  if (!process.env.SENDGRID_API_KEY) {
-    console.warn('SendGrid API key not configured, skipping email notification');
-    return;
-  }
-
   const subject = `New ${formType} submission - Growlyft`;
   const text = `New form submission received:
 
@@ -39,17 +51,40 @@ Submitted at: ${new Date().toLocaleString()}`;
     </div>
   `;
 
-  try {
-    await sgMail.sendMultiple({
-      to: recipientEmails,
-      from: 'hasanmehedimdh@gmail.com', // Using verified sender email
-      subject,
-      text,
-      html,
-    });
-    console.log(`Email notification sent to ${recipientEmails.join(', ')}`);
-  } catch (error) {
-    console.error('Failed to send email notification:', error);
+  // Try SMTP first (Nodemailer), then fallback to SendGrid
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: recipientEmails,
+        subject,
+        text,
+        html,
+      });
+      console.log(`Email notification sent via SMTP to ${recipientEmails.join(', ')}`);
+      return;
+    } catch (error) {
+      console.error('Failed to send email via SMTP:', error);
+      console.log('Trying SendGrid as fallback...');
+    }
+  }
+
+  // Fallback to SendGrid if SMTP fails or is not configured
+  if (process.env.SENDGRID_API_KEY) {
+    try {
+      await sgMail.sendMultiple({
+        to: recipientEmails,
+        from: 'hasanmehedimdh@gmail.com', // Using verified sender email
+        subject,
+        text,
+        html,
+      });
+      console.log(`Email notification sent via SendGrid to ${recipientEmails.join(', ')}`);
+    } catch (error) {
+      console.error('Failed to send email via SendGrid:', error);
+    }
+  } else {
+    console.warn('No email service configured (SMTP or SendGrid), skipping email notification');
   }
 }
 
