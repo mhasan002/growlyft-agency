@@ -77,21 +77,47 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setFormSubmitted(true);
-      setIsSubmitting(false);
-      setFormData({
-        name: '',
-        businessName: '',
-        website: '',
-        email: '',
-        phoneNumber: '',
-        countryCode: '+1',
-        budget: '',
-        message: ''
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          businessName: formData.businessName,
+          website: formData.website,
+          phoneNumber: formData.phoneNumber,
+          budget: formData.budget,
+          type: 'contact'
+        }),
       });
-    }, 1000);
+      
+      if (response.ok) {
+        setFormSubmitted(true);
+        setFormData({
+          name: '',
+          businessName: '',
+          website: '',
+          email: '',
+          phoneNumber: '',
+          countryCode: '+1',
+          budget: '',
+          message: ''
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Form submission error:', errorData);
+        alert('Failed to submit form. Please try again.');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('Failed to submit form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleFaq = (index: number) => {
@@ -99,11 +125,11 @@ export default function Contact() {
   };
 
   const budgetOptions = [
-    { value: "500+", label: "$500+" },
-    { value: "1000+", label: "$1,000+" },
-    { value: "2500+", label: "$2,500+" },
-    { value: "5000+", label: "$5,000+" },
-    { value: "custom", label: "Custom" }
+    { value: "under_1000", label: "Under $1,000" },
+    { value: "1000_3000", label: "$1,000 - $3,000" },
+    { value: "3000_5000", label: "$3,000 - $5,000" },
+    { value: "5000_10000", label: "$5,000 - $10,000" },
+    { value: "10000_plus", label: "$10,000+" }
   ];
 
   const faqData = [

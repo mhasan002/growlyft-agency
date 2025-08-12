@@ -27,17 +27,19 @@ const serviceOptions = [
   { id: "other", label: "Other" },
 ];
 
-const budgetAllocationOptions = [
-  { value: "ready_now", label: "Yes, ready to invest now" },
-  { value: "next_1_3_months", label: "Yes, in the next 1–3 months" },
-  { value: "exploring", label: "Not yet / Just exploring" },
+const readyToInvestOptions = [
+  { value: "yes", label: "Yes, ready to invest now" },
+  { value: "not_sure", label: "Not sure / exploring options" },
+  { value: "no", label: "No, just gathering information" },
 ];
 
-const minimumBudgetOptions = [
-  { value: "under_300", label: "< $300" },
-  { value: "300_500", label: "$300–$500" },
-  { value: "500_1000", label: "$500–$1000" },
-  { value: "1000_plus", label: "$1000+" },
+const monthlyBudgetOptions = [
+  { value: "under_300", label: "Under $300" },
+  { value: "300_500", label: "$300 - $500" },
+  { value: "500_1000", label: "$500 - $1,000" },
+  { value: "1000_3000", label: "$1,000 - $3,000" },
+  { value: "3000_10000", label: "$3,000 - $10,000" },
+  { value: "10000_plus", label: "$10,000+" },
 ];
 
 const callPlatformOptions = [
@@ -61,13 +63,9 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
       websiteUrl: "",
       email: "",
       phoneNumber: "",
-      countryCode: "+1",
-      servicesInterested: [],
-      budgetAllocated: undefined,
-      minimumBudget: undefined,
-      preferredDate: "",
-      timeZone: "EST",
-      callPlatform: undefined,
+      monthlyBudget: "500_1000",
+      mainGoal: "",
+      readyToInvest: "yes",
     },
   });
 

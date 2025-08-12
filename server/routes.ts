@@ -42,7 +42,7 @@ Submitted at: ${new Date().toLocaleString()}`;
   try {
     await sgMail.sendMultiple({
       to: recipientEmails,
-      from: 'noreply@replit.app', // Using Replit's default sender to avoid verification issues
+      from: 'hasanmehedimdh@gmail.com', // Using verified sender email
       subject,
       text,
       html,
