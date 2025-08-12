@@ -224,13 +224,8 @@ export function registerAdminRoutes(app: Express) {
   // Form submissions analytics (for admin dashboard)
   app.get("/api/admin/analytics/submissions", requireAdminAuth, async (req, res, next) => {
     try {
-      // TODO: Implement analytics for form submissions
-      // This would involve creating queries to get submission counts, trends, etc.
-      res.json({
-        totalSubmissions: 0,
-        recentSubmissions: [],
-        submissionsByForm: {}
-      });
+      const analytics = await storage.getSubmissionAnalytics();
+      res.json(analytics);
     } catch (error) {
       next(error);
     }

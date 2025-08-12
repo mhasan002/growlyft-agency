@@ -50,6 +50,13 @@ export interface IStorage {
   createPasswordResetToken(email: string, token: string, expiresAt: Date): Promise<PasswordResetToken>;
   getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined>;
   markPasswordResetTokenUsed(token: string): Promise<void>;
+  
+  // Analytics
+  getSubmissionAnalytics(): Promise<{
+    totalSubmissions: number;
+    recentSubmissions: any[];
+    submissionsByForm: Record<string, number>;
+  }>;
 }
 
 export class MemStorage implements IStorage {
@@ -609,6 +616,49 @@ export class DatabaseStorage implements IStorage {
         .where(eq(passwordResetTokens.token, token));
     } catch (error) {
       console.error("Error marking password reset token as used:", error);
+    }
+  }
+
+  async getSubmissionAnalytics(): Promise<{
+    totalSubmissions: number;
+    recentSubmissions: any[];
+    submissionsByForm: Record<string, number>;
+  }> {
+    try {
+      // Get counts for all submission types
+      const contactCount = await db.select().from(contactSubmissions);
+      const discoveryCount = await db.select().from(discoveryCallSubmissions);
+      const talkGrowthCount = await db.select().from(talkGrowthSubmissions);
+      
+      const totalSubmissions = contactCount.length + discoveryCount.length + talkGrowthCount.length;
+      
+      // Get recent submissions (last 10)
+      const recentSubmissions = [
+        ...contactCount.map(s => ({ ...s, type: 'Contact Form', date: s.createdAt })),
+        ...discoveryCount.map(s => ({ ...s, type: 'Discovery Call', date: s.createdAt })),
+        ...talkGrowthCount.map(s => ({ ...s, type: 'Talk Growth', date: s.createdAt }))
+      ]
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .slice(0, 10);
+
+      const submissionsByForm = {
+        'Contact Forms': contactCount.length,
+        'Discovery Calls': discoveryCount.length,
+        'Talk Growth Requests': talkGrowthCount.length
+      };
+
+      return {
+        totalSubmissions,
+        recentSubmissions,
+        submissionsByForm
+      };
+    } catch (error) {
+      console.error("Error getting submission analytics:", error);
+      return {
+        totalSubmissions: 0,
+        recentSubmissions: [],
+        submissionsByForm: {}
+      };
     }
   }
 }
