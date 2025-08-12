@@ -134,7 +134,7 @@ export default function Blog() {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 py-4 border-t border-gray-200">
+            <div className="md:hidden mt-4 py-4 border-t border-gray-200 bg-white/95 backdrop-blur-sm rounded-lg">
               <nav className="flex flex-col space-y-4">
                 <Link href="/" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">Home</Link>
                 <Link href="/about" className="text-gray-700 hover:text-[#4CAF50] transition-colors duration-300">About</Link>

@@ -86,17 +86,17 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
       newServices = selectedServices.filter(id => id !== serviceId);
     }
     setSelectedServices(newServices);
-    form.setValue("servicesInterested", newServices);
+    // Note: This field doesn't exist in the discovery call schema, removing
   };
 
-  const validateForm = (budgetAllocated?: string, minimumBudget?: string) => {
-    if (budgetAllocated === "exploring") {
+  const validateForm = (monthlyBudget?: string, readyToInvest?: string) => {
+    if (readyToInvest === "no") {
       setIsFormValid(false);
       setValidationMessage("Our discovery calls are reserved for businesses ready to start within 3 months.");
       return false;
     }
     
-    if (minimumBudget === "under_300") {
+    if (monthlyBudget === "under_300") {
       setIsFormValid(false);
       setValidationMessage("Our services start from $300/month. Please select a higher budget to proceed.");
       return false;
@@ -108,7 +108,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
   };
 
   const onSubmit = (data: InsertDiscoveryCall) => {
-    if (!validateForm(data.budgetAllocated, data.minimumBudget)) {
+    if (!validateForm(data.monthlyBudget, data.readyToInvest)) {
       return;
     }
     submitForm(data);
@@ -248,18 +248,25 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
               </div>
 
               <div className="md:col-span-2">
-                <PhoneInput
-                  label="Phone Number"
-                  required={true}
-                  phoneValue={form.watch("phoneNumber") || ""}
-                  countryCode={form.watch("countryCode") || "+1"}
-                  onPhoneChange={(value) => form.setValue("phoneNumber", value)}
-                  onCountryCodeChange={(value) => form.setValue("countryCode", value)}
-                  placeholder="Your phone number"
-                  error={form.formState.errors.phoneNumber?.message}
-                  variant="discovery"
-                  testId="discovery-phone"
-                />
+                <div>
+                  <Label htmlFor="phoneNumber" className="font-medium" style={{color: '#000000'}}>
+                    Phone Number *
+                  </Label>
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    {...form.register("phoneNumber")}
+                    className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
+                    style={{borderColor: '#DDDDDD', color: '#000000'}}
+                    placeholder="+1 (555) 123-4567"
+                    data-testid="input-phone"
+                  />
+                  {form.formState.errors.phoneNumber && (
+                    <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-phone">
+                      {form.formState.errors.phoneNumber.message}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -273,29 +280,21 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
 
             <div className="space-y-6">
               <div>
-                <Label className="font-medium mb-4 block" style={{color: '#000000'}}>
-                  Which services are you most interested in? *
+                <Label htmlFor="mainGoal" className="font-medium" style={{color: '#000000'}}>
+                  What's your main goal with social media marketing? *
                 </Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {serviceOptions.map((service) => (
-                    <div key={service.id} className="flex items-center space-x-3">
-                      <Checkbox
-                        id={service.id}
-                        checked={selectedServices.includes(service.id)}
-                        onCheckedChange={(checked) => handleServiceToggle(service.id, checked as boolean)}
-                        className="border-2"
-                        style={{borderColor: '#DDDDDD', '--checkbox-checked-bg': '#2ECC71', '--checkbox-checked-border': '#2ECC71'} as React.CSSProperties}
-                        data-testid={`checkbox-service-${service.id}`}
-                      />
-                      <Label htmlFor={service.id} className="cursor-pointer" style={{color: '#000000'}}>
-                        {service.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-                {form.formState.errors.servicesInterested && (
-                  <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-services">
-                    {form.formState.errors.servicesInterested.message}
+                <Textarea
+                  id="mainGoal"
+                  {...form.register("mainGoal")}
+                  rows={3}
+                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm resize-none"
+                  style={{borderColor: '#DDDDDD', color: '#000000'}}
+                  placeholder="Describe your main marketing goals and what you hope to achieve..."
+                  data-testid="textarea-main-goal"
+                />
+                {form.formState.errors.mainGoal && (
+                  <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-main-goal">
+                    {form.formState.errors.mainGoal.message}
                   </p>
                 )}
               </div>
@@ -303,66 +302,66 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <Label className="font-medium" style={{color: '#000000'}}>
-                    Do you have budget allocated for social media marketing? *
+                    What's your monthly marketing budget? *
                   </Label>
                   <Select
-                    value={form.watch("budgetAllocated") || ""}
+                    value={form.watch("monthlyBudget") || ""}
                     onValueChange={(value) => {
-                      form.setValue("budgetAllocated", value);
-                      validateForm(value, form.watch("minimumBudget"));
+                      form.setValue("monthlyBudget", value);
+                      validateForm(value, form.watch("readyToInvest"));
                     }}
                   >
                     <SelectTrigger 
                       className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm" 
                       style={{borderColor: '#DDDDDD'}}
-                      data-testid="select-budget-allocated"
+                      data-testid="select-monthly-budget"
                     >
-                      <SelectValue placeholder="Select an option" />
+                      <SelectValue placeholder="Select budget range" />
                     </SelectTrigger>
                     <SelectContent>
-                      {budgetAllocationOptions.map((option) => (
+                      {monthlyBudgetOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {form.formState.errors.budgetAllocated && (
-                    <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-budget-allocated">
-                      {form.formState.errors.budgetAllocated.message}
+                  {form.formState.errors.monthlyBudget && (
+                    <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-monthly-budget">
+                      {form.formState.errors.monthlyBudget.message}
                     </p>
                   )}
                 </div>
 
                 <div>
                   <Label className="font-medium" style={{color: '#000000'}}>
-                    What's your minimum budget range? *
+                    Are you ready to invest in marketing? *
                   </Label>
                   <Select
-                    value={form.watch("minimumBudget") || ""}
+                    value={form.watch("readyToInvest") || ""}
                     onValueChange={(value) => {
-                      form.setValue("minimumBudget", value);
-                      validateForm(form.watch("budgetAllocated"), value);
+                      form.setValue("readyToInvest", value);
+                      validateForm(form.watch("monthlyBudget"), value);
                     }}
                   >
                     <SelectTrigger 
                       className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm" 
                       style={{borderColor: '#DDDDDD'}}
-                      data-testid="select-minimum-budget"
+                      data-testid="select-ready-to-invest"
                     >
-                      <SelectValue placeholder="Select budget range" />
+                      <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
                     <SelectContent>
-                      {minimumBudgetOptions.map((option) => (
+                      {readyToInvestOptions.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {form.formState.errors.minimumBudget && (
-                    <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-minimum-budget">
-                      {form.formState.errors.minimumBudget.message}
+                  {form.formState.errors.readyToInvest && (
+                    <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-ready-to-invest">
+                      {form.formState.errors.readyToInvest.message}
                     </p>
                   )}
                 </div>
@@ -370,83 +369,7 @@ export default function DiscoveryCallForm({ isOpen, onClose }: DiscoveryCallForm
             </div>
           </div>
 
-          {/* Section 3 - Call Scheduling */}
-          <div className="rounded-2xl p-6 border shadow-lg" style={{backgroundColor: '#F8F8F8', borderColor: '#DDDDDD'}}>
-            <div className="flex items-center gap-3 mb-6">
-              <Calendar className="w-6 h-6" style={{color: '#2ECC71'}} />
-              <h3 className="text-xl font-semibold" style={{color: '#000000'}}>Call Scheduling</h3>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <Label htmlFor="preferredDate" className="font-medium" style={{color: '#000000'}}>
-                  Preferred Date & Time *
-                </Label>
-                <Input
-                  id="preferredDate"
-                  type="datetime-local"
-                  {...form.register("preferredDate")}
-                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
-                  style={{borderColor: '#DDDDDD', color: '#000000'}}
-                  data-testid="input-preferred-date"
-                />
-                {form.formState.errors.preferredDate && (
-                  <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-preferred-date">
-                    {form.formState.errors.preferredDate.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="timeZone" className="font-medium" style={{color: '#000000'}}>
-                  Time Zone *
-                </Label>
-                <Input
-                  id="timeZone"
-                  {...form.register("timeZone")}
-                  className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm"
-                  style={{borderColor: '#DDDDDD', color: '#000000'}}
-                  placeholder="e.g. EST, PST, GMT"
-                  data-testid="input-time-zone"
-                />
-                {form.formState.errors.timeZone && (
-                  <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-time-zone">
-                    {form.formState.errors.timeZone.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="md:col-span-2">
-                <Label className="font-medium" style={{color: '#000000'}}>
-                  Preferred Call Platform *
-                </Label>
-                <Select
-                  value={form.watch("callPlatform") || ""}
-                  onValueChange={(value) => form.setValue("callPlatform", value)}
-                >
-                  <SelectTrigger 
-                    className="mt-2 border-2 rounded-xl discovery-form-input focus:ring-0 transition-all duration-300 shadow-sm" 
-                    style={{borderColor: '#DDDDDD'}}
-                    data-testid="select-call-platform"
-                  >
-                    <SelectValue placeholder="Choose your preferred platform" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {callPlatformOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {form.formState.errors.callPlatform && (
-                  <p className="text-sm mt-1" style={{color: '#E63946'}} data-testid="error-call-platform">
-                    {form.formState.errors.callPlatform.message}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
 
           {!isFormValid && (
             <div className="rounded-lg p-4 border-2" style={{backgroundColor: '#FFF5F5', borderColor: '#E63946'}}>
