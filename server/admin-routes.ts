@@ -1,9 +1,11 @@
 import type { Express } from "express";
 import { storage } from "./storage";
 import { requireAdminAuth, requireAdminRole } from "./admin-auth";
+import { z } from "zod";
 import { 
   insertFormConfigSchema, 
   insertBlogPostSchema,
+  updateAdminUserSchema,
   FormConfig,
   BlogPost 
 } from "@shared/schema";
@@ -21,9 +23,14 @@ export function registerAdminRoutes(app: Express) {
 
   app.put("/api/admin/users/:id", requireAdminAuth, requireAdminRole(['admin']), async (req, res, next) => {
     try {
-      const validation = insertAdminUserSchema.partial().safeParse(req.body);
+      const validation = updateAdminUserSchema.safeParse(req.body);
       if (!validation.success) {
         return res.status(400).json({ error: validation.error.errors });
+      }
+
+      // Remove empty password field to avoid updating it
+      if (validation.data.password === "") {
+        delete validation.data.password;
       }
 
       const user = await storage.updateAdminUser(req.params.id, validation.data);
@@ -91,7 +98,7 @@ export function registerAdminRoutes(app: Express) {
         return res.status(400).json({ error: validation.error.errors });
       }
 
-      const form = await storage.updateFormConfig(req.params.id, validation.data);
+      const form = await storage.updateFormConfig(req.params.id, validation.data as any);
       if (!form) {
         return res.status(404).json({ error: 'Form configuration not found' });
       }

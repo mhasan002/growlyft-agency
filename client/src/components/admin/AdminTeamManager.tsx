@@ -150,7 +150,7 @@ export default function AdminTeamManager() {
     if (!editingUser) return;
     
     // Remove password if it's empty (don't update password)
-    const updateData = { ...data };
+    const updateData: any = { ...data };
     if (!data.password || data.password.trim() === "") {
       delete updateData.password;
     }

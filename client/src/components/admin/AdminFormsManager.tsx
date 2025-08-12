@@ -17,7 +17,7 @@ import { Plus, Settings, ExternalLink, Trash2, Edit, Mail, Save } from "lucide-r
 import { z } from "zod";
 
 const updateFormSchema = z.object({
-  recipientEmails: z.string().email("Please enter a valid email address"),
+  recipientEmails: z.string().min(1, "At least one email is required"),
   googleSheetUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   location: z.string().min(1, "Location is required"),
 });

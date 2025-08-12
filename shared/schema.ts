@@ -177,6 +177,22 @@ export const insertAdminUserSchema = createInsertSchema(adminUsers).pick({
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
 });
 
+export const updateAdminUserSchema = createInsertSchema(adminUsers).pick({
+  email: true,
+  password: true,
+  role: true,
+  firstName: true,
+  lastName: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address").optional(),
+  password: z.string().min(8, "Password must be at least 8 characters").optional().or(z.literal("")),
+  role: z.enum(["admin", "editor", "form_manager"], {
+    required_error: "Please select a role",
+  }).optional(),
+  firstName: z.string().min(2, "First name must be at least 2 characters").optional(),
+  lastName: z.string().min(2, "Last name must be at least 2 characters").optional(),
+});
+
 export const loginAdminSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
@@ -196,7 +212,7 @@ export const insertFormConfigSchema = createInsertSchema(formConfigs).pick({
   buttonName: z.string().optional(),
   location: z.string().min(1, "Location is required"),
   recipientEmails: z.array(z.string().email()).min(1, "At least one recipient email is required"),
-  googleSheetUrl: z.string().url().optional().or(z.literal("")),
+  googleSheetUrl: z.string().url().optional().or(z.literal("")).or(z.null()),
   isActive: z.boolean().default(true),
 });
 
@@ -248,6 +264,7 @@ export type TalkGrowthSubmission = typeof talkGrowthSubmissions.$inferSelect;
 
 // Admin types
 export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
+export type UpdateAdminUser = z.infer<typeof updateAdminUserSchema>;
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type LoginAdmin = z.infer<typeof loginAdminSchema>;
 export type InsertFormConfig = z.infer<typeof insertFormConfigSchema>;

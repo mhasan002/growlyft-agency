@@ -11,22 +11,28 @@ interface AnalyticsData {
 }
 
 export default function AdminAnalytics() {
-  const { data: analytics, isLoading } = useQuery<AnalyticsData>({
+  const { data: analytics, isLoading: analyticsLoading } = useQuery<AnalyticsData>({
     queryKey: ["/api/admin/analytics/submissions"],
     queryFn: getQueryFn({ on401: "returnNull" }),
   });
 
-  if (isLoading) {
+  // Get blog posts count
+  const { data: blogPosts, isLoading: blogLoading } = useQuery({
+    queryKey: ["/api/blog/posts"],
+    queryFn: getQueryFn({ on401: "returnNull" }),
+  });
+
+  if (analyticsLoading || blogLoading) {
     return <div>Loading analytics...</div>;
   }
 
   // Use real analytics data with fallback
   const realData = {
     totalSubmissions: analytics?.totalSubmissions || 0,
-    totalBlogPosts: 0, // We'll fetch this from blog posts
+    totalBlogPosts: (blogPosts as any[])?.length || 0,
     activeForms: 11,
     averageResponseTime: "< 1 hour",
-    submissionTrend: analytics?.totalSubmissions > 0 ? "+New" : "No data yet",
+    submissionTrend: (analytics?.totalSubmissions || 0) > 0 ? "+New" : "No data yet",
     topPerformingForm: "Contact Form",
     recentActivity: analytics?.recentSubmissions?.slice(0, 5).map((submission: any, index: number) => ({
       type: "Form Submission",
@@ -39,14 +45,6 @@ export default function AdminAnalytics() {
       conversionRate: "Active",
     }))
   };
-
-  // Get blog posts count
-  const { data: blogPosts } = useQuery({
-    queryKey: ["/api/blog/posts"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
-  });
-
-  realData.totalBlogPosts = blogPosts?.length || 0;
 
   return (
     <div className="space-y-6">
@@ -122,7 +120,7 @@ export default function AdminAnalytics() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {mockData.formPerformance.map((form) => (
+            {realData.formPerformance.map((form: any) => (
               <div key={form.name} className="flex items-center justify-between">
                 <div className="space-y-1">
                   <p className="text-sm font-medium">{form.name}</p>
@@ -147,7 +145,7 @@ export default function AdminAnalytics() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {mockData.recentActivity.map((activity, index) => (
+            {realData.recentActivity.map((activity: any, index: number) => (
               <div key={index} className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0" />
                 <div className="space-y-1 flex-1">
